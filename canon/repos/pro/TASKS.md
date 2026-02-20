@@ -1,0 +1,670 @@
+# Repo `pro` — Tasks
+
+## Audit — Paywall offre active (schedule vs start) [2026-02-20]
+- [x] Audit réalisé sans patch applicatif (documentation uniquement).
+- [x] Garde-fou actuel localisé côté carte agenda (UI), pas au niveau source-of-truth backend:
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php:291`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php:305`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php:536`
+- [x] Flux PROGRAMMER cartographié:
+  - Entrée onboarding selon offres actives (`id_etat=3`): `pro/web/ec/ec.php:63`, `pro/web/ec/ec.php:100`, `pro/web/ec/ec.php:119`
+  - UI choix jeu -> POST `session_init`: `pro/web/ec/modules/tunnel/start/ec_start_step_1_game.php:52`
+  - Handler create session: `pro/web/ec/modules/tunnel/start/ec_start_script.php:161`
+  - Write session: `pro/web/ec/modules/tunnel/start/ec_start_script.php:258`
+  - Lookup offre depuis `id_securite` sans filtre état actif: `global/web/app/modules/ecommerce/app_ecommerce_functions.php:822`
+- [x] Flux LANCER/JOUER cartographié:
+  - Route play classique: `pro/web/.htaccess:200`
+  - Handler play classique: `pro/web/ec/modules/tunnel/start/ec_start_sessions_play_classic.php:1`
+  - Génération liens launcher centralisée: `global/web/app/modules/jeux/sessions/app_sessions_functions.php:851`
+  - Surface alternative (widget agenda) sans garde-fou UI équivalent: `pro/web/ec/modules/widget/ec_widget_client_lieu_sessions_agenda.php:100`
+- [x] Candidats de déplacement du garde-fou identifiés (sans implémentation):
+  - Enlever le blocage UI de programmation/lancement sur carte agenda (`sessions_list_bloc`).
+  - Ajouter/centraliser le check offre active côté backend de lancement (source-of-truth des routes launcher/play).
+  - Ajouter message + CTA offres sur la carte session programmée quand lancement refusé backend.
+
+## PATCH — Moved paywall to backend launch [2026-02-20]
+- [x] Programmation ouverte sans offre active (garde-fou retiré au moment “programmer”):
+  - `pro/web/ec/ec.php:98` (onboarding par défaut vers `choose/0`)
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_1_game.php:55` (transport `flag_session_demo`)
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php:171` (session non-démo autorisée via `flag_session_demo=0`)
+- [x] Garde-fou déplacé et centralisé côté backend lancement:
+  - nouvelle fonction verdict: `global/web/app/modules/jeux/sessions/app_sessions_functions.php` (`app_session_launch_guard_get`)
+  - blocage effectif sur route lancement: `pro/web/ec/modules/tunnel/start/ec_start_sessions_play_classic.php`
+- [x] Uniformisation des surfaces UI vers le verdict backend:
+  - funnel launcher via `/extranet/start/game/play/{id}` dans `app_session_get_link(..., 'launcher', ...)`
+  - retrait du garde-fou local UI dans `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+- [x] Message refus lancement + CTA offres:
+  - écran refus backend sur `start/game/play/{id}` avec CTA `Voir les offres`
+- [x] Fix remaining entrypoints bloquant encore la programmation:
+  - widget `Nouvelle session` (agenda vide / sans offre) ne pointe plus vers e-commerce, mais vers `choose/0`:
+    - `pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php`
+  - route `start/game/offres` ne bloque plus quand 0 offre active, redirection vers `choose/0` (avec contexte conservé):
+    - `pro/web/ec/modules/tunnel/start/ec_start_step_0_offres_client.php`
+  - flux bibliothèque non-demo: suppression du retour forcé vers `/start/game/offres/`, envoi `session_init` avec `flag_session_demo=0` même sans offre active:
+    - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+
+## PATCH — Home EC sans offre active (harmonisation widgets) [2026-02-20]
+- [x] Affichage harmonisé sur la home EC pour les clients sans offre active:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - ordre forcé:
+    - widget commande en position 1
+    - widget `Découvre les jeux Cotton` en position 2
+  - tous les autres widgets de home masqués dans ce cas
+- [x] Mapping widget commande sans dépendance au pipeline/usage (cas no-offer):
+  - typologie `1/8` (+ défaut) -> `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement.php`
+  - typologie `2/3` -> `pro/web/ec/modules/widget/ec_widget_ecommerce_evenement.php`
+  - typologie `12` -> `pro/web/ec/modules/widget/ec_widget_ecommerce_particulier.php`
+- [x] Bypass garde interne du widget abonnement pour clients sans offre active:
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement.php`
+  - suppression du blocage `id_pipeline_etat`/`id_solution_usage` quand `offre_client_active_count==0`
+- [x] Nouveau widget bibliothèque (contenu marketing enrichi + CTA):
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+  - CTA vers `/extranet/games/library`
+
+## Content Library (clients)
+
+### MVP checklist
+- [x] Définir le périmètre catalogue par jeu:
+  - [x] Quiz -> séries (`questions_lots`)
+  - [x] Bingo/Blind -> playlists (`jeux_bingo_musical_playlists`)
+- [x] Exposer les 3 vues métier dans l’UI:
+  - [x] Cotton certifiées
+  - [x] Communauté
+  - [x] Mes thématiques
+- [x] Implémenter les filtres:
+  - [x] jeu
+  - [x] rubrique
+  - [x] type de contenu
+  - [x] pagination
+  - [x] rubriques contextualisées par sélection active (`jeu + onglet`)
+  - [x] filtre rubrique en sélection directe (sans bouton de validation)
+- [x] Fiche thématique:
+  - [x] détails éditoriaux
+  - [x] image thématique (si présente dans uploads)
+  - [x] auteur + établissement auteur
+  - [x] métas d’usage visibles (nb d’utilisations / dernière utilisation)
+  - [x] mode builder Quiz disponible aussi depuis la fiche (`Ajouter/Retirer` + `Continuer/Annuler`)
+  - [x] détail de contenu affiché en page (questions Quiz / morceaux Bingo-Blind)
+  - [x] aperçu multimédia léger par type support (image miniature, audio extrait 10s, vidéo extrait court)
+  - [x] affichage usage aligné list: `Jouée x fois - dernière: ...` sous titre/sous-titre (retrait des lignes usage du bloc méta)
+  - [x] actions thématique (`Modifier les infos` / `Supprimer la playlist|série`) déplacées dans le bloc méta, style aligné sur `Modifier le contenu`
+  - [x] `Modifier le contenu` converti en bouton icône + tooltip dynamique (`Modifier la playlist/série`), toggle ouverture/fermeture conservé
+- [x] Action “Programmer une session” depuis la fiche:
+  - [x] `session_init` puis redirection vers `step_2_setting` avec transport `id_catalogue_produit` (`from=library`)
+  - [x] après validation setting: auto-`session_theme` puis redirection vers résumé
+  - [x] Quiz: confirmation puis mode builder sur la liste (session) pour sélectionner 1 à 4 séries, transport `quiz_lot_ids` jusqu’au `session_setting`
+  - [x] Quiz: application multi-séries via la logique existante du tunnel start (`lot_ids`)
+- [x] Action “Lancer une démo” depuis la fiche:
+  - [x] conservation du flux existant démo: `session_init` puis `session_theme` (pas de `step_2_setting`)
+  - [x] redirection vers résumé (CTA “Ouvrir le jeu”)
+- [x] Ajouter le point d’entrée UI:
+  - [x] route `/extranet/games/library`
+  - [x] menu latéral EC “Les jeux”: clic parent => portail `/extranet/games/library` + sous-menu direct auto-ouvert en contexte bibliothèque (`Blindtest` / `Bingo musical` / `Cotton Quiz`)
+- [x] Action directe en liste:
+  - [x] CTA principal unique par carte: `Voir le détail`
+  - [x] mode builder Quiz: action secondaire discrète `Ajouter au quiz` via icône `+` (top-right), avec état `✓` si déjà ajoutée
+  - [x] lien de détail conservé et contextualisé (série/playlist), sans conflit de clic avec l’action builder
+  - [x] statut transitoire en bas de carte (`mine`) si non programmable: `Série à compléter` / `Série à valider` / `Playlist à valider`
+  - [x] admin (`id_client=10`): statut temporaire `Non publiée` en bandeau jaune sur l’onglet `Communauté` quand `flag_share_community!=1`
+  - [x] onglet `Communauté`: exclusion des contenus partagés par le client courant (ne pas voir ses propres contenus)
+- [x] Enrichir la liste:
+  - [x] affichage difficulté (3 icônes + libellé)
+  - [x] métas d’usage discrètes si `usage_count>0`
+- [ ] Recherche texte (retirée par décision UX sur cette itération).
+- [x] Recherche texte retirée de la list (UI supprimée, compat query `q` conservée en silencieux).
+- [ ] Vérifier contrôles d’accès (tenant + rôle contact) sur toutes les actions ci-dessus en QA manuelle.
+
+### Tests manuels (MVP)
+- [ ] Tenant isolation:
+  - [ ] un client A ne voit pas “Mes thématiques” du client B
+  - [ ] les métas d’usage n’agrègent pas cross-tenant
+  - [ ] Parcours fiche -> programmer session:
+  - [ ] arrivée sur `step_2_setting` (date + format)
+  - [ ] sélection thématique conservée jusqu’au résumé
+  - [ ] `flag_configuration_complete=1` après validation
+  - [ ] CTA `Ouvrir le jeu` fonctionnel depuis le résumé
+  - [ ] Quiz: choix “non” à l’ajout -> 1 série -> setting -> résumé
+  - [ ] Quiz: ajout de 3 séries -> 4 séries -> setting -> résumé
+  - [ ] Quiz: tentative 5 séries -> refus backend
+  - [ ] Quiz: annuler le builder -> retour mode normal + sélection vidée
+  - [ ] Quiz (fiche): mode builder actif visible, CTA `Ajouter au quiz` + état `Déjà ajoutée` (+ retrait), puis continuer vers setting/résumé
+  - [ ] Quiz (liste builder): icône `+` ajoute sans quitter la liste, état `✓` visible, et ouverture du détail toujours accessible
+- [ ] Parcours fiche -> détail contenu:
+  - [ ] Quiz: affichage questions + support (type 1/2/3)
+  - [ ] Bingo/Blind: affichage morceaux + support si URL disponible
+  - [ ] audio: bouton `Extrait 10s` stop auto
+  - [ ] vidéo: mini player `Extrait 10s`
+  - [ ] YouTube sans `start/t/end`: démarrage auto à 30s
+- [ ] Parcours fiche -> lancer démo:
+  - [ ] pas de passage par `step_2_setting` (comportement existant conservé)
+  - [ ] session démo créée/dupliquée en 2 joueurs quand attendu
+  - [ ] arrivée directe au résumé avec CTA `Ouvrir le jeu` fonctionnel
+- [ ] Contrôle rôles:
+  - [ ] animateur (`id_client_contact_type=3`) respecte les restrictions existantes
+- [ ] Non-régression routing:
+  - [ ] `/extranet/start/game/choose/*` (tunnel classique inchangé)
+  - [ ] `/extranet/start/game/choose/demo`
+  - [ ] `/extranet/start/game/theme/*/{id_securite_session}`
+  - [ ] `/extranet/start/script` (`session_init`, `session_theme`, `session_duplicate`)
+
+## Bibliothèque — CRUD mine-only (create/edit)
+
+### Implémentation
+- [x] Ajouter un adapter unifié metadata-only:
+  - [x] `pro/web/ec/modules/jeux/bibliotheque/sources/quiz_series.php`
+  - [x] `pro/web/ec/modules/jeux/bibliotheque/sources/playlists.php`
+  - [x] API unifiée: `loadMeta/createMeta/updateMeta` (owner-check sur update)
+- [x] Ajouter les écrans dédiés:
+  - [x] `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_create.php`
+  - [x] `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_edit.php`
+  - [x] `pro/web/ec/modules/jeux/bibliotheque/editor/p_theme_save.php`
+- [x] Brancher bibliothèque sans toucher start:
+  - [x] `Créer` visible en onglet `mine` uniquement
+  - [x] carte `+` en tête de grille `mine` (CTA principal création)
+  - [x] libellé carte `+` contextualisé jeu:
+    - [x] Quiz: `Ajouter une série`
+    - [x] Bingo/Blind: `Ajouter une playlist`
+  - [x] icône `+` colorée avec la couleur du jeu actif
+  - [x] formulaire create sans sélecteur de jeu quand `game` est préfiltré depuis la bibliothèque
+  - [x] `Modifier` visible sur la fiche uniquement si `id_client_auteur == $_SESSION['id_client']`
+  - [x] save via `library/script` (`mode=content_library_theme_save`)
+  - [x] option de partage communauté éditable en méta (`t_theme_edit`) pour tous les contenus perso (Quiz/Bingo/Blind)
+  - [x] retrait du mode dédié `content_library_admin_quiz_share_toggle` (pilotage partage unifié via save méta)
+  - [x] suppression via `library/script` (`mode=content_library_theme_delete`) avec owner-check
+  - [x] suppression visible uniquement depuis la fiche (retirée de l’écran edit)
+  - [x] redirection vers la fiche avec `?saved=1`
+  - [x] redirection suppression vers `mine` avec `?deleted=1`
+  - [x] hardening anti-500:
+    - [x] fallback local delete si `clib_theme_adapter_delete_meta()` indisponible
+    - [x] fallback URL `mine` si helper lib indisponible
+    - [x] try/catch delete sources (retour `false` au lieu de fatal SQL)
+
+### Tests manuels (CRUD mine-only)
+- [ ] Quiz:
+  - [ ] créer une série `mine` depuis la bibliothèque (jeu=quiz)
+  - [ ] vérifier apparition dans `Mes séries`
+  - [ ] modifier le titre depuis la fiche -> succès + retour fiche
+- [ ] Bingo/Blind:
+  - [ ] créer une playlist `mine` (jeu=bingo et jeu=blindtest)
+  - [ ] vérifier apparition dans `Mes playlists`
+  - [ ] modifier rubrique/description -> succès + retour fiche
+- [ ] Contrôles d’accès:
+  - [ ] bouton `Modifier` absent sur item non-mine
+  - [ ] URL forcée d’édition d’un item non-mine -> refus backend
+  - [ ] URL forcée de suppression d’un item non-mine -> refus backend
+- [ ] UX création:
+  - [ ] depuis `Mes séries` (quiz), carte `+` affiche `Ajouter une série` + icône couleur Quiz
+  - [ ] depuis `Mes playlists` (bingo/blind), carte `+` affiche `Ajouter une playlist` + icône couleur jeu
+  - [ ] create préfiltré jeu: pas de sélecteur jeu affiché
+- [ ] Garde-fou start:
+  - [ ] `git diff --name-only` sans changement sous `/extranet/start/` / `ec_start_*`
+
+## Bibliothèque — edit contenu (quiz series / playlists)
+
+### Contrat add/remove/reorder (audit preuve file:line)
+- [x] Quiz séries (`questions_lots` -> `questions` + `questions_propositions`):
+  - [x] création/édition question + supports + propositions confirmée par:
+    - [x] `pro/web/ec/modules/jeux/catalogue_series/catalogue_series_form_manager/ec_catalogue_series_form_manager_questions_create_or_update.php:77`
+    - [x] `pro/web/ec/modules/jeux/catalogue_series/catalogue_series_form_manager/ec_catalogue_series_form_manager_questions_create_or_update.php:145`
+    - [x] `pro/web/ec/modules/jeux/catalogue_series/catalogue_series_form_manager/ec_catalogue_series_form_manager_questions_create_or_update.php:172`
+  - [x] chargement des questions + propositions confirmé par:
+    - [x] `pro/web/ec/modules/jeux/catalogue_series/catalogue_series_form_manager/ec_catalogue_series_form_manager_questions_get.php:406`
+    - [x] `pro/web/ec/modules/jeux/catalogue_series/catalogue_series_form_manager/ec_catalogue_series_form_manager_questions_get.php:479`
+- [x] Playlists (`jeux_bingo_musical_playlists` -> `jeux_bingo_musical_morceaux_to_playlists`):
+  - [x] insertion avec `position` confirmée par:
+    - [x] `pro/web/ec/modules/jeux/catalogue_playlists/ec_catalogue_playlist_import.php:199`
+  - [x] consommation start via table de liaison confirmée par:
+    - [x] `pro/web/ec/modules/tunnel/start/ec_start_script.php:629`
+    - [x] `pro/web/ec/modules/tunnel/start/ec_start_script.php:638`
+
+### Implémentation (bibliothèque only, mine-only)
+- [x] Ajouter écran dédié contenu:
+  - [x] `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php`
+  - [x] UI minimale liste + add + remove + move + update item
+- [x] Ajouter endpoint AJAX:
+  - [x] `pro/web/ec/modules/jeux/bibliotheque/editor/p_theme_content_ajax.php`
+  - [x] actions: `add`, `remove`, `move`, `update_item`
+- [x] Ajouter adapters contenu:
+  - [x] `pro/web/ec/modules/jeux/bibliotheque/sources/quiz_series_content.php`
+  - [x] `pro/web/ec/modules/jeux/bibliotheque/sources/playlists_content.php`
+  - [x] owner-check backend `id_client_auteur = $_SESSION['id_client']` avant write
+  - [x] normalisation des positions après add/remove/move
+  - [x] playlist mapping robuste sans dépendance `id` de la table de liaison (ops basées sur `position`, comme dans start)
+- [x] Brancher bibliothèque:
+  - [x] route editor `t_theme_content` dans `ec_bibliotheque_list.php`
+  - [x] mode script `content_library_theme_content_ajax` dans `ec_bibliotheque_script.php`
+  - [x] bouton fiche `Modifier contenu` visible uniquement pour `mine` dans `ec_bibliotheque_view.php`
+  - [x] helpers adapter + URL dans `ec_bibliotheque_lib.php`
+  - [x] hardening flux AJAX éditeur contenu:
+    - [x] submit JS avec headers `Accept: application/json` + `X-Requested-With`
+    - [x] backend `content_ajax` avec sortie immédiate (`exit`) pour éviter redirection parasite
+    - [x] fallback non-AJAX: redirection vers `t_theme_content` (pas d’affichage JSON brut)
+  - [x] garde-fou réponse add: refuser `success=true` si rechargement retourne `rows=[]`
+
+### Itération playlist (alignement start/catalogue)
+- [x] Ajouter playlist via URL playlist YouTube Music (et non ajout unitaire par morceau) pour Bingo/Blind:
+  - [x] validation URL: `music.youtube.com/playlist?list=...`
+  - [x] extraction `list` + import via API YouTube (playlistItems + videos)
+  - [x] contrainte mini alignée catalogue: minimum 40 morceaux
+  - [x] import borné à 40 morceaux pour la playlist cible
+- [x] Contraintes URL support:
+  - [x] Quiz support type 2 (audio): URL YouTube Music titre requise (`music.youtube.com/watch?v=...`)
+  - [x] Playlist Bingo/Blind (édition item): URL YouTube Music requise si renseignée
+  - [x] liens YouTube classiques (`youtube.com`, `youtu.be`) refusés pour ces cas
+
+### Itération playlist (mine-only) - workflow fiche 2026-02-16
+- [x] Réutiliser la logique d’import playlist alignée start/catalogue (sans modifier start):
+  - [x] ajout via URL playlist YouTube Music uniquement (`/playlist?list=...`)
+  - [x] minimum 40 / import max 40
+  - [x] signaux “titres douteux” repris du flux analyse/import catalogue (levenshtein artiste/chaîne, termes suspects, patterns)
+- [x] Changer le post-import bibliothèque:
+  - [x] redirection vers la fiche en mode visu (`?imported=1`) et non vers l’éditeur contenu
+  - [x] stockage flash import (`imported_count`, `doubtful_count`, `doubtful_rows`)
+  - [x] affichage fiche: mise en avant inline des lignes douteuses/non fonctionnelles (pas de bloc séparé)
+- [x] UX fiche playlist (vide + remplie):
+  - [x] formulaire lien YT Music disponible en mode visu
+  - [x] fiche remplie: bloc import supprimé
+  - [x] fiche vide: bloc import visible
+  - [x] fiche vide: pas de titre section contenu ni placeholder vide
+  - [x] fiche vide: pas de CTA `Créer mon jeu` / `Démo`
+  - [x] bouton import renommé `Importer`
+  - [x] actions owner `Modifier/Supprimer` remplacées par icônes près du titre
+  - [x] édition unitaire: icône ligne + bouton `Valider`, formulaire sur ligne dédiée avant aperçu
+  - [x] surbrillance cohérente: message d’alerte + lignes concernées
+- [x] Validation obligatoire playlists perso (legacy validé par défaut):
+  - [x] migration schéma `jeux_bingo_musical_playlists`:
+    - [x] `flag_validated TINYINT(1) NOT NULL DEFAULT 1`
+    - [x] `validated_at DATETIME NULL`
+    - [x] `flag_rights_waiver_accepted TINYINT(1) NOT NULL DEFAULT 0`
+    - [x] `rights_waiver_accepted_at DATETIME NULL`
+    - [x] `rights_waiver_text_version VARCHAR(16) NULL`
+  - [x] legacy safe:
+    - [x] playlists existantes considérées validées par défaut
+  - [x] création playlist `mine`:
+    - [x] forçage `flag_validated=0`
+    - [x] init `validated_at/rights_waiver_*` à `NULL/0`
+    - [x] pas de reset de ces champs sur update métadonnées
+  - [x] fiche `p=view` transitoire (`mine` + `flag_validated=0`):
+    - [x] masquage CTA d’usage (`Créer mon jeu` / `Démo`)
+    - [x] affichage bloc en bas “Validation requise”
+    - [x] checkbox waiver (texte juridique) + prénom auteur obligatoires
+    - [x] bouton “Valider la playlist” désactivé si `suspect_count>0` ou prénom vide ou checkbox non cochée
+  - [x] backend validation:
+    - [x] nouveau mode `content_library_playlist_validate`
+    - [x] vérification owner-only (`id_client_auteur == $_SESSION['id_client']`)
+    - [x] recalcul serveur suspects via source playlists (pas de confiance client)
+    - [x] refus si suspects restants / prénom vide / waiver décoché / contenu < 40
+    - [x] write `flag_validated=1` + `validated_at` + `nom_auteur` + waiver flags/dates/version
+    - [x] redirect succès `?validated=1`, erreurs via `?error=...`
+  - [x] garde-fou backend usage:
+    - [x] `content_library_program` et `content_library_demo` refusés si playlist `mine` non validée (URL forcée incluse)
+  - [x] ajustements post-implémentation:
+    - [x] pas de revalidation demandée après edits bénins: si des suspects réapparaissent, usage bloqué mais `flag_validated` conservé
+    - [x] correction marquage suspects: corriger une ligne ne retire plus les autres suspects
+    - [x] clic `Valider` sur une ligne suspecte sans modification: ligne considérée manuellement “ok” (retrait du suspect ciblé)
+    - [x] bloc validation caché tant qu’aucun lien playlist n’a été soumis (fiche vide)
+    - [x] tooltip explicatif sur bouton validation disabled (raisons dynamiques)
+    - [x] champ validation aligné DB existante: `nom_auteur` (suppression usage `author_first_name`)
+- [x] Créer playlist (editor=t_theme_create):
+  - [x] suppression du champ `Jeu`
+  - [x] sélecteur difficulté déplacé en bas
+  - [x] import en mode remplacement du contenu existant (`replace_existing=1`)
+- [x] Modifier playlist (editor=t_theme_edit):
+  - [x] suppression du champ `Jeu`
+  - [x] sélecteur difficulté ajouté
+  - [x] persistance difficulté en update playlist
+- [x] Compteurs d’usage:
+  - [x] exclusion des sessions démo (`flag_session_demo=0`) pour `usage_count` / `last_used_at`
+- [x] UX liste bibliothèque (filtres):
+  - [x] onglets `Cotton/Communauté/Mes` en style soft-tabs avec soulignement accentué couleur du jeu
+  - [x] retrait du select `Rubrique`
+  - [x] ajout chips `Rubrique` cliquables (incluant `Toutes les rubriques`) avec filtre 1 clic
+  - [x] chips positionnés au-dessus de la ligne de résultats
+  - [x] chips actifs Bingo/Blindtest: texte couleur fond de page
+  - [x] ligne de résultats colorée avec la couleur du jeu sélectionné
+  - [x] chips allégés visuellement (outline discret, densité réduite, actif plus doux)
+  - [x] onglet `Communauté`: filtre `A la une` ajouté (à gauche de `Nouveautés`) et défini par défaut
+  - [x] `A la une` communauté = top 12 popularité
+  - [x] onglet `Perso`: suppression du filtre `Nouveautés`, conservation du filtre `Thèmes` uniquement (par défaut: toutes)
+  - [x] tri des contenus `Perso`: plus récent -> plus ancien
+  - [x] chip `Toutes les séries/playlists` séparé du dropdown `Thèmes`:
+    - [x] `Cotton` / `Communauté`: chip placé à droite de `Thèmes`
+    - [x] `Perso`: chip placé à gauche de `Thèmes` et actif par défaut
+  - [x] layout cartes liste:
+    - [x] titre page: `Catalogue des playlists/séries du <jeu>`
+    - [x] sous-titre `Parcours le catalogue...` supprimé
+    - [x] densité cartes: 4 colonnes max sur écran large
+    - [x] bandeau bas léger avec bouton unique `Voir le détail`
+    - [x] liens prog/démo retirés de la carte liste
+    - [x] bouton `Voir le détail`: style des blocs choix jeu (portail bibliothèque) + flèche à droite
+- [x] UX Bibliothèque list/view (2026-02-18):
+  - [x] `/extranet/games/library` devient un portail “Les jeux” (hub) avec 3 blocs de sélection (quiz/bingo/blindtest), réutilisant le pattern visuel de `start > step_1_game`
+  - [x] list filtrée activée via `?game=quiz|bingo|blindtest` (compat conservée avec `seo_slug_jeu`)
+  - [x] suppression des 3 blocs de jeu en haut de la list (page allégée)
+  - [x] titre list simplifié au nom du jeu (`Blindtest` / `Bingo Musical` / `Cotton Quiz`) + sous-titre dynamique playlists/séries selon jeu
+  - [x] menu latéral EC renommé: `Bibliotheque` -> `Les jeux` (lien inchangé `/extranet/games/library`)
+  - [x] POC UX list (game sélectionné uniquement):
+    - [x] segmented `source` en soft-tabs à libellés contextuels:
+      - [x] Quiz: `Séries Cotton` / `Séries de la communauté` / `Mes séries`
+      - [x] Bingo/Blind: `Playlists Cotton` / `Playlists de la communauté` / `Mes playlists`
+      - [x] style renforcé: uppercase + taille augmentée + contraste actif sur couleur du jeu
+    - [x] suppression de la barre recherche/tri (UI retirée; params legacy compatibles si présents en URL)
+    - [x] filtres actifs list: `A la une` / `Nouveautés` / `Thèmes` (suppression `Populaires` et chip `Toutes`)
+    - [x] `Thèmes` ouvre un dropdown rubriques (périmètre actif `jeu + type`) avec entrée reset contextualisée:
+      - [x] Quiz: `Toutes les séries`
+      - [x] Bingo/Blind: `Toutes les playlists`
+    - [x] suppression complète de l’ancienne rangée de chips rubriques
+    - [x] wiring URL list aligné MVP: `type`, `preset`, `id_rubrique`, `page` (+ compat silencieuse `q/sort/perso_state/source`)
+    - [x] non-cumul des filtres: un seul actif à la fois (`A la une` ou `Nouveautés` ou `Thèmes`)
+    - [x] reset `Toutes les séries/playlists` en mode `Thèmes` (plus de retour implicite vers `A la une`)
+    - [x] état par défaut: `A la une`
+    - [x] défaut au switch de source:
+      - [x] `Cotton` => `A la une`
+      - [x] `Communauté` / `Perso` => `Nouveautés`
+      - [x] reset rubrique au switch (`id_rubrique=0`)
+    - [x] visibilité presets:
+      - [x] `A la une` affiché uniquement sur l’onglet `Cotton`
+      - [x] `Nouveautés` affiché sur `Cotton`, `Communauté` et `Perso`
+      - [x] `Communauté` / `Perso`: `Nouveautés` + `Thèmes`
+    - [x] limites de sélection:
+      - [x] `A la une`: 12 entrées max
+      - [x] `Nouveautés`: 12 entrées max
+    - [x] `A la une` (`Cotton`): complétion si `<12` avec les thématiques les plus populaires du catalogue
+    - [x] `Thèmes`: tri par popularité décroissante (puis dernière utilisation, puis id)
+    - [x] états vides avec CTA contextualisés (Cotton / Communauté / Perso)
+    - [x] preset `now` branché sur logique existante tunnel start/catalogue:
+      - [x] Quiz: règle “à la une” (`flag_une` + `jour_associe_*` vides, scope Cotton)
+      - [x] Bingo/Blind: fenêtre date `jour_associe_*` (scope Cotton)
+    - [x] preset `new` aligné sur le comportement existant “récents” (tri descendant)
+      - [x] règle exacte bibliothèque: aucun seuil de date, pas de filtre additionnel; tri `ORDER BY id DESC` sur table catalogue (`questions_lots` / `jeux_bingo_musical_playlists`)
+      - [x] règle exacte tunnel start `step_3_theme`: aucun seuil de date, pas de filtre additionnel (hors statut publié); tri `ORDER BY id DESC` via `ec_catalogue_series_list.php` / `ec_catalogue_playlists_list.php`
+      - [x] champs impliqués “Nouveautés”: `id` (tri) + statut publication (`id_etat=2` pour Quiz, `online=1` pour playlists)
+  - [x] Popularité hors démo (12 mois) par thématique:
+    - [x] table d’agrégats dédiée `reporting_games_content_popularity_365d` (clé logique `game + content_type + id_catalogue_produit`)
+    - [x] métriques stockées: `uses_365d_nondemo`, `last_used_at_nondemo`, `is_top_10pct_365d`, `computed_at`
+    - [x] filtre temporel glissant: `date >= NOW() - INTERVAL 365 DAY`
+    - [x] filtre hors démo: `flag_session_demo=0` + `flag_configuration_complete=1`
+    - [x] cas Quiz multi-séries: incrément par lot via parsing `lot_ids` (tokens `L<id>`) + prise en compte `id_produit`
+    - [x] UI list: badge `Populaire` (Top 10%) + tooltip “Top playlist/série · X utilisations depuis 1 an”
+    - [x] style badge `Populaire`: fond `#582AFF`, texte blanc, icône étoile
+    - [x] UI view: ligne `Popularité` affichée uniquement pour Top 10% avec message éditorial (`Cette playlist/série fait partie des 10% les plus utilisées !`)
+    - [x] suppression du script rebuild CLI obsolète (rebuild assuré par le cron reporting)
+    - [x] recalcul périodique branché dans le cron quotidien BO WWW: `www/web/bo/cron_routine_bdd_maj.php` (sans dépendance runtime au module `pro`)
+  - [x] liste `mine` Bingo/Blind non validée: remplacement CTA `Créer mon jeu` + `Démo` par bouton unique `À valider` vers `p=view`
+  - [x] conservation contexte navigation list->view->list (`type`, `preset`, `id_rubrique`, `page`, `builder` + compat params legacy)
+  - [x] fiche playlist: bouton/icône `Modifier` rendus plus discrets (style ghost/outline fin)
+  - [x] édition unitaire morceau: labels visibles `Artiste`, `Titre`, `Lien YouTube`
+  - [x] aperçu playlist Bingo/Blind compact: action `▶ Écouter 10s` sans libellé `Support` ni lien YouTube en visu
+  - [x] contraste ajusté: chips rubriques (list) + actions/icônes outline (view)
+  - [x] view: édition métas calée visuellement sur le bouton `Démo` (icône seule)
+  - [x] view: édition ligne calée sur le style lien détail (`Modifier` + icône) et placée à côté du titre
+  - [x] liens retour (`Retour au catalogue/fiche`) : hover/focus en blanc pour éviter la disparition sur fond body
+  - [x] ligne de contexte blanc entre supra-filtres et chips, avec message contextualisé `Cotton/Communauté/Perso`
+  - [x] suppression de la carte vide redondante “Tu n’as pas encore de contenus perso”
+  - [x] message vide builder quiz (mine): `Aucune série perso disponible...`
+  - [x] mode builder Quiz (liste + fiche):
+    - [x] sélection affichée ligne par ligne avec fond léger couleur jeu
+    - [x] réordonnancement drag-and-drop + persistance ordre via `ordered_ids`
+    - [x] action `Retirer` par ligne
+    - [x] exclusion des séries non validées + masquage création nouvelle série en mode builder
+  - [x] microcopy/titres builder harmonisés (`Compose ton quiz (X / 4 séries max.)` + sous-titre explicite 1..4 + cas `4/4` = `Ta sélection est complète.` + CTA principal `Valider`)
+  - [x] mode builder liste: quand la sélection est pleine (`4 / 4`), icône `+` désactivée avec tooltip `Limite atteinte`
+  - [x] view (hors builder): encart d’usage unique en haut de fiche (`Utiliser cette playlist/série`) avec 2 CTA unifiés:
+    - [x] primaire dynamique `Créer un <jeu>` (Cotton Quiz / Bingo musical / Blindtest)
+    - [x] secondaire `Lancer une démo`
+    - [x] aide contextuelle: `Crée une session pour jouer, ou lance une démo pour tester rapidement.`
+    - [x] placement: après header + métas, avant le détail du contenu
+  - [x] ajustement UX view (rollback): CTA réintégrés inline dans l’UI (sans section dédiée ni titre), avec phrase d’aide conservée
+  - [x] quiz view: CTA renommé `Utiliser cette série`, sans modale, redirection directe vers la liste avec builder visible et série ajoutée (persistée via session builder)
+  - [x] view contenu: bouton d’aperçu audio compact et inline (même ligne que la question/le morceau)
+  - [x] view contenu: suppression de l’affichage texte `Support : Audio/Vidéo/Image`
+  - [x] view contenu: alternance visuelle une ligne sur deux (fond gris léger) pour distinguer les index
+  - [x] fiche mine (playlist/série): édition du contenu via toggle global unique (icône roue crantée près du titre), suppression des liens unitaires `Modifier` en visu
+  - [x] mode édition contenu: fond warning léger + séparation visuelle renforcée des items + aperçu support au-dessus des champs
+  - [x] playlist view: compteur nombre de morceaux affiché à côté de `Contenu de la playlist`
+  - [x] quiz view: si `0` question, masquer `Contenu de la série 0/6` + `Aucune question disponible`; si `>=1`, placer bloc ajout au-dessus du contenu
+  - [x] suppression des bandeaux info post-save (`Thématique mise à jour`, `Série en cours de création...`) pour tous les jeux
+  - [x] bloc validation (owner non validé):
+    - [x] positionné entre métas et contenu avec fond warning léger
+    - [x] texte titre harmonisé (`Ta playlist/série est complète...`)
+    - [x] champ prénom prérempli depuis l’utilisateur actif (modifiable)
+    - [x] ordre cases inversé: partage communauté (optionnel, coché par défaut) puis consentement (obligatoire)
+    - [x] consentement long inline sans info-bulle
+    - [x] si playlist avec suspects: bloc validation masqué, message dédié affiché à la place, édition auto-ouverte sur lignes suspectes
+    - [x] flag `flag_share_community` persisté à la validation (quiz + playlists), avec `share_community_set_at`/`share_community_text_version` si colonnes disponibles
+    - [x] flag partage figé après validation (les actions d’édition ne permettent pas sa modification)
+  - [x] Publication communauté auto + sync transparent (étape 2):
+    - [x] table `community_items` ajoutée (index de publication communauté)
+    - [x] publication initiale auto à la validation owner si `flag_share_community=1` (création item `published`)
+    - [x] synchronisation auto sur mutation owner (métas + contenu) en update in-place (sans rotation/versioning/clone source)
+    - [x] suppression owner: bascule de l’item communauté en `hidden`
+    - [x] items `community` listés uniquement si:
+      - [x] `flag_share_community=1`
+      - [x] contenu validé
+      - [x] item `community_items` `published` existant
+    - [x] UI cards/view communauté: renderer inchangé (aucune information technique de snapshot affichée)
+    - [x] sessions: `championnats_sessions.community_item_id` alimenté lors du lancement bibliothèque en contexte `type=community`
+  - [x] Legacy communauté (étape 3):
+    - [x] identification origine legacy:
+      - [x] `COTTON_AUTHOR_ID` via helper/config (fallback legacy `id_client_auteur=0`)
+      - [x] règle quiz listable actuelle: `id_etat=2` (c’est le statut qui “masque/affiche”)
+      - [x] règle playlists listables actuelle: `online=1`
+    - [x] script idempotent ajouté: `pro/web/ec/modules/jeux/bibliotheque/scripts/rebuild_community_items_legacy.php`
+      - [x] alimentation/UPSERT `community_items` en `published` pour les contenus listables legacy
+      - [x] sync des flags source legacy (`flag_share_community=1`) pour les contenus perso déjà publiés en communauté
+      - [x] origin:
+        - [x] `cotton` si `id_client_auteur == COTTON_AUTHOR_ID`
+        - [x] `legacy_community` sinon
+      - [x] unique logique appliquée sur `(game, content_type, source_type, source_id, status)` + gestion anti-doublon
+      - [x] script SQL importable ajouté: `pro/web/ec/modules/jeux/bibliotheque/scripts/rebuild_community_items_legacy.sql` (usage phpMyAdmin)
+      - [x] règle Cotton legacy verrouillée pour opération DB: `id_client_auteur = 0` (ID `10` en communauté legacy)
+    - [x] listing `Cotton/Communauté` branché sur `community_items` `published` (et non plus uniquement sur `id_client_auteur`)
+      - [x] onglet `Cotton` => `origin='cotton'`
+      - [x] onglet `Communauté` => `origin IN ('legacy_community','shared_from_personal')`
+      - [x] hydratation cards/view inchangée depuis les tables source (pas de rendu technique exposé)
+      - [x] fallback automatique vers la logique legacy si `community_items` n’est pas encore peuplé pour le contexte courant (évite les listes vides)
+- [x] Import playlists robuste:
+  - [x] exigence stricte de 40 insertions (pas de succès partiel)
+  - [x] rollback batch si insertions < 40
+  - [x] messages d’erreur détaillés remontés en AJAX (au lieu de `Action impossible`)
+  - [x] URLs morceau normalisées au format `https://youtu.be/<id>` (alignement start/import)
+- [x] Édition unitaire depuis la fiche:
+  - [x] formulaire par ligne fermé par défaut (`details`)
+  - [x] mapping ligne corrigé avec `map_id` (plus d’erreur “Ligne introuvable…”)
+  - [x] modification in-place du morceau ciblé (pas de création de ligne supplémentaire)
+  - [x] retrait du marquage `douteux` après correction d’une ligne
+
+### Tests manuels (edit contenu)
+- [ ] Quiz (série mine):
+  - [ ] création série mine: arrivée fiche en mode intermédiaire `0/6`
+  - [ ] bandeau intermédiaire visible: `Série en cours de création — X/6 questions`
+  - [ ] bloc `Ajouter une question` visible tant que `countQuestions < 6`
+  - [ ] ajouter 2 questions
+  - [ ] modifier texte/support d’une question
+  - [ ] modifier une question via bouton `Modifier` (formulaire repliable) + `update_item` AJAX
+  - [ ] aucun tag `Valide/Invalide` affiché en fiche
+  - [ ] list `mine` Quiz: bouton unique `À compléter` tant que `<6` (pas de `Créer mon jeu` / `Démo`)
+  - [ ] `Créer mon jeu` / `Démo` masqués tant que `countQuestions < 6` en fiche
+  - [ ] à `6/6`: bloc ajout masqué + bloc `Validation requise` affiché
+  - [ ] à `6/6` non validée: list `mine` affiche `À valider`, pas de `Créer mon jeu`/`Démo`
+  - [ ] validation officielle quiz (prénom + waiver) => `Créer mon jeu`/`Démo` visibles
+  - [ ] si retour `<6` (suppression), validation quiz réinitialisée
+  - [ ] réordonner monter/descendre
+  - [ ] retirer 1 question
+  - [ ] rechargement fiche bibliothèque: contenu conforme
+  - [ ] fiche Quiz owner: CTA haut `Modifier` + `Supprimer` (style playlist)
+- [ ] Playlist mine (bingo + blindtest):
+  - [ ] legacy: playlist perso existante avant patch -> validée par défaut, pas de bloc validation, CTA démo/program OK
+  - [ ] ajouter via URL playlist YouTube Music (`/playlist?list=...`)
+  - [ ] vérifier contrainte mini 40 morceaux (refus si < 40)
+  - [ ] vérifier import max 40 morceaux
+  - [ ] après import (nouvelle playlist): fiche transitoire, CTA démo/program absents, bloc validation visible entre métas et contenu
+  - [ ] si suspects > 0: message dédié + bouton validation disabled
+  - [ ] tenter validation avec 1 suspect restant -> refus backend + message erreur
+  - [ ] modifier artiste/titre/url d’un morceau
+  - [ ] vérifier que l’édition unitaire modifie la ligne ciblée (pas de nouvelle ligne)
+  - [ ] vérifier que le lien est enregistré en `youtu.be/<id>`
+  - [ ] vérifier qu’une ligne corrigée n’est plus marquée `Douteux`
+  - [ ] suspect_count=0 + prénom + checkbox: validation OK, `flag_validated=1`, CTA réapparaissent
+  - [ ] URL forcée script `program/demo` sur playlist non validée -> refus backend explicite
+  - [ ] réordonner monter/descendre
+  - [ ] retirer 1 morceau
+  - [ ] rechargement fiche bibliothèque: contenu conforme
+  - [ ] après import: redirection fiche (pas éditeur), message import visible
+  - [ ] fiche remplie: bloc import absent
+  - [ ] fiche vide: bloc import présent
+  - [ ] fiche vide: aucun titre section contenu / aucun placeholder
+  - [ ] fiche vide: aucun bouton `Créer mon jeu` / `Démo`
+  - [ ] vérifier que les compteurs n’intègrent pas les démos
+  - [ ] liste -> fiche -> retour: onglet `mine` conservé
+  - [ ] liste -> fiche -> retour: onglet `cotton` conservé
+  - [ ] liste -> fiche -> retour: onglet `community` conservé
+  - [ ] playlist `mine` non validée en liste: bouton unique `À valider`, sans CTA `Créer mon jeu`/`Démo`
+  - [ ] fiche playlist: bouton modifier discret + icône fine
+  - [ ] édition morceau: labels visibles + sauvegarde OK
+  - [ ] aperçu morceau: uniquement bouton `▶ Écouter 10s` (pas de `Support : Audio`, pas de lien YouTube visible)
+  - [ ] mobile (390x844): les 3 cartes jeux tiennent sur 1 seule ligne au-dessus des onglets
+  - [ ] view: bouton édition métas = style `Démo` avec icône seule
+  - [ ] view: mode édition global via bouton unique près du titre (pas de lien `Modifier` unitaire par morceau)
+  - [ ] suspect faux positif: clic `Valider` sans changer les champs retire bien la ligne du blocage
+  - [ ] liens retour: hover/focus en blanc visible sur `view/create/edit/content`
+- [ ] Robustesse UX/API:
+  - [ ] submit “Ajouter” ne redirige plus vers la liste bibliothèque
+  - [ ] aucun JSON brut affiché si submit non-AJAX (fallback redirect vers éditeur)
+  - [ ] pas de faux positif (`success=true` avec `rows=[]`) sur ajout playlist
+- [ ] Contrôles:
+  - [ ] bouton `Modifier contenu` absent sur non-mine
+  - [ ] URL forcée / POST forcé non-mine refusés backend
+  - [ ] `git diff --name-only` sans modif sous `pro/web/ec/modules/tunnel/start/*` ni `ec_start_*`
+
+## Bibliothèque — verrou édition/suppression si contenu en cours d’utilisation
+
+### Implémentation
+- [x] Rollback du patch versioning source:
+  - [x] suppression des helpers/versioning auto-ensure (`status`, `archived_at`, `root_id`) dans la bibliothèque
+  - [x] suppression rotation archive/clone/new-id (métas + contenu)
+  - [x] suppression redirections UI vers nouvel ID (`p_theme_save.php`, `p_theme_content_ajax.php`)
+  - [x] suppression filtres `published` injectés dans listing/sélection par ce patch
+  - [x] suppression garde-fou `status` ajouté dans start
+  - [x] suppression bloc cron purge archives source
+  - [x] migration `pro/web/ec/modules/jeux/bibliotheque/scripts/archive_versioning_migration.sql` neutralisée (legacy non utilisée par le flux courant)
+- [x] Verrou métier unique “in use”:
+  - [x] fonction backend de détection usage sessions futures/en cours basée sur les références réelles:
+    - [x] Quiz: `id_produit` + `lot_ids` (`id_type_produit IN (1,5)`)
+    - [x] Bingo: `id_produit -> playlists_clients.id -> id_playlist` (`id_type_produit IN (3,6)`)
+    - [x] Blindtest: `id_produit` direct (`id_type_produit=4`)
+  - [x] filtre chronologie: `flag_session_demo=0`, `flag_configuration_complete=1`, `date>=CURDATE()`
+  - [x] couverture des références session communautaires:
+    - [x] jointure `championnats_sessions.community_item_id -> community_items.id -> source_id`
+    - [x] prise en compte dans les compteurs d’usage (fiche) et dans le verrou backend
+  - [x] branché sur update/delete méta + mutations de contenu (add/remove/move/update_item)
+  - [x] code erreur métier: `CONTENT_LOCKED_IN_USE`
+  - [x] messages UI selon cas:
+    - [x] usage par un autre client: blocage modification/suppression
+    - [x] usage par le créateur uniquement: blocage + invitation à supprimer sa session d’abord
+- [x] Logs d’événements backend:
+  - [x] `CONTENT_EDIT_BLOCKED`
+  - [x] `CONTENT_DELETE_BLOCKED`
+  - [x] meta log: `content_type`, `content_id`, `reason`, `session_count`, `owner_session_count`, `other_client_session_count`
+- [x] Communauté:
+  - [x] sync mutation owner en update in-place (sans archive/new published)
+  - [x] suppression owner autorisée => passage en `hidden` (pas d’archivage)
+  - [x] compat publication legacy conservée en listing `community`:
+    - [x] Quiz: visibilité si `id_etat=2`
+    - [x] Playlists: visibilité si `online=1`
+    - [x] appliquée en OR avec la règle courante `flag_validated=1 AND flag_share_community=1`
+- [x] UX fiche (pré-check avant traitement):
+  - [x] clic `Modifier` -> precheck AJAX backend, alerte immédiate si bloqué
+  - [x] clic `Supprimer` -> precheck AJAX backend, alerte immédiate si bloqué, confirmation seulement si autorisé
+  - [x] clic `Modifier le contenu` (toggle édition in-page) -> precheck AJAX backend avant ouverture
+- [x] UX fiche (acceptation du verrou):
+  - [x] ajout d’un badge info “en cours d’utilisation par X client(s)” sur la page `view` des contenus perso
+  - [x] `X` basé sur le nombre de clients distincts en sessions futures/en cours hors démo
+  - [x] variante message si usage créateur uniquement: “programmée dans ton agenda” + consigne suppression session
+  - [x] en état verrouillé: masquage des boutons `Modifier`, `Supprimer`, `Modifier le contenu`
+  - [x] compte admin bibliothèque (`id_client=10`) :
+    - [x] accès modification/suppression/édition contenu sur thématiques communauté (`id_client_auteur>0`)
+    - [x] owner-check bypassé côté backend (sources meta + content)
+    - [x] verrou `CONTENT_LOCKED_IN_USE` conservé
+    - [x] mode transition quiz legacy:
+      - [x] élargissement de l’onglet `Communauté` pour voir les séries clients quiz legacy
+      - [x] levée du filtre `id_etat=2` en mode transition admin quiz (sinon liste vide sur historique non publié)
+      - [x] action admin fiche: bascule `Publier en communauté` / `Retirer de la communauté`
+      - [x] publication admin: sync DB (`flag_share_community`) + `community_items`
+  - [x] métas d’usage fiche owner ajustées:
+    - [x] `Utilisée: 0 fois` -> `Jamais utilisée`
+    - [x] `Dernière utilisation` masquée si jamais utilisée
+    - [x] `Utilisée` -> `Utilisée dans tes jeux` si usage perso > 0
+    - [x] ajout `Playlist/Série partagée: oui|non`
+    - [x] ajout `Utilisation par la communauté: X fois` si partage actif et usages autres clients > 0
+
+### Tests manuels minimum (verrou in_use)
+- [ ] Contenu non utilisé:
+  - [ ] edit OK (impact direct)
+  - [ ] delete OK (impact direct)
+- [ ] Contenu utilisé par session future/en cours:
+  - [ ] edit refusé avec `CONTENT_LOCKED_IN_USE` + message utilisateur
+  - [ ] delete refusé avec `CONTENT_LOCKED_IN_USE` + message utilisateur
+- [ ] Fiche (pré-check UI):
+  - [ ] clic `Modifier` sur contenu bloqué: alerte avant navigation
+  - [ ] clic `Supprimer` sur contenu bloqué: alerte avant confirmation/submit
+  - [ ] clic `Modifier le contenu` sur contenu bloqué: alerte avant ouverture de l’édition
+- [ ] Fiche (badge usage):
+  - [ ] sur contenu utilisé: badge visible avec `X client(s)` cohérent
+  - [ ] sur contenu non utilisé: badge absent
+  - [ ] contenu verrouillé: boutons `Modifier`, `Supprimer`, `Modifier le contenu` masqués
+
+## References
+- Audit preuve-first: `notes/audit-content-library-session-demo-2026-02-12.md`
+- Canon repo: `canon/repos/pro/README.md`
+
+## Done
+- [x] 2026-02-12 — Initialisation du canon `pro` (`README.md` + `TASKS.md`) avec cadrage content-library, tunnel start session/démo, et référence d’audit.
+- [x] 2026-02-12 — Implémentation MVP Content Library (`pro/web/ec/modules/jeux/bibliotheque/*`) + routes `/extranet/games/library*` + menu EC + chaînage `session_init`/`session_theme` pour Programmer/Démo.
+- [x] 2026-02-12 — MAJ audit/canon après ajout `pro/web/config.php` (bootstrap env confirmé, inconnue #1 levée dans la note d’audit).
+- [x] 2026-02-12 — Bibliothèque MVP: association et affichage images thématiques (list + fiche) via conventions upload existantes (`questions_lots` / `playlists`) avec fallback si absent.
+- [x] 2026-02-12 — Bibliothèque MVP: affichage établissement auteur en plus de l’auteur (`clients.nom` résolu via `id_client_auteur`) sur liste et fiche.
+- [x] 2026-02-12 — Affinage UI Bibliothèque: sélecteur jeu visuel + couleurs dynamiques par jeu (onglet actif, bordure), filtre `Rubrique` contextuel sous onglets, actions directes en carte (`Créer un jeu`/`Lancer une démo`), lien détail contextualisé, niveau difficulté affiché.
+- [x] 2026-02-13 — Bibliothèque: sécurisation du flux “Programmer une session” avec réintroduction `step_2_setting`, transport `id_catalogue_produit` (`from=library`), auto-`session_theme` post-setting, validations tenant + compatibilité catalogue; flux démo conservé sans `step_2_setting`.
+- [x] 2026-02-13 — Bibliothèque Quiz: ajout du mode builder sur la liste (session `library_quiz_builder`, max 4), transport `quiz_lot_ids` vers `setting`, puis application multi-séries côté `session_setting` en réutilisant la logique tunnel start (`lot_ids`), avec validations serveur (droits/tenant/doublons/limite).
+- [x] 2026-02-13 — Bibliothèque: itération UX fiche (`view`) avec bloc caractéristiques aligné liste, détail de contenu in-page (sans modale), mode builder Quiz depuis fiche, et extraits multimédias légers (audio 10s, vidéo courte, miniature image/Drive).
+- [x] 2026-02-13 — Bibliothèque: CRUD mine-only metadata (create/edit) via écrans dédiés `editor/*` + adapter `sources/*` (Quiz `questions_lots`, Bingo/Blind `jeux_bingo_musical_playlists`) + garde owner backend, sans modification du tunnel start.
+- [x] 2026-02-13 — Bibliothèque CRUD mine-only: ajout suppression owner-only depuis fiche (`content_library_theme_delete`), carte `+` contextualisée (libellé + couleur jeu), préfiltrage jeu dans create (form sans select quand jeu déjà fixé), et hardening suppression anti-500 (fallback adapter + fallback URL + delete safe).
+- [x] 2026-02-13 — Bibliothèque: édition contenu mine-only (Quiz séries + Playlists) via nouvel écran `t_theme_content` et endpoint `content_library_theme_content_ajax`, avec adapters dédiés `sources/*_content.php` (add/remove/move/update + owner-check), sans modification du tunnel start.
+- [x] 2026-02-13 — Bibliothèque playlists: alignement contrat start/catalogue pour l’ajout (URL playlist YouTube Music + import API, mini 40 / max 40), validation URL Music stricte, et correctifs runtime éditeur contenu (AJAX headers, fallback non-AJAX, arrêt redirections parasites, mapping liaison par `position`).
+- [x] 2026-02-15 — Bibliothèque playlists: ajout du statut validée/non validée (schema minimal si absent), bloc “titres douteux” post-import en fiche, redirection post-import vers la fiche, blocage UI+backend de Programmer/Démo tant que playlist perso non validée, et action owner-only de validation manuelle.
+- [x] 2026-02-15 — Bibliothèque playlists: finalisation workflow fiche (analyse/import depuis la fiche, édition unitaire inline), import en remplacement + 40 strict avec rollback, erreurs explicites AJAX, normalisation des liens `youtu.be`, correction mapping `map_id`, et update in-place des morceaux (sans création de ligne).
+- [x] 2026-02-16 — Bibliothèque playlists: validation obligatoire des nouvelles playlists perso avec migration legacy-safe (`flag_validated` défaut 1), bloc “Validation requise” en fiche (prénom+waiver), mode backend `content_library_playlist_validate`, et blocage backend `program/demo` tant que non validée.
+- [x] 2026-02-18 — Bibliothèque UX list/view: CTA liste `mine` non validée remplacés par `À valider`, retour fiche->liste contextualisé (onglet/rubrique/page), chips rubriques adoucis, bouton/icône édition plus discrets, labels explicites en édition morceau, aperçu playlist compact `▶ Écouter 10s` sans lien YouTube en visu.
+- [x] 2026-02-18 — Bibliothèque UX (itération complémentaire): switch jeux compact mobile sur une ligne, recadrage styles d’icônes/liens (`Démo`/`Détail`), correction visibilité hover des liens de retour (blanc), et override manuel suspects (valider une ligne sans modification retire le suspect ciblé).
+- [x] 2026-02-18 — Bibliothèque Mine Quiz: patch minimal “playlist-like” (CTA header owner `Modifier` + `Supprimer` en fiche, lien `Modifier` question avec icône, owner-only conservé).
+- [x] 2026-02-18 — Bibliothèque Mine Quiz: état intermédiaire basé sur `countQuestions`, suppression du tag `Valide/Invalide`, bouton list `À compléter` tant que `<6`, puis validation officielle owner (prénom+waiver) à `6/6` avant activation des CTA `Créer mon jeu`/`Démo` (list+view), avec reset auto de validation si la série repasse `<6`.
+- [x] 2026-02-18 — Bibliothèque supports YouTube: saisie utilisateur en URL (`Lien YouTube Music` pour audio, `Lien YouTube` pour vidéo), extraction auto serveur de l’ID et normalisation backend en `youtu.be/<id>`.
+- [x] 2026-02-18 — Quiz vidéo: ajout champs facultatifs `Début`/`Fin` (ex: `30`, `1.30`) sur ajout/modif de question, avec message d’aide utilisateur; audio orienté “Titre YouTube Music” (lien explicite vers music.youtube.com).
+- [x] 2026-02-19 — Bibliothèque UX finalisation: builder Quiz ligne par ligne + drag/drop + retrait, filtres/supra-filtres recadrés (textes contextualisés, ligne d’aide blanche, défaut Cotton=`A la une`, Communauté/Perso=`Nouveautés`), badge `Populaire` violet `#582AFF` avec étoile, et simplification édition fiche mine via toggle global.
+- [x] 2026-02-19 — Bibliothèque validation owner: bloc validation repositionné (entre métas et contenu, fond warning), microcopies juridiques mises à jour, prénom auteur prérempli depuis utilisateur actif, ordre des cases inversé, et workflow suspects playlist (bloc validation masqué tant que suspects, édition auto-ouverte).
+- [x] 2026-02-19 — Étape 1 partage communauté: wiring backend du choix UI de partage (`flag_share_community`) au moment de la validation owner, stockage DB (quiz + playlists) avec horodatage/version texte, et verrouillage post-validation du flag (non modifiable ensuite).
+- [x] 2026-02-19 — Étape 2 communauté: publication automatique à validation (`share=1`), sync `community_items` en update in-place (sans rotation archive/clone), suppression en `hidden`, stockage `community_item_id` en session (flows bibliothèque `type=community`), et verrou backend `CONTENT_LOCKED_IN_USE` sur edit/delete source utilisés en sessions futures/en cours.
+- [x] 2026-02-19 — Étape 3 legacy communauté: ajout du rebuild idempotent `rebuild_community_items_legacy.php` (origin `cotton`/`legacy_community`), et bascule des onglets Cotton/Communauté pour lister via `community_items` `published` uniquement.
+- [x] 2026-02-19 — Étape 3bis legacy communauté: ajout du script SQL importable phpMyAdmin (`rebuild_community_items_legacy.sql`), fallback list automatique vers l’ancienne logique si bootstrap `community_items` incomplet, puis verrouillage de la règle Cotton sur `id_client_auteur = 0` (ID `10` reclassé `legacy_community`).
+- [x] 2026-02-20 — Bibliothèque view (Cotton/Communauté): ajout d’un bouton rouge de signalement à côté du titre `Contenu de la playlist/série`, ouverture d’une modale (motif + détail conditionnel), et nouveau mode backend `content_library_report_issue` pour envoi d’un mail à `contact@cotton-quiz.com` avec contexte contenu/utilisateur.
+- [x] 2026-02-20 — Bibliothèque view (signalement UX): bouton de signalement déplacé en bas du bloc contenu (pas dans le header), retour au style standard (non rouge), bouton modal `Annuler` contrasté, et champ de précision toujours visible avec le libellé `Précise les contenus qui posent problème`.
+- [x] 2026-02-20 — Bibliothèque signalement (fiabilisation envoi): bouton modal `Envoyer` aligné en style standard, et backend recâblé sur la logique CRM contact (`crm_contact_ajouter`) pour déclencher l’email admin via le circuit support existant; contenu enrichi avec expéditeur (nom/prénom + compte client) et thématique concernée.
+- [x] 2026-02-20 — Bibliothèque signalement (fix redirect): correction post-submit pour revenir systématiquement sur la thématique signalée (`view` avec `type`) après envoi réussi.
+- [x] 2026-02-20 — Bibliothèque signalement (UX submit): abandon de la redirection post-envoi au profit d’un submit AJAX + modale de remerciement sur la page courante; backend enrichi d’une réponse JSON dédiée au mode `content_library_report_issue`, envoi mail conservé via logique directe (`mail_send`/fallback `mail`).
+- [x] 2026-02-20 — Bibliothèque view (lisibilité contenu): boutons d’aperçu audio alignés à droite sur les lignes contenu (quiz + playlists), avec règle responsive mobile (texte sur première ligne, aperçu aligné à droite sur la suivante).
+- [x] 2026-02-20 — Bibliothèque view (supports): alignement à droite étendu à tous les aperçus (audio, image, vidéo, fallback lien/indisponible) avec conservation de la compatibilité mobile.
+- [x] 2026-02-20 — Bibliothèque view (ajustement vidéo): miniatures d’aperçu vidéo (YouTube/fichier) réagrandies au format précédent (220px) avec conservation du responsive mobile.
+- [x] 2026-02-20 — Bibliothèque view (ajustement UX vidéo/mobile): mention “les joueurs ne voient pas le titre de la vidéo” restaurée sur les aperçus, et alignement mobile des supports forcé à gauche quand les éléments passent à la ligne.
+- [x] 2026-02-20 — Bibliothèque list (mobile): onglets source `Cotton / Communauté / Perso` maintenus sur une seule ligne via CSS responsive (`nowrap` + `flex:1` + réduction padding/typo).
+- [x] 2026-02-20 — Bibliothèque list (mobile labels): libellés onglets raccourcis en mobile (`Cotton / Communauté / Mes playlists|séries`) avec maintien des libellés complets en desktop.
+- [x] 2026-02-20 — Bibliothèque view (signalement): garde d’affichage renforcé pour masquer le bouton sur les contenus perso (`$is_mine_item`) et le limiter strictement à `Cotton/Communauté`.
+- [x] 2026-02-20 — Bibliothèque create (perso): reprise du comportement tunnel start pour image par défaut à la création (`default_cotton_quiz.jpg` / `default_playlist.jpg` copiés vers `<id>.jpg`), avec fallback de chemin legacy.
+- [x] 2026-02-20 — Bibliothèque view (métas contenu): suppression du compteur à droite du titre `Contenu de la playlist/série`, ajout des métas `X morceaux|questions` et `Durée indicative` (`30s * nb morceaux` pour playlist, `5 min` pour quiz), tout en conservant `x/6` uniquement pendant la création d’une série quiz.
+- [x] 2026-02-20 — Bibliothèque view (création): affichage de `Durée indicative` conditionné à un contenu complet en mode perso (quiz: à partir de `6` questions, playlist: contenu complet/validable), masqué pendant la phase incomplète.
+- [x] 2026-02-20 — Bibliothèque view (création): même règle appliquée au méta `Questions/Morceaux` (masqué tant que contenu incomplet), avec maintien du compteur de progression `x/6` dans le bloc contenu quiz.
+- [x] 2026-02-20 — Bibliothèque view (métas perso): tant que la thématique perso n’est pas validée, masquage des lignes méta `Playlist/Série partagée`, `Questions/Morceaux` et `Durée indicative`.
+- [x] 2026-02-20 — Bibliothèque view (métas): libellé `Questions/Morceaux` harmonisé en `Contenu` (`Contenu: X questions|morceaux`).
+- [x] 2026-02-20 — Bibliothèque view (image): réduction de l’image de tête en fiche (`max-height:220px`) avec conservation du ratio natif (`object-fit:contain`, sans recadrage).
+- [x] 2026-02-20 — Bibliothèque view (image): alignement à gauche de l’image de tête (`margin-right:auto`, sans centrage).
+- [x] 2026-02-20 — Builder Quiz (view -> list): suppression de la modale depuis la fiche Quiz, CTA `Utiliser cette série` branché en ajout direct builder (`content_library_quiz_builder_add`) avec redirection liste `builder=1`; bloc builder liste mis à jour (titre `Compose ton quiz (X / 4 séries max.)`, sous-titre explicite 1..4 + cas `4/4` complet, CTA `Valider` + `Annuler` empilés et centrés verticalement).
