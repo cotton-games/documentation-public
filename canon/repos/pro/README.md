@@ -1,0 +1,780 @@
+# Repo `pro` — Carte IA d’intervention (canon)
+
+## Doc discipline
+- `canon/repos/pro/TASKS.md` à mettre à jour à chaque action significative (update-not-append si une tâche existe déjà).
+- `canon/repos/pro/README.md` à mettre à jour dès qu’un changement impacte le fonctionnel (routing, flux session/démo, catalogues, auth/tenant).
+- En cas de divergence, le code fait foi ; corriger la doc immédiatement.
+
+## Scope & entrypoints (confirmés)
+- Entrypoint EC (espace client): `pro/web/ec/ec.php`.
+- Entrypoint FO (site public pro): `pro/web/fo/fo.php`.
+- Dispatch scripts EC: `pro/web/ec/do_script.php` (+ `do_script_specifique.php`).
+- Dispatch script FO: `pro/web/fo/do_script.php`.
+- Routing URL applicatif: `pro/web/.htaccess` (rewrites `extranet/*`, `signin/signup`, `utm/*`, etc.).
+
+## Bootstrap config (confirmé)
+- Fichier: `pro/web/config.php`.
+- Détection env:
+  - `localhost` => `local`
+  - `pro.dev.cotton-quiz.com` => `dev`
+  - fallback => `prod`
+- Variables socle utilisées par EC/FO:
+  - racines/URL: `site_url`, `site_root`, `public`
+  - dépendances inter-sites: `global_root`, `global_url`, `www_root`, `www_url`, `games_url`
+  - entrypoints jeux: `quiz_game_url`, `bingo_game_url`, `blindtest_game_url`
+
+## Routing interne `t/m/p`
+- Pattern module/page:
+  - Page EC: `modules/$t/$m/ec_${m}_${p}.php`
+  - Script EC: `modules/$t/$m/ec_${m}_${p}.php` via `do_script.php`
+  - AJAX EC (convention): `modules/$t/$m/ec_${m}_${p}_ajax.php` via `ec_ajax.php`
+  - Page FO: `modules/$t/$m/fo_${m}_${p}.php`
+- Variables URL standard: `t`, `m`, `p`, `l`.
+
+Références:
+- `pro/web/ec/ec.php`
+- `pro/web/ec/do_script.php`
+- `pro/web/ec/ec_ajax.php`
+- `pro/web/fo/fo.php`
+- `pro/web/fo/do_script.php`
+- `pro/web/.htaccess`
+
+## Auth / tenant (résumé)
+- Tenant courant porté par la session PHP:
+  - `$_SESSION['id_client']`
+  - `$_SESSION['id_client_contact']`
+  - `$_SESSION['id_client_contact_type']`
+- Garde d’accès EC: redirection `signin` si `id_client_contact` absent.
+- Multi-compte (un contact, plusieurs clients) géré via `clients_contacts_to_clients` + switch `client_gate`.
+
+Références:
+- `pro/web/ec/modules/compte/authentification/ec_authentification_script.php`
+- `pro/web/ec/ec.php`
+
+## Tunnel start session / démo
+- Routes clés:
+  - `/extranet/start/agenda/mode/{id_offre}` -> écran pivot “Mode de programmation” (affiché après choix du jeu en agenda quick)
+  - `/extranet/start/agenda/mode/script` -> traitement du choix A/B
+  - `/extranet/start/game/choose/demo` -> choix jeu démo (`flag_session_demo=1`)
+  - `/extranet/start/game/choose/{id_offre}` -> choix jeu client (`flag_session_demo=0`, support `from=agenda&mode=quick`)
+  - `/extranet/start/game/setting/{id_securite_session}` (support quick multi-dates via `from=agenda&mode=quick`)
+  - `/extranet/start/game/theme/{rubrique}/{id_securite_session}`
+  - `/extranet/start/game/resume/{id_securite_session}`
+  - `/extranet/start/game/resume-batch/{batch_token}` -> résumé création multi-sessions agenda quick
+  - `/extranet/start/script` -> `ec_start_script.php` (`frm_mode`)
+- Vue `Mon agenda` (`/extranet/start/games`):
+  - page: `pro/web/ec/modules/tunnel/start/ec_start_sessions_list.php`
+  - carte session: `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+  - UX V1 (différenciation vs bibliothèque):
+    - sessions regroupées par date (header de date + compteur)
+    - jalons temporels (headers de date) en uppercase
+    - hiérarchie carte centrée sur la temporalité (`DATE - HEURE` sur une seule ligne, en gras)
+    - visuel carte allégé côté agenda (image moins dominante)
+    - CTA secondaire carte: `Gérer` (icône sliders)
+- `frm_mode` principal:
+  - `agenda_mode_select` (aiguillage `quick` vs `library`)
+  - `session_init`
+  - `session_setting`
+  - `session_setting_multi` (agenda quick, création N sessions)
+  - `session_theme`
+  - `session_duplicate` (test/démo depuis fiche session)
+  - `session_delete`
+- Agenda quick (`from=agenda&mode=quick`):
+  - entrée agenda:
+    - CTA `Nouvelle session`/`Ajouter` -> `start/game/choose/*?from=agenda&mode=quick`
+    - en multi-offres: `start/game/offres/0?from=agenda&mode=quick` puis choix offre + jeu
+  - step 1 (choix jeu) inchangé, transport du contexte quick
+  - après `session_init`: pivot `start/agenda/mode/{id_offre}` avec `id_securite_session` + `seo_slug_jeu`
+  - pivot UI:
+    - titre page dynamique:
+      - `Nouvelle(s) session(s) de Blindtest`
+      - `Nouvelle(s) session(s) de Bingo Musical`
+      - `Nouvelle(s) session(s) de Cotton Quiz`
+    - bloc `Programmation rapide` (image locale `ec/images/communication/statique/prog_rapide.jpg`) -> step 2 quick multi-dates
+    - bloc `Choisir une thématique` (image locale `ec/images/communication/statique/prog_choisir_thematique.jpg`) -> bibliothèque filtrée jeu
+    - titres blocs:
+      - `Programmation rapide : une ou plusieurs sessions`
+      - `Choisir une thématique : une session à la fois`
+    - descriptions adaptées au jeu:
+      - Quiz:
+        - carte 1: `Choisis une ou plusieurs dates, 4 séries de quiz populaires seront automatiquement ajoutées à tes jeux...`
+        - carte 2: titre `Choisir mes thématiques` + description `Parcours le catalogue, sélectionne tes séries de quiz, puis programme ta session.`
+      - Bingo/Blindtest: `playlists` / `ta playlist`
+    - CTA des 2 blocs colorés selon le jeu choisi (`btn-color-blind-test|bingo-musical|cotton-quiz`)
+  - repère de progression (Option A, non cliquable):
+    - format:
+      - ligne compacte `Étape X/5 — {libellé}`
+      - mini barre de progression sous la ligne
+    - responsive:
+      - mobile: au-dessus du titre
+      - desktop: inline à gauche du titre (discret)
+    - étapes de référence:
+      - `1/5 Jeu`
+      - `2/5 Contenu`
+      - `3/5 Paramètres`
+      - `4/5 Récap`
+      - `5/5 C’est prêt !`
+    - couleur:
+      - barre remplie basée sur la couleur du jeu via classes existantes `bg-color-{seo_slug_jeu}` (blind-test / bingo-musical / cotton-quiz), sans hardcode hex côté stepper
+    - mapping pages:
+      - `start/game/choose/*?from=agenda&mode=quick` -> `Étape 1/5 — Jeu`
+      - `start/agenda/mode/*` -> `Étape 2/5 — Contenu`
+      - `games/library?...&from=agenda&mode=library` (liste + détail) -> `Étape 2/5 — Contenu`
+      - `start/game/setting/*` avec `from=agenda&mode=quick` ou `from=library&tunnel=agenda` -> `Étape 3/5 — Paramètres`
+      - `start/game/resume/*` et `start/game/resume-batch/*` -> `Étape 4/5 — Récap`
+      - `start/game/view/*` -> `Étape 5/5 — C’est prêt !`
+    - intégration:
+      - include tunnel dédié: `pro/web/ec/modules/tunnel/start/ec_start_include_stepper.php`
+      - injection centralisée header tunnel: `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+      - bibliothèque:
+        - activation via contexte `from=agenda&mode=library`
+        - contexte propagé depuis le pivot agenda et conservé dans les URLs list/view
+        - redirection bibliothèque -> setting: ajout `tunnel=agenda` pour conserver le stepper en étape 3
+  - choix `Choisir une thématique` depuis la pivot:
+    - redirection vers bibliothèque sans `id_securite_session` (pas de contexte “changer une thématique”)
+    - nettoyage de la session pré-initialisée si elle est encore vide/incomplète
+  - step 2 étendu en multi-dates (`session_dates[]` + `session_times[]`)
+    - en mode quick, titre header: `Paramètres des sessions`
+    - section paramètres jeu affichée avant la zone de programmation (incluant `Version du jeu` si présente)
+    - toggle de planification:
+      - `Dates libres` (multi-lignes date/heure)
+      - `Récurrence` (hebdo, bi-hebdo, mensuel)
+    - bloc récurrence:
+      - `recurrence_freq`: `weekly|biweekly|monthly`
+      - mode mensuel: `nth_weekday` (1er/2e/3e/4e + weekday) ou `last_weekday` (+ weekday)
+      - `until_date` + horaires multiples
+      - champs de règle explicitement postés (`name=`) pour exploitation backend
+      - label horaire final:
+        - `Heure(s) de session(s) (Appliquée(s) à toutes les dates.)`
+      - ajout d’horaire: incrément automatique `+1h` par nouvelle ligne
+    - bloc commun `Aperçu / confirmation`:
+      - compteur des occurrences
+      - liste triée date+horaire
+      - suppression unitaire d’occurrence avant submit
+      - exclusions stockées en JSON (`excluded_occurrences`)
+      - submit final converti en `session_dates[]` / `session_times[]` pour réutiliser `session_setting_multi`
+    - limites:
+      - soft limit 40: warning + confirmation explicite
+      - hard limit 200: refus serveur
+    - robustesse backend:
+      - fallback `Dates libres` si payload final `session_dates[]/session_times[]` absent
+      - en mode `Récurrence`, reconstruction serveur des occurrences depuis les paramètres de règle + horaires
+      - exclusions de preview appliquées aussi côté serveur
+    - suppression de ligne date/heure disponible (au moins une ligne conservée)
+    - bouton suppression date/heure masqué si une seule ligne reste
+  - batch create:
+    - 1 session par date
+    - application settings sur chaque session
+    - auto-thématique Cotton via source popularité bibliothèque (même query/fonctions via `clib_list_get(..., preset='themes')` + stats `clib_popularity_stats_for_items_get`)
+    - anti-répétition 365j filtrée par jeu + fallback progressif `180 -> 30 -> 0`
+    - Quiz:
+      - numérique: tirage auto inchangé de 4 séries catalogue (`4xL`)
+      - papier (agenda quick auto): auto-pick initial limité à 1 lot catalogue, puis génération `T,T,T,L` avec 3 lots temporaires (history/arts/sciences) + 1 lot catalogue
+    - logs info:
+      - `AGENDA_QUICK_PREVIEW_BUILD`
+      - `AGENDA_QUICK_OCCURRENCE_REMOVE`
+      - `AGENDA_QUICK_SUBMIT`
+      - `AGENDA_QUICK_CREATE_BATCH`
+      - `AGENDA_QUICK_THEME_PICK`
+      - `AGENDA_QUICK_CREATE_DONE`
+- Bridge bibliothèque:
+  - source: `/extranet/games/library/script`
+  - édition meta admin (non-owner) sur contenus Cotton/Communauté:
+    - la sauvegarde n’écrase plus les champs de partage communauté (`flag_share_community`, `share_community_text_version`)
+    - évite le passage involontaire de `community_items.status` en `hidden` après simple modification de méta (titre/description/rubrique/difficulté)
+  - filtre bibliothèque `A la une` + badge `En ce moment`:
+    - en bibliothèque, la logique est désormais stricte “en cours”:
+      - date du jour comprise entre `jour_associe_debut` et `jour_associe_fin` (année courante)
+    - la fenêtre glissante “J-90 avant début” n’est plus utilisée pour le tri/badge en bibliothèque
+  - lock d’usage actif (sessions en cours/à venir):
+    - non-admin: blocage conservé pour les mutations (édition/suppression) si le contenu est en cours d’utilisation
+    - admin (`id_client=10`): bypass du lock autorisé pour édition/suppression sur thématiques Cotton/Communauté
+    - la view conserve l’affichage du bandeau d’information d’usage, y compris pour admin
+  - certification admin (source communauté -> Cotton):
+    - mode script `content_library_admin_certify` (admin only, `id_client=10`)
+    - conservation de l’auteur initial (`id_client_auteur`/`nom_auteur` inchangés)
+    - bascule de référencement `community_items.origin` vers `cotton` pour remontée en onglet `Cotton` (tous utilisateurs)
+    - exclusion du contenu promu de l’onglet `Communauté` via filtre SQL dédié (`NOT EXISTS` sur `community_items.origin='cotton'`)
+  - contrat Programmer (Bingo/Blind): `session_init` puis redirection `setting/{id_securite_session}?id_catalogue_produit=...&from=library`
+  - contrat Programmer (Quiz): confirmation puis mode builder sur la liste (session `library_quiz_builder`, sélection 1..4 séries), puis `session_init` et redirection `setting/{id_securite_session}?from=library&quiz_lot_ids=...`
+  - contrat Démo: conservation du flux existant `session_init` puis `session_theme` (pas de `setting`)
+  - après POST `session_setting` (si `from=library`): application directe de `session_theme`, puis redirection contextualisée:
+    - bibliothèque directe: `/extranet/start/game/resume/{id_securite_session}?from=library` (stepper masqué)
+    - agenda -> bibliothèque (`tunnel=agenda`): `/extranet/start/game/resume/{id_securite_session}?from=library&tunnel=agenda` (stepper conservé)
+    - Quiz multi-séries transporté via `quiz_lot_ids`
+  - contrat “Changer la thématique” (session existante):
+    - bibliothèque appelée avec `id_securite_session`
+    - entrée de modification depuis la fiche session (`start/game/view`) ; redirection vers la liste bibliothèque filtrée jeu (pas de landing direct sur la fiche thématique)
+    - bandeau contextuel bibliothèque (liste + fiche):
+      - Quiz: `Choisis une autre série pour ton quiz`
+      - Bingo: `Choisis une autre playlist pour ton bingo musical`
+      - Blindtest: `Choisis une autre playlist pour ton blindtest`
+    - mode script `content_library_apply_session_theme`
+    - applique `session_theme` sur la session existante (pas de duplication, pas de nouvelle session)
+    - wording view en mode apply-session:
+      - CTA principal: `Remplacer`
+      - texte d’aide: `Choisir cette playlist/série en remplacement dans ma session`
+    - Quiz V2: support `slot_index` pour modifier une série “slot par slot” (remplacement ciblé dans `lot_ids`, sans écraser les autres séries)
+    - robustesse payload quiz v2:
+      - `session_theme` accepte les payloads de lots tokenisés (`L...` / `T...`) en plus des IDs numériques CSV
+      - le remplacement d’une série quiz classique depuis la bibliothèque conserve l’ordre multi-séries dans `lot_ids`
+      - pour les sessions papier mixtes (`T...` + `L...`), `session_theme` n’écrase plus le payload avec une régénération auto: le remplacement d’un lot classique est appliqué tel quel
+  - contrat “Voir le détail” depuis fiche session (agenda -> bibliothèque VIEW):
+    - paramètres standard:
+      - `context=session`
+      - `id_securite_session=<id>`
+      - `return_to=session_view`
+      - `item_type=playlist|quiz_lot|quiz_temp_lot`
+      - `item_id=<id contenu>`
+      - `slot_index=<index>` (Quiz V2, optionnel) pour conserver le slot ciblé durant la navigation avant application
+    - landing direct VIEW supporté via `item_type + item_id` (pas besoin de passer par la liste)
+    - mode VIEW `context=session`:
+      - bandeau contextuel daté en haut de page:
+        - `Playlist du Blindtest programmé le jj/mm/aaaa`
+        - `Playlist du Bingo musical programmé le jj/mm/aaaa`
+        - `Série du Quiz programmé le jj/mm/aaaa`
+      - les bandeaux contextuels (view + list) incluent un lien inline `Retour à la session` (si session valide et appartenant au client courant)
+      - CTA principal remplacé par `Retour à la session`
+      - CTA démo masqué
+      - lien `← Retour au catalogue` masqué
+      - si session invalide/non autorisée: fallback en mode VIEW normal
+  - persistance contexte session en bibliothèque:
+    - stockage court en session PHP: `$_SESSION['library_session_ctx']` (`id_securite_session`, `game`, `mode`, `slot_index`, `ts`)
+    - réhydratation automatique du contexte lors des navigations internes si les query params ont été perdus
+    - purge possible via `clear_session_ctx=1`
+  - wording start choix jeu:
+    - titre: `Je programme mes sessions de jeu`
+    - CTA cartes: `Créer mes jeux`
+  - Quiz V2 (fiche session):
+    - affichage des séries avec `Voir le détail` + `Modifier cette série` par série
+    - séries temporaires (`T{id}`): suffixe `(auto)` directement dans le nom (badge `Auto` retiré)
+    - responsive fiche:
+      - desktop: `Voir le détail` inline à côté du titre
+      - mobile: `Voir le détail` sous le titre (même bloc)
+    - ordre des séries réorganisable par drag-and-drop avec sauvegarde automatique immédiate (impact direct sur `lot_ids`)
+    - après réordonnancement, redirection conservée sur la fiche détail (`return_to=view`) au lieu du résumé
+    - suppression unitaire:
+      - bouton `✕` affiché uniquement s’il reste plus d’une série
+      - confirmation modale avant suppression
+      - si suppression de la dernière série: suppression de la session quiz
+      - suppression slot robuste sur Quiz V2: logique serveur alignée sur les tokens `lot_ids` (`L..` et `T..`) pour supprimer le bon slot et éviter la suppression complète de session lors d’un retrait de lot temporaire
+    - harmonisation CTA fiche session:
+      - bouton de remplacement unifié: `Remplacer` (Quiz/Bingo/Blindtest)
+      - Blindtest/Bingo (playlist): largeur du bouton `Remplacer` harmonisée au format compact des autres actions de page
+      - exception ciblée (quiz papier auto, séries temporaires `T{id}`): bouton `Remplacer` masqué
+      - pour cette exception: bouton de suppression de série conservé (si suppression autorisée)
+    - harmonisation “Voir le détail” fiche session:
+    - Quiz: lien `Voir le détail` à côté du nom de série, bouton `Remplacer` à droite
+    - exception ciblée (quiz papier auto, séries temporaires `T{id}`): lien renommé `Voir / Modifier` pour admin, `Voir le détail` pour non-admin
+    - Bingo/Blindtest: lien `Voir le détail` à côté du nom de playlist, bouton `Remplacer` à droite
+    - Blindtest/Bingo: sous-titre et détail playlist masqués dans la fiche session (le détail passe par la VIEW bibliothèque)
+  - onglet maintenance admin Quiz:
+    - onglet `Lots temporaires` visible uniquement pour admin (`id_client=10`) dans la bibliothèque quiz
+    - source list: lots `questions_lots_temp` auto-générés quiz papier (`descriptif_court` préfixé `Série auto papier :`) reliés à des sessions papier via tokens `T{id}` dans `lot_ids`
+    - métrique `Jouée X fois` en list `Lots temporaires`: calculée uniquement sur les occurrences tokenisées `T{id}` (pas de mélange avec les lots catalogue `L{id}`)
+    - navigation vers la VIEW temp lot en mode bibliothèque admin (espace de maintenance)
+    - framing de page en mode admin bibliothèque:
+      - neutralisation du contexte agenda/session (pas de bandeau `Série ... programmée`, pas de CTA `Retour à la session`)
+      - menu/contexte conservé côté bibliothèque `Les jeux`
+    - CTA fiche lot temporaire en mode bibliothèque admin:
+      - `Lancer une démo` crée une session démo Quiz neuve contenant uniquement le lot temporaire courant (`T{id}`), sans dupliquer la session liée d’origine
+      - affichage informatif des sessions liées (date/heure/client), hors sessions démo (`flag_session_demo=0`)
+    - badge `Populaire`:
+      - non affiché sur l’onglet `Lots temporaires` (lots `T`)
+      - conservé sur les onglets catalogue (`Cotton` / `Communauté` / `Mes`) via les stats de popularité des contenus catalogue (`L`)
+  - impression support papier (fiche session `start/game/view`, tous jeux):
+    - libellé unifié du lien d’impression: `Imprimer les feuilles de réponses`
+    - portée limitée au wording UI (URLs/actions print inchangées)
+
+Références:
+- `pro/web/.htaccess`
+- `pro/web/ec/modules/tunnel/start/ec_start_step_1_game.php`
+- `pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php`
+- `pro/web/ec/modules/tunnel/start/ec_start_step_3_theme.php`
+- `pro/web/ec/modules/tunnel/start/ec_start_step_4_resume.php`
+- `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+- `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+
+## Menu latéral INS/CSO (liens)
+- Fichier pivot: `pro/web/ec/ec.php`
+- Règles ciblées:
+  - INS + typologie CHR (`id_typologie in (1,8)`): lien `Mon agenda` visible dans le menu, y compris sans session programmée.
+  - lien `Media Kit` masqué uniquement pour:
+    - INS particulier (`id_typologie=12`)
+    - INS événement (`id_typologie in (2,3)`)
+    - CSO particulier (`id_typologie=12`)
+    - CSO événement (`id_typologie in (2,3)`)
+  - lien `Media Kit` conservé sur les autres profils (dont CHR).
+
+### Sessions programmées: schedule vs start (audit paywall offre active)
+- Audit de cartographie (sans patch code): `canon/repos/pro/sessions_scheduled_paywall_audit.md`
+- Point clé: le garde-fou “offre active” est actuellement majoritairement porté par la carte UI d’agenda (`ec_start_sessions_list_bloc.php`) et pas par un contrôle backend unique de lancement.
+
+## Catalogues de contenus (thématiques)
+- Cotton Quiz (séries):
+  - UI: `pro/web/ec/modules/jeux/catalogue_series/ec_catalogue_series_list.php`
+  - Card/submit: `pro/web/ec/modules/jeux/catalogue_series/ec_catalogue_series_list_bloc.php`
+  - Source DB: `questions_lots`, `questions_lots_rubriques`
+- Bingo/Blind (playlists):
+  - UI: `pro/web/ec/modules/jeux/catalogue_playlists/ec_catalogue_playlists_list.php`
+  - Card/submit: `pro/web/ec/modules/jeux/catalogue_playlists/ec_catalogue_playlists_list_bloc.php`
+  - Source DB: `jeux_bingo_musical_playlists`, `jeux_bingo_musical_playlists_rubriques`
+- Liaison session <-> contenu:
+  - table pivot runtime: `championnats_sessions` (`id_produit`, `lot_ids`, `flag_session_demo`, `flag_configuration_complete`)
+
+## Content Library MVP (2026-02-12)
+- Module unifié (EC) ajouté:
+  - route hub/list: `/extranet/games/library` -> `t=jeux&m=bibliotheque&p=list`
+    - sans `game` et sans `seo_slug_jeu`: hub “Les jeux” (3 blocs de sélection)
+    - avec `game=quiz|bingo|blindtest`: list filtrée jeu
+    - compat legacy conservée: `seo_slug_jeu` continue de fonctionner
+  - route fiche: `/extranet/games/library/{seo_slug_jeu}/{id_catalogue_produit}` -> `p=view`
+  - route action: `/extranet/games/library/script` -> `t=jeux&m=bibliotheque&p=script`
+- Fichiers:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+- Contrat MVP:
+  - filtres list (state URL principal): `type` (`cotton|community|mine`) + `preset` (`now|new|themes`) + `id_rubrique` + pagination `page`
+  - compat legacy conservée en lecture: `source` (`cotton|community|personal`) et params historiques (`q`, `sort`, `perso_state`)
+  - UX filtres:
+    - portail d’entrée jeu sur `/extranet/games/library` (3 blocs)
+    - list filtrée allégée (sans blocs jeu en tête)
+    - segmented source en soft-tabs libellés contextuels:
+      - Quiz: `Séries Cotton` / `Séries de la communauté` / `Mes séries`
+      - Bingo/Blind: `Playlists Cotton` / `Playlists de la communauté` / `Mes playlists`
+      - style renforcé: uppercase, taille augmentée, contraste actif sur la couleur du jeu
+    - recherche texte et tri retirés de l’UI list
+    - presets actifs:
+      - `Cotton` / `Communauté`: `A la une / Nouveautés / Thèmes` + chip séparé `Toutes les séries/playlists`
+      - `Perso`: `Thèmes` + chip séparé `Toutes les séries/playlists` (pas de `Nouveautés`)
+    - visibilité presets:
+      - `A la une` sur les onglets `Cotton` et `Communauté`
+      - `Nouveautés` disponible sur `Cotton` et `Communauté`
+      - `Perso`: sélecteur `Thèmes` uniquement (pas de chip `Nouveautés`)
+    - `Thèmes` ouvre un dropdown rubriques (remplace l’ancienne rangée de chips rubriques)
+    - le reset `Toutes les séries/playlists` est un chip dédié (hors dropdown `Thèmes`)
+    - position du chip reset:
+      - `Cotton` / `Communauté`: à droite du chip `Thèmes`
+      - `Perso`: à gauche du chip `Thèmes`
+    - non-cumul: un seul filtre actif à la fois (`A la une` ou `Nouveautés` ou `Thèmes`)
+    - reset `Toutes les séries/playlists`: conserve `preset=themes` (ne revient pas sur `A la une`)
+    - défaut à l’ouverture: `A la une`
+    - défaut lors d’un changement d’onglet source:
+      - vers `Cotton`: `preset=now` (`A la une`)
+      - vers `Communauté`: `preset=now` (`A la une`)
+      - vers `Perso`: `preset=themes` (`Toutes les séries/playlists`)
+      - reset rubrique implicite (`id_rubrique=0`) au changement de source pour éviter un cumul caché
+  - titre list dynamique simplifié:
+    - titre = `Catalogue des playlists/séries du <jeu>`
+    - sous-titre retiré sur la liste
+  - statut POC data:
+    - `preset=now` (`A la une`, onglets `Cotton` et `Communauté`):
+      - limite affichage: 12 entrées max
+      - onglet `Cotton`: priorité aux thématiques “du moment” via fenêtre `jour_associe_debut/fin` (Quiz + playlists), complété par popularité
+      - onglet `Communauté`: top 12 par popularité
+    - onglet `Perso`:
+      - filtre unique `Thèmes` (par défaut `Toutes les séries/playlists`)
+      - tri: date de création décroissante (`id DESC`)
+    - `preset=new` (`Nouveautés`) reprend le comportement “récents” existant (tri descendant) avec règle exacte:
+      - limite affichage: 12 entrées max
+      - bibliothèque (`ec_bibliotheque_lib.php`):
+        - filtre: aucun filtre date additionnel; uniquement les filtres catalogue/onglet actifs (`status`, `type`, rubrique éventuelle, recherche éventuelle)
+        - tri: `ORDER BY id DESC`
+        - champs impliqués: `id` (tri récence), `id_etat` (Quiz) / `online` (playlists) pour publication
+      - tunnel start (`step_3_theme` via catalogue):
+        - Quiz (`ec_catalogue_series_list.php`, rubrique `new`): `id_etat=2`, tri `id DESC`, limite `24`
+        - Playlists (`ec_catalogue_playlists_list.php`, rubrique `new`): `online=1`, tri `id DESC`, limite `24`
+        - champs impliqués: `id` (tri), `id_etat` ou `online` (filtre publication)
+      - conclusion d’alignement: bibliothèque et tunnel start appliquent tous deux un tri descendant sur `id` sans seuil calendaire (pas de fenêtre 30 jours, etc.)
+  - rubriques: liste limitée aux rubriques réellement présentes dans la sélection active (`jeu + onglet`)
+  - Quiz bibliothèque (filtre qualité catalogue):
+    - appliqué en SQL dans `clib_list_get(...)` et `clib_rubriques_filtered_get(...)` (`ec_bibliotheque_lib.php`)
+    - une série Quiz n’est visible que si:
+      - elle contient au moins une question,
+      - chaque question a une réponse correcte non vide,
+      - chaque question a au moins 3 propositions complètes (réponse + propositions fausses non vides)
+  - preset `themes`: tri des thématiques par popularité décroissante (365 jours hors démo), puis dernière utilisation, puis `id`
+  - médias: affichage image thématique depuis uploads existants (`questions_lots` pour CQ, `playlists` pour Bingo/Blind), fallback sans image si absent
+  - auteur: affichage `nom_auteur` + lookup établissement auteur (`clients.nom` via `id_client_auteur`) dans liste et fiche
+  - difficulté: affichage niveau (3 icônes + libellé `Facile/Moyen/Difficile`) en liste, mapping identique au tunnel start step_3
+  - métas d’usage (fiche + onglet `mine`):
+    - usage perso (`Utilisée dans tes jeux`) + dernière utilisation perso
+    - usage communauté (autres clients) affiché si partage actif
+    - libellé `Jamais utilisée` quand usage perso = 0 (et masquage de `Dernière utilisation`)
+  - métas popularité (list + fiche):
+    - stockage agrégé dédié: `reporting_games_content_popularity_365d`
+    - compat lecture `pro`: fallback legacy maintenu temporairement sur `content_library_popularity_stats`
+    - clé logique: `(game, content_type, id_catalogue_produit)` (`content_type`: `series` pour Quiz, `playlist` pour Bingo/Blind)
+    - métriques:
+      - `uses_365d_nondemo`: `COUNT(*)` d’utilisations hors démo sur 365 jours glissants
+      - `last_used_at_nondemo`: dernière utilisation observée dans la fenêtre 365 jours
+      - `is_top_10pct_365d`: marqueur Top 10% par `jeu + type`
+      - `computed_at`: horodatage du dernier rebuild
+    - source sessions:
+      - filtre commun: `flag_configuration_complete=1` et `flag_session_demo=0`
+      - filtre temps: `date >= NOW() - INTERVAL 365 DAY`
+      - Quiz: incrémentation par série via `id_produit` et tokens `L<id>` dans `lot_ids` (sessions multi-séries). Les tokens `T<id>` (lots temporaires) sont ignorés pour la popularité catalogue.
+      - Bingo: mapping via `jeux_bingo_musical_playlists_clients.id_playlist` pour `id_type_produit IN (3,6)`
+      - Blind: `id_type_produit=4` avec `id_produit` direct
+    - exposition UI:
+      - list: badge `Populaire` si `is_top_10pct_365d=1` (+ tooltip “Top playlist/série · X utilisations depuis 1 an”)
+      - style badge popularité: fond `#582AFF`, texte blanc, icône étoile
+      - list: badge `En ce moment` (même shape que `Populaire`, couleur dédiée) affiché sur les contenus Cotton (Quiz + playlists) réellement dans la période courante du preset `A la une` (date courante vs `jour_associe_debut/fin`)
+      - view: affichage uniquement pour les items Top 10% d’un message éditorial:
+        - `Popularité: Cette playlist/série fait partie des 10% les plus utilisées !`
+    - rebuild:
+      - quotidien intégré au cron BO WWW: `www/web/bo/cron_routine_bdd_maj.php` (bloc reporting + popularité 365j)
+  - communauté (publication sans rotation source):
+    - index publication: `community_items` (`game`, `content_type`, `source_type`, `source_id`, `origin`, `status`, `snapshot_json`)
+    - statuts utilisés côté catalogue:
+      - `published` (visible)
+      - `hidden` (retiré)
+    - publication owner: validation + partage (`flag_share_community=1`) crée/maintient un item `published`
+    - sync owner après modification autorisée: update in-place du snapshot `community_items` (pas de clone/version)
+    - suppression owner autorisée: item `published` basculé en `hidden`
+  - verrou contenu perso “used by session” (pas de versioning/archivage/clone):
+    - règle:
+      - contenu non référencé par session future/en cours: update/delete inchangés (impact direct)
+      - contenu référencé par un autre client: update/delete refusés
+      - contenu référencé uniquement par le client créateur: update/delete refusés avec invitation à supprimer sa session d’abord
+    - erreur métier retournée: `CONTENT_LOCKED_IN_USE`
+      - message: `Cette playlist (ou série) est en cours d’utilisation, tu ne peux pas la modifier / supprimer actuellement, réessaie plus tard.`
+    - détection backend (références réelles de programmation):
+      - Quiz: `championnats_sessions.id_produit` + `championnats_sessions.lot_ids` (tokens `L<id>` et `T<id>`) sur `id_type_produit IN (1,5)` ; seuls les `L` sont des séries catalogue.
+      - Bingo: `championnats_sessions.id_produit` -> `jeux_bingo_musical_playlists_clients.id` -> `id_playlist` sur `id_type_produit IN (3,6)`
+      - Blindtest: `championnats_sessions.id_produit` direct sur `id_type_produit=4`
+      - sessions communauté: `championnats_sessions.community_item_id` -> `community_items.id` -> `source_id`
+      - filtre chronologie appliqué: `flag_session_demo=0`, `flag_configuration_complete=1`, `date>=CURDATE()`
+    - logs blocage:
+      - `CONTENT_EDIT_BLOCKED`
+      - `CONTENT_DELETE_BLOCKED`
+      - payload: `content_type`, `content_id`, `reason`, `session_count`, `owner_session_count`, `other_client_session_count`
+    - exception admin bibliothèque:
+      - client admin `id_client=10` peut modifier/supprimer/éditer le contenu des thématiques communauté et Cotton (sources `id_client_auteur>=0`)
+      - bypass owner-check appliqué côté backend (métas + contenu), sans contourner le verrou `in_use`
+      - mode transition Quiz:
+        - en onglet `Communauté`, `id_client=10` voit aussi les séries quiz clients legacy (fallback listing legacy)
+        - en mode transition admin quiz, le filtre de statut source (`id_etat=2`) est levé pour éviter une liste vide sur les séries historiques non publiées
+      - partage communauté:
+        - piloté via l’édition méta de la thématique (`t_theme_edit`) pour tous les jeux (`quiz`, `bingo`, `blindtest`)
+        - le mode script dédié de toggle admin a été retiré (plus de bypass spécifique en fiche view)
+        - uncheck partage en méta masque l’item côté communauté (`community_items.status='hidden'`)
+    - UX pré-check (fiche bibliothèque):
+      - au clic `Modifier` / `Supprimer`, appel AJAX de pré-vérification (`content_library_theme_precheck`) avant mutation
+      - si verrou actif: alerte immédiate et action bloquée côté front
+      - si autorisé: navigation edit / confirmation suppression puis submit
+      - le bouton `Modifier le contenu` (mode édition in-page) est aussi pré-vérifié avant ouverture
+    - badge d’usage en fiche (owner):
+      - affichage d’un badge info si la thématique est utilisée en sessions futures/en cours (hors démo)
+      - message (autre client impliqué): `Cette série/playlist est en cours d’utilisation par X client(s).`
+      - sous-message: `Modification et suppression temporairement impossible`
+      - message (usage créateur uniquement): `Cette série/playlist est programmée dans ton agenda.`
+      - sous-message: `Supprime d'abord la session concernée si tu veux la modifier ou la supprimer.`
+      - calcul basé sur le nombre de clients distincts utilisateurs (`championnats_sessions.id_client`)
+      - en cas de verrou actif: masquage des actions d’édition/suppression dans la fiche (`Modifier`, `Supprimer`, `Modifier le contenu`)
+    - explicitement retiré:
+      - aucune rotation d’ID source
+      - aucune redirection UI vers un “nouvel ID”
+      - aucun cleanup cron d’archives source
+    - listing onglets:
+      - `Cotton` => `origin='cotton'`
+      - `Communauté` => `origin IN ('legacy_community','shared_from_personal')`
+      - garde-fou visibilité appliqué aussi en mode `community_items`:
+        - règle courante: `flag_validated=1` + `flag_share_community=1`
+        - compat legacy: contenu historiquement public (`questions_lots.id_etat=2` ou `jeux_bingo_musical_playlists.online=1`)
+    - fallback de robustesse:
+      - si `community_items` ne contient pas encore de `published` pour le contexte jeu/onglet, la list retombe automatiquement sur la logique legacy (`id_client_auteur` + statuts source)
+    - migration legacy:
+      - script CLI idempotent: `pro/web/ec/modules/jeux/bibliotheque/scripts/rebuild_community_items_legacy.php`
+      - script SQL importable phpMyAdmin: `pro/web/ec/modules/jeux/bibliotheque/scripts/rebuild_community_items_legacy.sql`
+      - les scripts rebuild legacy synchronisent aussi les flags source (`flag_share_community=1`) pour les contenus perso legacy déjà publiés en communauté (évite incohérence méta “partagée: non”)
+      - règle Cotton legacy verrouillée: `id_client_auteur = 0` (ID `10` traité en `legacy_community`)
+  - CTA liste:
+    - action principale unique par carte: `Voir le détail`
+    - mode builder Quiz (`builder=1`): action secondaire discrète `Ajouter au quiz` via icône `+` (top-right), avec état `✓` quand la série est déjà sélectionnée
+    - comportement anti-duplication: pas de bouton plein format `Ajouter` dans la carte liste
+    - contenus perso non programmables (`mine`): badge statut en bas de carte (`Série à compléter` / `Série à valider` / `Playlist à valider`)
+    - onglet `Communauté`: les contenus dont `id_client_auteur == client courant` sont exclus (même si partagés)
+  - cartes liste (layout):
+    - grille densifiée: jusqu’à 4 cartes par ligne sur écran large
+    - bandeau bas léger avec bouton unique `Voir le détail`
+    - accès rapides `Créer un jeu` / `Démo` retirés de la carte liste
+    - bouton `Voir le détail`: style aligné sur les boutons des blocs de choix du jeu (portail bibliothèque) + icône flèche à droite
+  - CTA script:
+    - Programmer une session (Bingo/Blind): `session_init` puis passage par `step_2_setting` avec transport `id_catalogue_produit` (`from=library`), puis `session_theme` auto et résumé
+    - Programmer une session (Quiz): confirmation -> builder sur liste (session `library_quiz_builder`, max 4), transport `quiz_lot_ids` vers `step_2_setting`, puis application des séries via la logique tunnel start (champ `championnats_sessions.lot_ids`) et résumé
+    - Lancer une démo: flux existant conservé (`session_init` puis `session_theme`), sans `step_2_setting`
+  - sécurité bridge bibliothèque: validation d’appartenance tenant (`championnats_sessions.id_client == $_SESSION['id_client']`) + validation de compatibilité catalogue selon type de jeu (Quiz vs Playlists) avec règles `mine/community/cotton`
+  - lien détail contextuel depuis la carte: `Détail de la série` (Quiz) / `Détail de la playlist` (Bingo/Blind), avec transport du contexte liste (`type`, `preset`, `id_rubrique`, `page`, `builder`, + params legacy éventuels) pour un retour fiche->liste sur le même état UX
+  - itération UX `view` (2026-02-13):
+    - bloc métadonnées aligné avec la liste (niveau, auteur(+établissement), usages) + cohérence accents/libellés
+    - mode builder Quiz également actif sur la fiche:
+      - CTA principal `Ajouter au quiz`
+      - état `Déjà ajoutée` + action secondaire `Retirer`
+      - bandeau builder inchangé (`Continuer/Annuler`)
+    - aperçu contenu intégré en page (sans modale):
+      - Quiz: questions + support par type (`image/audio/vidéo`)
+      - Bingo/Blind: morceaux + support média si disponible
+    - extraits multimédias courts:
+      - audio: bouton `Écouter 10s` (YouTube audio-only ou fichier audio) avec états visuels `idle/loading/playing` (play/spinner/stop), arrêt manuel possible, arrêt auto 10s, et unicité d’aperçu actif sur la page
+      - vidéo: mini player + libellé `Extrait 10s`, fenêtre courte
+      - image: miniature (incluant support des liens Google Drive pour preview)
+    - anti-intro YouTube: si aucun `start/t/end` dans l’URL, l’extrait démarre à `30s` par défaut
+  - itération UX `view` lots temporaires Quiz (2026-02-24):
+    - titre simplifié côté fiche: `<nom série> (auto)` (ex: `Cette semaine dans l'histoire (auto)`)
+    - sous-titre simplifié: descriptif sans préfixe `Série auto papier :`
+    - fallback image: affichage image par défaut Quiz (`default_cotton_quiz.jpg`) aussi pour les `quiz_temp_lot`
+    - bloc métadonnées simplifié:
+      - `Niveau: Facile`
+      - `Auteur: Cotton`
+      - `Contenu: 6 questions`
+      - `Durée indicative: 5 min`
+      - suppression `Date d'ajout` et `Mode: Lecture seule`
+    - cas `Cette semaine dans l'histoire`: ajout de `Date de référence: jj/mm/aaaa` (date de session quiz quand disponible en contexte agenda/session)
+    - contenu question (view série auto/temp):
+      - rendu sur 2 lignes dans `.clib-content-question-text`:
+        - ligne 1 meta: index + `Univers` + `Rubrique` + `Jour` (si présent)
+        - ligne 2: énoncé de la question
+      - affichage limité aux séries auto/temp (`/library/temp/T{id}`), sans impact sur les séries classiques
+    - édition conditionnelle (quiz papier quick):
+      - visible uniquement pour admin (`id_client=10`) en contexte session agenda explicite (`context=session`, `nav_ctx=agenda`, `id_securite_session` valide)
+      - garde-fous backend: admin requis, session quiz papier (`flag_controle_numerique=0`), lot `T{id}` présent dans `lot_ids` de la session
+      - hors contexte: view read-only inchangée
+    - modification question par question (admin bibliothèque):
+      - action unique `Modifier cette question` (icône édition), sans workflow A/B de remplacement
+      - formulaire réutilisé depuis le flux de création/remplacement, mais prérempli avec la question source:
+        - classification (`id_univers`, `id_rubrique`) éditable
+        - question/réponse/propositions éditables (`proposition_4` supportée)
+        - commentaire éditable (prérempli depuis `questions.commentaire`)
+        - réouverture modale: propositions rechargées depuis `questions_propositions` (mapping `proposition_1..4`)
+        - support conditionnel (`Aucun/Image/Audio/Vidéo`) avec bornes vidéo
+      - persistance backend dédiée:
+        - mode script `content_library_temp_lot_question_update` (admin-only)
+        - garde lot maintenable: `descriptif_court LIKE 'Série auto papier :%'` + session quiz papier liée via token `T{id}` dans `lot_ids`
+        - mise à jour en place de la question (pas de remplacement d’ID dans `questions_lots_temp.question_ids`)
+        - upload image optionnel (conservation du support image existant si aucun nouveau fichier)
+        - affichage des supports actuels dans la modale (liens existants question/réponse)
+      - format `jour_associe`:
+        - UI/validation: date saisie en `YYYY-MM-DD`
+        - stockage DB (`questions.jour_associe`): normalisé en `MM-DD` (colonne `char(5)`)
+      - règles `jour_associe`:
+        - champ affiché uniquement si la source porte un signal `jour_associe`/`jour_associe_v1`
+        - validation ±5 jours autour de la date de session quand un contexte session est disponible
+      - protections:
+        - UI: action invisible hors admin
+        - backend: refus non-admin (y compris URL directe)
+    - conservation du flux historique session utilisateur (quiz papier):
+      - en contexte session agenda (`context=session`, `nav_ctx=agenda`) pour un lot temporaire présent dans la session, l’action de **remplacement** question par question (`↻`) reste disponible pour le client propriétaire
+      - backend `content_library_temp_lot_question_replace` aligné sur ce contexte session (non-admin autorisé si session owner + lot lié)
+      - formulaire de création de question de remplacement: champ `Commentaire` disponible (persisté dans `questions.commentaire`)
+  - itération CRUD mine-only `create/edit` (2026-02-13):
+    - écrans dédiés (p=list + `editor` query param):
+      - `editor=t_theme_create` -> `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_create.php`
+      - `editor=t_theme_edit` -> `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_edit.php`
+    - save dédié via `p=script`:
+      - `mode=content_library_theme_save` -> `pro/web/ec/modules/jeux/bibliotheque/editor/p_theme_save.php`
+    - Quiz (contenu série perso):
+      - formulaires “Ajouter une question” et “Modifier” incluent le champ `Commentaire` (création + édition)
+      - ordonnancement harmonisé des formulaires:
+        - bloc `Fausse proposition 1/2/3` groupé
+        - bloc `Type support` + champs liés positionné en fin de formulaire
+      - labels harmonisés sur tous les formulaires quiz: `Fausse proposition 1/2/3` (suppression des variantes `Prop.` / `Proposition`)
+      - `Commentaire` reste facultatif avec un champ monoligne (`input text`) + aide inline `À l’attention du quiz master.`
+      - ordre final harmonisé: bloc `Fausse proposition 1/2/3` puis `Commentaire`, puis bloc `Type support`
+      - retour de ligne explicite après `Bonne réponse` dans les formulaires quiz (séparation visuelle avant les fausses propositions)
+      - espacement des CTA formulaires harmonisé en `mt-4` au-dessus des boutons d’action
+    - adapter DB unifié metadata-only:
+      - Quiz: `pro/web/ec/modules/jeux/bibliotheque/sources/quiz_series.php` (`questions_lots`)
+      - Bingo/Blind: `pro/web/ec/modules/jeux/bibliotheque/sources/playlists.php` (`jeux_bingo_musical_playlists`)
+    - règles d’accès:
+      - création toujours en `mine` (`id_client_auteur=$_SESSION['id_client']`)
+      - édition uniquement owner (`id_client_auteur=$_SESSION['id_client']`)
+      - bouton/carte `Créer` affiché seulement sur l’onglet `mine`
+      - bouton `Modifier` affiché seulement sur une fiche owner
+    - itérations UX/robustesse complémentaires (2026-02-13):
+      - carte `+` ajout thématique en première position des cartes `mine`
+      - texte carte `+` contextualisé:
+        - Quiz: `Ajouter une série`
+        - Bingo/Blind: `Ajouter une playlist`
+      - icône `+` colorée selon le jeu actif
+      - create préfiltré: quand `game` est fourni depuis la biblio, le formulaire n’affiche plus le sélecteur jeu
+      - suppression owner-only:
+        - action backend `mode=content_library_theme_delete`
+        - point d’entrée UI conservé sur la fiche item owner (retiré de l’écran edit)
+        - redirection succès vers `mine` avec `deleted=1`
+      - hardening anti-500 sur suppression:
+        - fallback local dans `editor/p_theme_save.php` si `clib_theme_adapter_delete_meta()` indisponible
+        - fallback URL `mine` si helper lib indisponible
+        - delete `sources/*` protégé (retour `false` en cas d’erreur SQL au lieu de fatal)
+  - itération éditer contenu mine-only (2026-02-13):
+    - écran dédié:
+      - `editor=t_theme_content` -> `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php`
+    - endpoint actions contenu:
+      - `mode=content_library_theme_content_ajax` -> `pro/web/ec/modules/jeux/bibliotheque/editor/p_theme_content_ajax.php`
+      - actions: `add`, `remove`, `move`, `update_item`
+    - adapters contenu:
+      - Quiz: `pro/web/ec/modules/jeux/bibliotheque/sources/quiz_series_content.php`
+      - Bingo/Blind: `pro/web/ec/modules/jeux/bibliotheque/sources/playlists_content.php`
+    - règles d’accès:
+      - bouton `Modifier contenu` visible uniquement si owner (`mine`)
+      - write backend uniquement si owner (`id_client_auteur=$_SESSION['id_client']`)
+    - robustesse runtime:
+      - soumission AJAX explicite (`Accept: application/json`, `X-Requested-With`)
+      - fallback non-AJAX: redirection vers `t_theme_content` (pas d’affichage JSON brut)
+      - `content_ajax` sort explicitement (`exit`) pour éviter les redirections parasites vers la liste
+      - garde-fou: rejet du faux succès `add` si `rows=[]` après write
+    - alignement Mine Quiz (2026-02-18):
+      - fiche owner `p=view`: CTA haut aligné playlists (`Modifier` + `Supprimer`, icônes)
+      - progression série dérivée sans migration: helper `getQuizSeriesProgress(id_lot)` (`count`, `isSeriesValid`) + alias compat `getQuizSeriesValidity` (`validCount := count`)
+      - mode intermédiaire Quiz `mine` tant que `< 6` questions:
+        - bandeau `Série en cours de création — X/6`
+        - bloc inline `Ajouter une question` affiché en priorité
+        - aucun tag `Valide/Invalide` (question créée = OK)
+        - CTA d’usage `Créer mon jeu` / `Démo` masqués
+        - liste `mine`: bouton unique `À compléter` vers la fiche tant que `<6`
+      - validation officielle Quiz `mine` (2026-02-18):
+        - à `6/6`, affichage d’un bloc `Validation requise` (prénom auteur + consentement juridique + bouton)
+        - la série reste non utilisable tant que non validée officiellement
+        - après validation: `flag_validated=1` + métadonnées waiver, CTA `Créer mon jeu`/`Démo` réactivés
+        - si la série repasse sous `6` (suppression question), la validation est retirée automatiquement (`flag_validated=0`)
+        - liste `mine`: bouton `À valider` tant que `6/6` atteint mais validation officielle non soumise
+      - ajout question en fiche: write via endpoint existant `content_library_theme_content_ajax` (`action=add`)
+      - upload image support (type 1) réutilise l’endpoint existant catalogue-series `ec_catalogue_series_form_manager_questions_image_save.php` après création de la question
+      - édition unitaire en fiche: bouton `Modifier` par question + sauvegarde `action=update_item` (owner-only)
+      - liens audio:
+        - saisie utilisateur en URL (pas ID brut): backend extrait l’ID YouTube et normalise en `https://youtu.be/<id>`
+        - Quiz support audio (`id_type_support=2`): champ `Lien YouTube Music` + mention “Récupère le lien depuis un Titre YouTube Music”
+        - Playlist Bingo/Blind en édition unitaire: champ `Lien YouTube Music` + même mention
+      - liens vidéo quiz:
+        - champ `Lien YouTube` + champs `Début`/`Fin` facultatifs
+        - début/fin acceptent `30`, `1.30`, `1:30` (stockage normalisé en query `start/end`)
+  - itération playlists alignée start/catalogue (2026-02-13):
+    - ajout contenu playlist Bingo/Blind via URL playlist YouTube Music (et non ajout unitaire):
+      - format requis: `https://music.youtube.com/playlist?list=...`
+      - import via API YouTube (playlistItems + videos)
+      - contraintes alignées catalogue:
+        - minimum 40 morceaux requis
+        - import borné à 40 morceaux
+    - contraintes URL support:
+      - Saisie URL acceptée (YouTube / YouTube Music), extraction serveur de l’ID vidéo
+      - normalisation interne en `https://youtu.be/<id>`
+      - UX audio orientée YouTube Music “Titres”
+    - adaptation technique table de liaison playlists:
+      - mapping/ops basés sur `position` (sans dépendance à un `id` de liaison), cohérent avec usages start
+  - itération playlists validées/non validées (2026-02-16, validation obligatoire):
+    - migration `jeux_bingo_musical_playlists` (legacy-safe):
+      - `flag_validated` `TINYINT(1) NOT NULL DEFAULT 1` (legacy validé par défaut),
+      - `validated_at` `DATETIME NULL`,
+      - `flag_rights_waiver_accepted` `TINYINT(1) NOT NULL DEFAULT 0`,
+      - `rights_waiver_accepted_at` `DATETIME NULL`,
+      - `rights_waiver_text_version` `VARCHAR(16) NULL`,
+      - conservation `doubtful_titles_json` pour réutiliser l’analyse suspects existante.
+    - création playlist `mine`:
+      - forçage `flag_validated=0`,
+      - `validated_at/rights_waiver_*` initialisés à `NULL/0`.
+    - fiche playlist `mine` non validée:
+      - masquage des CTA d’usage (`Créer mon jeu` / `Démo`),
+      - bloc validation affiché entre les métas et le contenu (fond warning léger),
+      - bloc affiché uniquement après import/soumission d’un lien playlist (pas sur fiche vide avant import),
+      - si `suspect_count > 0`: bloc validation masqué, message dédié affiché à la place et édition du contenu auto-ouverte sur les lignes suspectes,
+      - bouton `Valider la playlist` activable seulement si `suspect_count=0` + prénom saisi + waiver coché.
+    - backend:
+      - nouveau mode `content_library_playlist_validate` (owner-only),
+      - recalcul serveur des suspects via la source playlist (pas de confiance client),
+      - validation refusée si suspects restants, si waiver absent, si prénom vide, ou si contenu < 40,
+      - écriture validation: `flag_validated=1`, `validated_at=NOW()`, `nom_auteur`, `flag_rights_waiver_accepted=1`, `rights_waiver_accepted_at=NOW()`, version optionnelle.
+    - contenu bloc validation (itération UX 2026-02-19):
+      - titre: `Ta playlist/série est complète ! Valide la pour pouvoir l'utiliser dans tes jeux.`
+      - champ auteur prérempli avec le prénom de l’utilisateur actif (modifiable)
+      - ordre des cases: partage communauté (facultative, cochée par défaut) puis consentement juridique (obligatoire)
+      - consentement long sans info-bulle (texte inline)
+    - garde-fou usage:
+      - `content_library_program` et `content_library_demo` refusent côté backend les playlists `mine` non validées (y compris URL/POST forcés),
+      - une playlist déjà validée n’est plus “dé-validée” automatiquement après édition; en revanche, si des suspects existent, l’usage reste bloqué jusqu’à correction.
+    - override manuel suspects (2026-02-18):
+      - un clic `Valider` sur une ligne suspecte (édition unitaire) retire explicitement ce morceau de `doubtful_titles_json`, même sans changement des champs (gestion des faux positifs heuristiques).
+  - finalisation playlists fiche produit (2026-02-15, ajustements UX finaux + correctifs 2026-02-16):
+    - la fiche playlist `mine` devient le point central:
+      - saisie du lien playlist YT Music directement depuis la fiche
+      - analyse/import puis retour fiche en visu (`?imported=1`)
+      - mise en avant inline des lignes `Douteux` / `Non fonctionnel`
+      - édition unitaire ligne par ligne depuis la fiche (icône par ligne, bouton `Valider`)
+      - formulaire d’import affiché uniquement si fiche vide (pas de réimport depuis fiche remplie)
+      - fiche vide: pas de section “Contenu de la playlist” ni placeholder vide, et pas de CTA `Créer mon jeu` / `Démo`
+      - formulaire édition unitaire affiché sur ligne séparée sous artiste/titre (avant l’aperçu média)
+      - labels explicites en édition unitaire: `Artiste`, `Titre`, `Lien YouTube`
+      - surbrillance visuelle cohérente entre message d’alerte et lignes concernées
+      - aperçu playlist compact en visu: action `▶ Écouter 10s` (sans libellé `Support` ni lien YouTube affiché)
+  - itération UX list/view (2026-02-18):
+    - retour fiche -> liste conserve au minimum l’onglet d’origine (`type`) et réinjecte `id_rubrique/page/q` quand présents
+    - chips rubriques adoucis (outline discret, état actif plus doux, densité réduite)
+    - bouton/icône `Modifier` sur fiche playlist rendus plus discrets (ghost/outline fin)
+    - mobile list: sélecteur jeux compact en une seule ligne (`Blindtest/Bingo/Quiz`), sans wrap
+    - recadrage styles view:
+      - bouton édition métadonnées calé sur le style bouton `Démo` (icône seule)
+      - action ligne calée sur le style lien détail (`Modifier` + icône) et placée à côté du titre
+    - accessibilité visuelle navigation:
+      - liens de retour (`Retour au catalogue`, `Retour à la fiche`, `Retour à Mes thématiques`) forcés en blanc au hover/focus pour éviter la disparition sur fond body
+    - écran `Modifier une thématique`:
+      - aligné sur `Créer`: suppression du champ `Jeu`, ajout/édition de `Difficulté`
+    - import robuste:
+      - mode remplacement du contenu existant (`replace_existing=1`)
+      - exigence stricte de 40 insertions, rollback complet si échec partiel
+      - erreurs backend détaillées remontées en AJAX
+    - alignement liens morceaux:
+      - normalisation vers `https://youtu.be/<id>` (cohérent avec flux start/catalogue import)
+    - correction édition unitaire:
+      - ciblage ligne via `map_id` (position réelle)
+      - update in-place du morceau ciblé (pas de création d’une nouvelle ligne)
+  - itération UX list/view/builders (2026-02-19):
+    - builder Quiz (liste + fiche):
+      - sélection affichée ligne par ligne avec fond léger couleur jeu
+      - réordonnancement drag-and-drop avant validation (`ordered_ids`)
+      - action `Retirer` par ligne
+      - mode builder: exclusion des séries non validées + masquage bloc création nouvelle série
+      - bandeau builder clarifié (`Mon Quiz`, compteur `X / 4 séries`, micro-aide d’ajout depuis liste/détail)
+      - icône `+` de la liste désactivée à `4 / 4` avec tooltip `Limite atteinte`
+    - fiche contenu (mine):
+      - suppression des liens de modification unitaire (par question/morceau) au profit d’un toggle global près de `Contenu de la série/playlist`
+      - en mode édition: champs ouverts avec fond warning léger et séparation renforcée entre items
+      - playlists: compteur affiché à côté de `Contenu de la playlist` (nombre de morceaux uniquement)
+      - playlists: aperçu support déplacé au-dessus des champs d’édition
+    - quiz fiche mine:
+      - si `0` question: masque `Contenu de la série 0/6` et masque `Aucune question disponible`
+      - si `>=1` question: bloc ajout positionné au-dessus de `Contenu de la série X/6`
+      - suppression du message “Série prête (6/6) ...”
+    - messages et microcopies:
+      - suppression des bandeaux info post-save (`Thématique mise à jour`, `Série en cours de création...`) pour tous les jeux
+      - textes create/edit alignés sur “playlist/série perso”
+      - ajout d’une ligne de description blanche entre supra-filtres et chips (Cotton/Communauté/Perso)
+  - itération UX view (2026-02-20):
+    - suppression du duo de boutons dispersés `Créer mon jeu` / `Démo` en bas de fiche (hors builder)
+    - ajout d’un encart unique en haut de fiche:
+      - intro: `Utiliser cette playlist/série :`
+      - CTA primaire dynamique: `Créer un <jeu>` (jeu courant déjà choisi à l’entrée)
+      - CTA secondaire: `Lancer une démo`
+      - micro-aide: `Crée une session pour jouer, ou lance une démo pour tester rapidement.`
+      - ordre d’affichage imposé: header + métas -> encart d’usage -> détail du contenu
+  - ajustement UX view (2026-02-20, itération):
+    - suppression de la section dédiée “Utiliser cette playlist/série”
+    - CTA `Créer un <jeu>` + `Lancer une démo` réintégrés inline dans la zone d’actions UI
+    - micro-aide conservée: `Crée une session avec cette playlist/série, ou lance une démo pour tester rapidement.`
+    - Quiz: popup de choix `Ajouter` / `Créer avec 1 série` conservée (soumission via `js-quiz-program-form`)
+  - correctif JS popup Quiz view (2026-02-20):
+    - cause: modale quiz déclarée après le script d’attachement, empêchant l’ouverture selon le timing DOM
+    - correction: résolution et binding de la modale au submit (lazy init) dans `ec_bibliotheque_view.php`
+  - itération UX view contenu (2026-02-20):
+    - aperçu audio réduit et déplacé inline sur la ligne de la question/du morceau (`Écouter 10s`)
+    - suppression du libellé de type support (`Support : Audio/Vidéo/Image`) en affichage lecture
+    - alternance de fond une ligne sur deux pour améliorer la séparation visuelle des index
+  - compteurs d’usage bibliothèque (2026-02-16):
+    - `Utilisée X fois` et `Dernière utilisation` excluent désormais explicitement les sessions démo (`flag_session_demo=0`)
+- Intégration navigation:
+  - menu latéral EC: lien `Les jeux` (anciennement `Bibliotheque`) dans `pro/web/ec/ec.php`
+- Routing:
+  - rewrites ajoutés dans `pro/web/.htaccess`
+
+Référence audit preuves:
+- `notes/audit-content-library-session-demo-2026-02-12.md`

@@ -1,0 +1,909 @@
+# Handoff — Repo `pro` (canon)
+
+Date: 2026-02-22  
+Sujet: Agenda “Nouvelle session” — mode quick multi-dates + auto-thématique bibliothèque.
+
+## Update 2026-02-27 — Quiz formulaires: champ commentaire compact + aide
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - champ `Commentaire` affiché en monoligne (`input text`) dans les formulaires quiz ciblés.
+  - retour à la ligne forcé après `Bonne réponse` (avant le bloc des fausses propositions).
+  - positionnement harmonisé: `Commentaire` placé sous les champs `Fausse proposition`.
+  - suppression du `mb-2` sous le texte “Les fausses propositions sont essentielles pour la version numérique du quiz.”
+  - espacement des boutons de soumission augmenté à `mt-4` sur les formulaires quiz ciblés.
+  - ajout d’une mention d’aide sous le champ: `À l’attention du quiz master.`
+  - champ conservé facultatif (contrat backend inchangé).
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php` OK
+
+## Update 2026-02-27 — Quiz formulaires: propositions regroupées, support en dernier
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - dans les formulaires quiz (bibliothèque + série perso), déplacement du bloc `Type support` (et champs liés) en bas de formulaire.
+  - regroupement des 3 champs propositions ensemble, juste après `Commentaire`.
+  - harmonisation des labels en `Fausse proposition 1/2/3`.
+  - suppression de la proposition 4 dans les formulaires série perso pour alignement global.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php` OK
+
+## Update 2026-02-27 — Quiz: champ `Commentaire` réintégré dans les formulaires d’édition
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout du champ `Commentaire` dans les formulaires quiz suivants:
+    - création de question en série perso
+    - édition de question en série perso
+    - création d’une question de remplacement (lot temporaire, contexte session client)
+    - modification d’une question existante (lot temporaire, contexte admin bibliothèque)
+  - préremplissage du commentaire existant en modes édition.
+  - aucun changement backend requis: validation/persistance `commentaire` déjà en place.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php` OK
+
+## Update 2026-02-27 — Bibliothèque: `A la une` / `En ce moment` en mode strict “en cours”
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - tri `A la une` (`preset=now`, type `cotton`) recalé sur une fenêtre stricte:
+    - `today >= jour_associe_debut`
+    - `today <= jour_associe_fin`
+  - badge `En ce moment` aligné sur la même règle stricte (suppression de la tolérance “J-90”).
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+
+## Update 2026-02-27 — Fix édition meta admin: préservation du référencement Cotton/Communauté
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/p_theme_save.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_edit.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Constat:
+  - une édition meta admin sur une série Cotton/Communauté pouvait faire passer `community_items.status='hidden'`, retirant la série de la liste.
+- Actions réalisées:
+  - `p_theme_save.php`: les champs de partage communauté ne sont plus injectés en update lorsque l’éditeur n’est pas l’auteur.
+  - `t_theme_edit.php`: case de partage affichée uniquement à l’auteur.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/editor/p_theme_save.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_edit.php` OK
+
+## Update 2026-02-27 — Admin: bypass lock “en cours d’utilisation” sur édition/suppression
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - backend:
+    - `clib_content_edit_or_delete_allowed(...)` autorise désormais le compte admin (`id_client=10`) à modifier/supprimer une thématique même si elle est utilisée dans des sessions en cours/à venir.
+    - ajout de logs dédiés de bypass admin: `CONTENT_EDIT_ADMIN_BYPASS_IN_USE` / `CONTENT_DELETE_ADMIN_BYPASS_IN_USE`.
+  - view:
+    - bandeau “en cours d’utilisation” conservé.
+    - verrou UI levé uniquement pour admin (`$is_theme_mutation_locked=false` côté admin), afin de garder les actions visibles et actives.
+    - non-admin inchangé (verrou maintenu).
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+
+## Update 2026-02-27 — Bibliothèque quiz: usage list `temp_lots` corrigé (`T` vs `L`)
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - extension de `clib_usage_get(...)` avec un mode token quiz explicite (`L|T`, défaut `L`).
+  - en mode `T`:
+    - filtre strict `id_type_produit=5`
+    - match uniquement via `FIND_IN_SET('T{id}', lot_ids)`
+    - exclusion des matches `id_produit`/`community_items` pour éviter les collisions d’ID numériques avec les lots catalogue.
+  - la list bibliothèque appelle désormais `clib_usage_get(..., 'T')` sur l’onglet admin `Lots temporaires`.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+
+## Update 2026-02-27 — Bibliothèque list: pagination mobile responsive
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’un scope CSS pagination dédié (`clib-pagination-wrap`, `clib-pagination`) dans la page list bibliothèque.
+  - en mobile (`max-width:575.98px`), le bloc pagination passe en scroll horizontal (`overflow-x:auto`) pour éviter le débordement.
+  - en desktop, pagination conservée centrée avec retour à la ligne possible.
+- Vérification:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+
+## Update 2026-02-27 — Quiz `A la une`: thématiques du moment + badge `En ce moment`
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - alignement Quiz avec les playlists en `preset=now` (`A la une`, onglet `Cotton`):
+    - priorité SQL sur la fenêtre date `jour_associe_debut/fin` (au lieu de la règle legacy `flag_une`).
+    - chargement des champs `jour_associe_debut/fin` aussi pour Quiz en list.
+  - activation du badge `En ce moment` sur les séries Quiz avec la même règle date que les playlists.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+
+## Update 2026-02-27 — Badge `Populaire`: exclusion des lots temporaires `T`
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’une garde `type !== 'temp_lots'` sur le calcul et l’affichage du badge `Populaire` dans la list bibliothèque.
+  - effet: pas de badge `Populaire` sur les cards de lots temporaires admin; badge conservé pour les contenus catalogue (`Cotton`/`Communauté`/`Mes`).
+- Vérification:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+
+## Update 2026-02-27 — CTA admin lot temporaire: démo mono-lot (sans duplication de session)
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - CTA `Lancer une démo` (vue admin lot temporaire) rerouté vers `ec_bibliotheque_script.php` (`mode=content_library_temp_lot_demo`) au lieu de `session_duplicate`.
+  - nouveau backend dédié:
+    - `session_init` démo quiz
+    - puis `session_theme` avec `id_catalogue_produit='T{id}'` (lot temporaire courant uniquement)
+  - résultat: la démo créée ne reprend plus la session liée complète; elle contient uniquement la série du lot temporaire consulté.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php` OK
+
+## Update 2026-02-27 — Lots temporaires admin: suppression du badge “en cours d’utilisation”
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - neutralisation du lock d’usage sur la vue lot temporaire (`$is_temp_lot_view`), pour ne plus afficher le badge:
+    - `Cette série est en cours d’utilisation...`
+    - `Modification et suppression temporairement impossible.`
+  - changement limité au contexte lot temporaire, sans impact sur les séries/playlists standards.
+- Vérification:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+
+## Update 2026-02-27 — Onglet admin `Lots temporaires`: tri décroissant par récence
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajustement du tri de `clib_quiz_temp_lots_admin_list_get(...)` pour afficher les lots du plus récent au plus ancien.
+  - ordre SQL appliqué: `ORDER BY t.date_ajout DESC, t.id DESC` (au lieu de `session_date DESC`).
+- Vérification:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+
+## Update 2026-02-27 — Modale admin lot temporaire: URL support question affichée
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - dans le bloc `Support(s) actuel(s)` (modale édition admin), le lien `Support question` affiche désormais l’URL complète:
+    - rendu: `Support question : {url cliquable}`
+- Vérification:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+
+## Update 2026-02-27 — Quiz lot temporaire (admin): masquage proposition 4 en édition
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - retrait du champ `Prop. 4` (`name="proposition_4"`) dans le formulaire d’édition admin de question (lot temporaire / contexte bibliothèque)
+  - objectif: alignement UI avec le flux de remplacement existant (3 fausses propositions affichées)
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+
+## Update 2026-02-25 — Fix responsive home INS/CSO quand la sidebar est visible
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/includes/css/ec_custom.css`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement_cso.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_evenement.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_particulier.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’un scope explicite “home no-offer INS/CSO” avec classe de contexte sur la `row`:
+    - `home-ins-cso-nooffer-grid`
+  - ajout d’un marquage de rôle par widget dans ce scope:
+    - `home-nooffer-widget-offer`
+    - `home-nooffer-widget-library`
+  - ajout de règles CSS desktop `>=992px` sur le scope INS/CSO no-offer:
+    - ratio `2/3 - 1/3` appliqué même sans classe body `sidebar-*` (fix desktop moyen)
+    - renfort conservé en états sidebar (`sidebar-menu`, `sidebar-icons`, `sidebar-compact`)
+    - widget offre forcé à `66.666%` (2/3)
+    - widget library forcé à `33.333%` (1/3)
+  - extension du marquage `offer` au widget particulier
+  - mise à jour du visuel widget library:
+    - remplacement de la bannière par `cotton-media-kit-portail.jpg`
+    - mobile aligné au rendu desktop (visuel unique plein largeur, sans scroll horizontal)
+  - aucune modification du comportement hors scope (autres homes/profils inchangés)
+- Vérifications:
+  - `php -l` OK:
+    - `ec_home_index.php`
+    - `ec_widget_ecommerce_abonnement.php`
+    - `ec_widget_ecommerce_abonnement_cso.php`
+    - `ec_widget_ecommerce_evenement.php`
+    - `ec_widget_ecommerce_particulier.php`
+    - `ec_widget_jeux_discover_library.php`
+
+## Update 2026-02-24 — Stepper mobile-first tunnel agenda (Option A)
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_stepper.php` (nouveau)
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’un composant stepper compact réutilisable (Option A):
+    - ligne `Étape X/5 — {libellé}`
+    - mini barre de progression
+    - non cliquable
+  - intégration centralisée dans le header start:
+    - mobile: stepper au-dessus du titre
+    - desktop: stepper inline à gauche du titre
+  - mapping appliqué:
+    - step 1 `Jeu`: `start/game/choose/*?from=agenda&mode=quick`
+    - step 2 `Contenu`: `start/agenda/mode/*`
+    - step 3 `Paramètres`: `start/game/setting/*` en quick agenda + flow bibliothèque agenda
+    - step 4 `Récap`: `start/game/resume/*` et `start/game/resume-batch/*`
+    - step 5 `C’est prêt !`: `start/game/view/*`
+  - couleur du stepper:
+    - barre remplie branchée sur les classes couleur jeu existantes `bg-color-{seo_slug_jeu}`
+    - aucun hardcode de palette spécifique stepper
+  - pont bibliothèque thématique (agenda):
+    - pivot `agenda/mode` -> bibliothèque enrichi avec `from=agenda&mode=library`
+    - conservation du contexte dans les URLs list/view
+    - affichage stepper `Étape 2/5 — Contenu` sur list + view seulement dans ce contexte
+    - redirection bibliothèque -> setting enrichie avec `tunnel=agenda` pour conserver l’étape 3
+- Vérifications:
+  - `php -l` OK:
+    - `ec_start_include_header.php`
+    - `ec_start_include_stepper.php`
+    - `ec_start_script.php`
+    - `ec_bibliotheque_list.php`
+    - `ec_bibliotheque_view.php`
+    - `ec_bibliotheque_script.php`
+- Point d’attention:
+  - le stepper affiche `4/5 Récap` sur `resume` et `5/5 C’est prêt !` sur `view`; en quick batch, l’écran final reste `resume-batch` (pas de page `view` unique).
+
+## Update 2026-02-23 — Bibliothèque: view read-only lot temporaire `T{id}`
+- Scope code:
+  - `pro/web/.htaccess`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout route explicite:
+    - `/extranet/games/library/temp/T{id}` -> `ec_bibliotheque_view.php` (token transporté)
+  - `ec_bibliotheque_view.php` étendu avec un mode `lot temporaire`:
+    - validation token (`^T\\d+$`) + fallback `id` numérique
+    - chargement `questions_lots_temp` (`id`, `nom`, `descriptif_court`, `question_ids`, `date_ajout`)
+    - parsing `question_ids` JSON puis récupération des questions `questions.id` en ordre strict via `ORDER BY FIELD(...)`
+    - rendu sur la même page view bibliothèque (mêmes blocs/styles/classes), avec libellés:
+      - titre: `Série auto-générée — {nom}`
+      - identifiant: `T{id}`
+      - méta date d’ajout
+    - mode read-only strict:
+      - actions modifier/supprimer/usage masquées
+      - aucun write DB
+  - intégration qualité de vie:
+    - depuis la fiche session quiz, les séries `T{id}` ont désormais un lien `Voir le détail` vers la route temp
+    - helper URL session->bibliothèque étendu (`item_type=quiz_temp_lot`)
+  - sécurité d’accès:
+    - lot temp introuvable -> alerte UI cohérente
+    - accès direct hors contexte session restreint (admin `id_client=10`)
+- Vérifications:
+  - `php -l` OK:
+    - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+    - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+- Tests manuels à exécuter:
+  - créer une session quiz papier auto (`lot_ids` avec `T,T,T,L`)
+  - depuis la fiche session, cliquer `Voir le détail` sur un lot `T`:
+    - vérifier rendu aligné avec la view bibliothèque standard
+    - vérifier ordre des questions identique au JSON `question_ids`
+    - vérifier absence d’actions d’édition/suppression/reorder
+  - vérifier qu’un lot temp inexistant affiche bien l’alerte “introuvable”
+
+## Update 2026-02-23 — Quiz auto papier `T,T,T,L` (pickers V2 + compat Pro)
+- Scope code:
+  - `global/web/app/modules/jeux/cotton_quiz/app_cotton_quiz_functions.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/pro/README.md`
+- Actions réalisées:
+  - ajout d’un module V2 de génération quiz papier (sans toucher à la génération V1 legacy):
+    - helpers token `L/T` (`normalize/parse`)
+    - contexte partagé (`excluded_ids`, `question20_used`, `client_id`, `session_date`)
+    - 3 builders 6 questions ordonnées:
+      - `qz_build_temp_history`
+      - `qz_build_temp_arts`
+      - `qz_build_temp_sciences`
+    - persistance lots temporaires via `questions_lots_temp` avec retour token `T{id}` (`qz_create_temp_lot`)
+    - orchestrateur `qz_build_paper_auto_lot_ids_csv(...)` avec idempotence si `lot_ids` contient déjà `T`
+  - branchement agenda quick:
+    - uniquement pour `game=quiz` + mode papier (`flag_controle_numerique=0`)
+    - production `lot_ids` final: `T,T,T,L`
+    - numérique et autres jeux inchangés
+  - application session sécurisée:
+    - validation stricte du CSV lot tokens (`[LT]?\\d+`)
+    - normalisation nombre nu -> `L{id}`
+  - compat UI Pro avec tokens `T`:
+    - fiche session quiz V2: parsing `T/L`, affichage d’un libellé “Temporaire”, détail lot `T` si disponible
+    - liste sessions: affichage des noms de lots `T` (fallback `TEMP #id`)
+    - suppression de slot quiz: support `T` sans crash
+    - bibliothèque en contexte session quiz: parsing lot_ids compatible `T`
+  - logs ajoutés:
+    - `QUIZ_PAPER_AUTO_TEMP_BUILD_START/OK/ERR`
+    - `QUIZ_PAPER_AUTO_TEMP_PERSIST_OK/ERR`
+    - `QUIZ_PAPER_AUTO_APPLY_OK/ERR`
+- Vérifications:
+  - `php -l` OK sur tous les fichiers PHP touchés (pro + global)
+- Notes:
+  - purge `questions_lots_temp` non implémentée dans ce patch (TODO tracé)
+  - audit exhaustif UX `T` sur toutes les surfaces Pro à compléter (TODO tracé)
+
+## Update 2026-02-23 — Stabilisation finale widgets home EC (INS/CSO + liens commande)
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/ec.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement_cso.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/pro/home_widgets_ins_cso.md`
+- Actions réalisées:
+  - correction du bug CTA widgets commande -> `/extranet/dashboard`:
+    - cause: closure home no-offer sans capture de `$url_ecommerce`
+    - fix: `use (..., $url_ecommerce, ...)` dans `ec_home_index.php`
+  - correction URL doublonnée `extranet/extranet`:
+    - URLs commande passées en root-relative dans `ec.php`
+    - suffixes conservés:
+      - abonnement: `/extranet/ecommerce/offers/abonnement/s1/1`
+      - événement: `/extranet/ecommerce/offers/evenement/s1/6`
+      - particulier: `/extranet/ecommerce/offers/particulier/s1/1`
+  - widget CSO:
+    - CTA fixé explicitement sur `/extranet/ecommerce/offers/abonnement/s1/1`
+    - suppression de la note `L'essai gratuit est réservé aux nouveaux clients.`
+  - widget découverte (final):
+    - titre `Les jeux Cotton`
+    - sous-titre `Parcours les catalogues Blind Test, Bingo Musical et Cotton Quiz.`
+    - CTA fixe `Découvrir les jeux`
+    - bulle icônes:
+      - sombre uniquement pour typologie événement (2/3)
+      - blanche sinon
+    - carte cliquable globalement (`stretched-link`)
+    - alignement vertical des bullets centré texte/icone
+- Vérifications:
+  - `php -l` OK sur les fichiers touchés
+
+## Update 2026-02-23 — PATCH UI home INS/CSO (discover + CSO offer refonte)
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement_cso.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/pro/home_widgets_ins_cso.md` (nouveau)
+- Actions réalisées:
+  - home no-offer:
+    - ajout d’un ordonnancement par pipeline:
+      - INS: découverte puis offre
+      - CSO (et autres non-INS): offre puis découverte
+  - widget découverte:
+    - titre dynamique:
+      - INS: `DÉCOUVRE LES JEUX`
+      - CSO: `REDÉCOUVRE LES JEUX`
+    - CTA dynamique:
+      - INS: `Découvrir les jeux`
+      - CSO: `Redécouvrir les jeux`
+    - header transformé en bannière 3 visuels jeux:
+      - `ec/images/communication/actualites/cotton-blind-test-display.jpg`
+      - `ec/images/communication/statique/visuel-jeu-bingo-musical.jpg`
+      - `ec/images/communication/statique/visuel-jeu-cotton-quiz.jpg`
+    - bullets remplacées selon brief + pictos en cercle plein coloré par typologie (20/22/21)
+  - widget CSO “Choisir une offre”:
+    - suppression de la pastille `Reprise d'abonnement`
+    - reprise du layout et remplacement des textes:
+      - titre: `✨ Fidélise ta clientèle et apporte de la nouveauté.`
+      - intro + 3 bullets (sans engagement / sessions illimitées / prêt en 2 minutes)
+      - CTA: `🚀 Je choisis mon offre`
+      - note bas de carte conservée: `L'essai gratuit est réservé aux nouveaux clients.`
+- Vérifications:
+  - `php -l` OK sur les 3 fichiers modifiés
+
+## Update 2026-02-23 — PATCH UX INS/CSO CHR (home widget + offers labels)
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement_cso.php` (nouveau)
+  - `global/web/app/modules/ecommerce/widget/app_ecommerce_bloc_offre_tarifaire_abn.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/pro/ecommerce_ins_cso.md` (nouveau)
+- Actions réalisées:
+  - audit INS/CSO:
+    - source de vérité = pipeline client (`clients.id_pipeline_etat`) résolu vers un nom via `referentiels_clients_pipeline_etats.nom`
+    - preuve code:
+      - lecture nom pipeline côté EC: `pro/web/ec/ec.php:60`
+      - fonction source: `global/web/app/modules/entites/clients/app_clients_functions.php:676`
+      - SQL: `SELECT nom FROM referentiels_clients_pipeline_etats WHERE id = ...`
+  - home widget (segment CHR):
+    - cas `offre_client_active_count==0` + typologie CHR + pipeline `CSO` -> widget de réactivation (sans wording essai)
+    - CTA vers la page offers CHR via `$url_ecommerce`
+    - `INS` conserve le widget essai existant
+    - non-CHR inchangé
+  - page offers ABN:
+    - CTA conditionné sur segment CHR + pipeline:
+      - `INS` => `Essayer gratuitement`
+      - `CSO` => `S'abonner`
+    - ajout note contextuelle CSO:
+      - `L'essai gratuit est réservé aux nouveaux clients.`
+    - non-CHR inchangé
+- Hors scope confirmé:
+  - aucun changement appliqué au tunnel Stripe / confirmation (`ec_offres_script.php` non modifié)
+
+## Update 2026-02-23 — Programmation rapide: toggle récurrence + aperçu commun
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+- Actions réalisées:
+  - step2 quick:
+    - remplacement du toggle initial par un segmented control “chips” lisible:
+      - `Dates libres` / `Récurrence`
+      - actif: fond violet + texte blanc
+      - inactif: fond blanc + border violet + texte violet
+      - pilotage via hidden `schedule_mode`
+    - repositionnement de la zone date/heure après les paramètres jeu (la section `Version du jeu`, quand présente, passe avant la programmation)
+    - mode `Dates libres`: conservation du multi-lignes existant (add/remove) avec adaptation des noms de champs frontend (`free_session_dates[]`, `free_session_times[]`)
+    - mode `Récurrence`: fréquence `weekly|biweekly|monthly`, règle mensuelle (`nth_weekday` / `last_weekday`), date de fin, horaires multiples (add/remove)
+      - champs récurrence postés explicitement (`name=` sur fréquence/jour/jusqu'au/règles mensuelles)
+      - reconstruction serveur des occurrences (weekly/biweekly/monthly) dans `session_setting_multi`
+      - application des exclusions (`excluded_occurrences`) côté serveur
+      - correction du bug de création partielle (cas observé: seule la 1re session créée)
+    - finitions UI retours (itération complémentaire):
+      - chips `Dates libres` / `Récurrence` forcés sous le label `Programmation`
+      - suppression du titre `Dates et heures` en mode `Dates libres`
+      - suppression du titre `Horaires` en mode `Récurrence`
+      - texte aide `Dates libres` ajusté:
+        - `Ajoute tes sessions une par une, elles seront créées dans l'ordre chronologique.`
+      - labels ajustés:
+        - `Heure de session` (mode dates libres)
+        - `Heure(s) de session(s) (Appliquée(s) à toutes les dates.)` (mode récurrence)
+      - microcopies ajoutées:
+        - suppression de `Chaque horaire ajoute une session à chaque occurrence.`
+      - bouton renommé:
+        - `+` (dates libres)
+        - `+` (récurrence horaires)
+      - ajout horaire récurrence:
+        - chaque nouvel horaire est prérempli à `+1h` du dernier horaire existant
+      - rendu récurrence:
+        - titre horaire affiché une seule fois (non dupliqué sur les lignes ajoutées)
+        - bouton suppression horaire centré verticalement sur sa ligne
+      - uniformisation des champs récurrence (hauteurs/alignements desktop-mobile)
+  - aperçu/confirmation commun:
+    - compteur avec pluralisation corrigée:
+      - `1 session sera créée`
+      - `X sessions seront créées`
+    - mode `Dates libres`:
+      - bloc aperçu masqué (redondant avec la zone de saisie)
+    - mode `Récurrence`:
+      - bloc aperçu conservé
+      - suppression d’occurrence au cas par cas réactivée dans la preview (`✕`)
+    - exclusions stockées en hidden `excluded_occurrences` (JSON)
+    - payload submit normalisé en hidden `session_dates[]` / `session_times[]` pour réutiliser `frm_mode=session_setting_multi`
+    - limite douce 40: warning + case de confirmation obligatoire au-delà
+    - badge compteur redimensionné (lisible, non surdimensionné)
+  - backend `session_setting_multi` renforcé:
+    - validation longueurs identiques `session_dates[]` / `session_times[]`
+    - validation format date/heure, dédoublonnage et tri (via normalisation existante)
+    - garde-fou hard limit `200` occurrences (refus serveur explicite)
+  - logs structurés:
+    - `AGENDA_QUICK_PREVIEW_BUILD` (depuis métadonnées preview soumises)
+    - `AGENDA_QUICK_OCCURRENCE_REMOVE` (depuis exclusions soumises)
+    - `AGENDA_QUICK_SUBMIT` (mode, count, over_soft_limit)
+- Vérifications:
+  - `php -l pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php` OK
+  - `php -l pro/web/ec/modules/tunnel/start/ec_start_script.php` OK
+
+## Update 2026-02-23 — Finitions UX (step2 quick + fiche session + lib view apply)
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Actions réalisées:
+  - start step 2 agenda quick:
+    - titre header quick passé à `Paramètres des sessions`
+    - gestion multi-dates: suppression de ligne disponible, avec au moins une ligne obligatoire
+    - bouton suppression ligne date/heure harmonisé avec `+ Ajouter une date`
+    - bouton suppression ligne masqué si une seule ligne reste
+  - fiche session agenda:
+    - `Voir le détail` harmonisé responsive:
+      - desktop inline à côté du titre
+      - mobile sous le titre (dans le même bloc)
+    - boutons de modif harmonisés:
+      - mobile `Modifier`
+      - desktop `Modifier la playlist` / `Modifier cette série`
+    - quiz séries:
+      - suppression unitaire avec modale de confirmation
+      - bouton suppression visible seulement si >1 série
+      - suppression de la dernière série => suppression de la session quiz
+  - bibliothèque view (contexte remplacement session):
+    - CTA `Appliquer à cette session` -> `Remplacer`
+    - aide texte -> `Choisir cette playlist/série en remplacement dans ma session`
+- Vérifications:
+  - `php -l` OK sur les fichiers modifiés
+
+## Update 2026-02-23 — Bibliothèque contexte session (nav_ctx) + Quiz slot-by-slot
+- Scope code:
+  - `pro/web/ec/ec.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+- Actions réalisées:
+  - bibliothèque:
+    - contexte explicite URL requis: conservation `id_securite_session` uniquement si `nav_ctx=agenda`
+    - auto-purge sécurité: si `id_securite_session` est présent sans `nav_ctx`, purge immédiate du contexte serveur (`$_SESSION['library_session_ctx']`)
+    - propagation `nav_ctx=agenda` sur URLs de navigation (liste/view, filtres, pagination, retours) quand le contexte session est actif
+    - purge forcée depuis le menu `Les jeux`: liens menu enrichis avec `clear_session_ctx=1` (+ purge client `localStorage/sessionStorage` best-effort)
+    - menu actif contextualisé:
+      - `nav_ctx=agenda` => menu `Mon agenda` actif
+      - forçage explicite ajouté aussi sur la bibliothèque en `context=session` + `id_securite_session` (visu/modif thématique en contexte session)
+      - sans `nav_ctx` => comportement standard bibliothèque
+    - bandeau optionnel `Contexte session actif` retiré (liste/view) pour alléger l’UI
+  - Quiz (modification depuis fiche session):
+    - ajout `slot_index` sur les liens `Modifier cette série`
+    - application backend “slot par slot” dans `content_library_apply_session_theme` (remplace uniquement le slot ciblé)
+  - Quiz (fiche session):
+    - ajout bouton `✕` rouge “Supprimer cette série” à côté de `Modifier cette série`
+    - nouveau mode script `session_quiz_slot_delete` (suppression unitaire + compactage de `lot_ids`)
+  - suppression session Quiz:
+    - robustesse restauration du CTA “Supprimer la session” en cas de détail session quiz partiel (`phase_courante` absent => phase 0)
+  - correction flux pivot -> bibliothèque:
+    - `Choisir une thématique` ne transporte plus `id_securite_session` (évite le faux contexte “changer une thématique”)
+  - fiche session agenda -> bibliothèque:
+    - ajout explicite `nav_ctx=agenda` sur les liens sortants (liste + détail thématique)
+- Vérifications:
+  - `php -l` OK sur tous les fichiers touchés
+
+## Update 2026-02-22 — Micro-ajustements UX/copies (pivot + bibliothèque + start step jeu)
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_agenda_mode.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_1_game.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Actions réalisées:
+  - pivot `start/agenda/mode`:
+    - titre page dynamique par jeu (`Nouvelle(s) session(s) de ...`)
+    - CTA des 2 blocs en couleur du jeu choisi
+    - textes de blocs clarifiés:
+      - `Programmation rapide : une ou plusieurs sessions`
+      - `Choisir une thématique : une session à la fois`
+    - descriptions blocs adaptées au jeu (quiz: séries / bingo-blind: playlists)
+  - flux pivot -> bibliothèque (`Choisir une thématique`):
+    - suppression du transport `id_securite_session` (plus de faux contexte session)
+    - suppression de la session pré-initialisée si encore vide/incomplète (anti session fantôme)
+  - start choix jeu:
+    - titre: `Je programme mes sessions de jeu`
+    - CTA cartes: `Créer mes jeux`
+  - bibliothèque:
+    - ajout d’un helper commun pour lien de retour session:
+      - `clib_session_back_url_if_owned_get`
+      - `clib_session_back_link_html_get`
+    - bandeaux contextuels `context=session` (view + list) enrichis avec lien inline:
+      - `— Retour à la session`
+    - lien affiché uniquement si session valide et appartenant au client courant
+- Vérifications:
+  - `php -l` OK sur tous les fichiers touchés
+
+## Update 2026-02-22 — Pivot déplacée après step 1 + harmonisation détail contenu
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_agenda_mode.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+  - `pro/web/ec/ec.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_offre_client_bloc.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_0_offres_client.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+- Actions réalisées:
+  - flux agenda “Nouvelle session” rerouté vers `step_1_game` en premier:
+    - CTA agenda -> `start/game/choose/*?from=agenda&mode=quick`
+    - en multi-offres -> `start/game/offres/0?from=agenda&mode=quick`
+  - pivot de programmation déplacée après sélection du jeu:
+    - après `session_init` en quick mode, redirection vers `start/agenda/mode/{id_offre}` avec `id_securite_session` + `seo_slug_jeu`
+    - fallback direct sur la pivot: message “Choisis d’abord un jeu” + bouton retour step 1
+  - pivot UI mise à jour (Variante A):
+    - titre `Nouvelle session`
+    - sous-titre `Comment veux-tu programmer tes prochaines sessions ?`
+    - 2 cards avec images locales:
+      - `prog_rapide.jpg` -> CTA `Programmer par date(s)`
+      - `prog_choisir_thematique.jpg` -> CTA `Choisir une thématique`
+  - `agenda_mode_select` renforcé:
+    - contexte post-step1: quick -> `step_2_setting` multi-dates ; library -> bibliothèque filtrée jeu + session
+    - fallback legacy conservé si pas de session/jeu
+  - fiche session (agenda view) alignée:
+    - liens `Voir le détail` conservés à côté du nom playlist/série
+    - bouton de modification maintenu à droite
+    - Blindtest/Bingo: sous-titre + détail playlist internes masqués (détail via bibliothèque VIEW)
+- Vérifications:
+  - `php -l` OK:
+    - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+    - `pro/web/ec/modules/tunnel/start/ec_start_agenda_mode.php`
+    - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+    - `pro/web/ec/ec.php`
+    - `pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php`
+    - `pro/web/ec/modules/widget/ec_widget_ecommerce_offre_client_bloc.php`
+    - `pro/web/ec/modules/tunnel/start/ec_start_step_0_offres_client.php`
+    - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+
+## Update 2026-02-22 — Agenda mode, multi-dates, auto-thème, changement de thème
+- Scope code:
+  - `pro/web/.htaccess`
+  - `pro/web/ec/ec.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_agenda_mode.php` (nouveau)
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_1_game.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_4_resume_batch.php` (nouveau)
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php`
+- Actions réalisées:
+  - nouveau point d’entrée agenda:
+    - `/extranet/start/agenda/mode/{id_offre}` avec 2 choix:
+      - A: programmer par date(s) + thématiques auto
+      - B: choisir une thématique avant (bibliothèque)
+  - mode quick:
+    - propagation du contexte `from=agenda&mode=quick`
+    - step 2 multi-dates (ajout/suppression de lignes date+heure)
+    - nouveau `frm_mode=session_setting_multi`:
+      - création N sessions (1/date)
+      - application settings sur chaque session
+      - attribution auto-thématique Cotton, puis `session_theme`
+      - résumé batch `/extranet/start/game/resume-batch/{batch_token}`
+  - auto-thématique:
+    - ranking réutilisé depuis la bibliothèque (`clib_list_get(..., preset='themes')`)
+    - stats popularité réutilisées (`clib_popularity_stats_for_items_get`)
+    - anti-répétition par jeu (365j), fallback 180/30/0, anti-doublon intra-lot “si possible”
+    - logs: `AGENDA_QUICK_CREATE_BATCH`, `AGENDA_QUICK_THEME_PICK`, `AGENDA_QUICK_CREATE_DONE`
+  - changement de thématique sur session existante:
+    - CTA “Changer la thématique” conservé sur la fiche détail session (retiré des cartes agenda)
+    - bibliothèque appelée avec `id_securite_session`, atterrissage sur la liste filtrée jeu
+    - bandeau jaune “Modification de thématique” affiché en bibliothèque (liste + fiche)
+    - mode `content_library_apply_session_theme` pour appliquer `session_theme` sans recréer de session
+- Vérifications:
+  - `php -l` OK sur tous les fichiers PHP modifiés
+- Points d’attention:
+  - marqueur `auto_theme=1` porté dans les logs structurés + batch session store (pas de colonne DB dédiée ajoutée)
+  - pour le flux “changer thématique”, l’application se fait depuis la bibliothèque (sélection explicite) sur la session existante
+  - quiz auto en agenda quick: 4 séries tirées et sérialisées dans `lot_ids` via le flux `session_theme`
+
+## Update 2026-02-22 — Ajustements post-recette agenda quick / quiz détail
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Actions réalisées:
+  - agenda cards:
+    - restauration du CTA d’accès session avec garde-fou offre active conservé (`app_session_launch_guard_get`)
+    - en cas de blocage, CTA pointe vers `cta_url` guard (commande/offres) avec libellé guard
+  - Quiz V2 détail session:
+    - suppression du CTA global “Changer la thématique”
+    - affichage des séries par défaut, ouverture détail série par série
+    - actions par série: `Voir le détail` puis `Modifier`
+    - drag-and-drop de l’ordre des séries avec sauvegarde automatique immédiate
+  - bibliothèque (modification de session):
+    - bandeau jaune “Modification de thématique” en haut de page (liste + fiche)
+    - navigation de modification orientée vers la liste bibliothèque filtrée (pas vers une fiche série spécifique)
+- Vérifications:
+  - `php -l` OK sur les fichiers PHP modifiés
+
+## Update 2026-02-22 — Documentation routing/flux + micro-fixs UX
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Mises à jour documentées:
+  - routes/flux start agenda quick confirmés dans README:
+    - `start/agenda/mode/*`
+    - `frm_mode=session_setting_multi`
+    - résumé batch `start/game/resume-batch/{batch_token}`
+  - quick quiz:
+    - auto-thème sur 4 séries
+  - changement de thématique session existante:
+    - entrée depuis fiche session
+    - redirection vers liste bibliothèque filtrée jeu
+    - bandeau bibliothèque contextualisé par jeu (quiz/bingo/blindtest)
+  - fiche session:
+    - labels harmonisés `Modifier la playlist` / `Modifier cette série`
+    - réordonnancement Quiz V2: retour sur fiche détail (pas résumé)
+
+## Update 2026-02-22 — Agenda fiche session -> VIEW bibliothèque contextualisée
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Actions réalisées:
+  - fiche session agenda:
+    - ajout/normalisation des liens `Voir le détail` vers la VIEW bibliothèque pour Quiz/Bingo/Blindtest
+    - params standard transmis: `context=session`, `id_securite_session`, `return_to=session_view`, `item_type`, `item_id`
+    - Bingo/Blindtest: `Voir le détail` positionné à gauche de `Modifier la playlist`
+  - bibliothèque VIEW:
+    - support landing direct par `item_type + item_id` en contexte session
+    - validation session (`id_securite_session`) côté client connecté avant activation du mode contextuel
+    - bandeau haut daté par jeu:
+      - `Playlist du Blindtest programmé le jj/mm/aaaa`
+      - `Playlist du Bingo Musical programmé le jj/mm/aaaa`
+      - `Série du Quiz programmé le jj/mm/aaaa`
+    - CTA usage remplacé par un bouton unique `Retour à la session`
+    - CTA démo masqué en contexte session
+    - lien `← Retour au catalogue` masqué en contexte session
+    - log structuré ajouté: `LIB_VIEW_CONTEXT_SESSION`
+- Vérifications:
+  - `php -l pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+- TODO QA:
+  - valider quick 1 date et N dates en conditions réelles
+  - valider fallback anti-répétition (365/180/30/0) avec historique dense
+  - valider non-régression complète des flux start standard + bibliothèque existants
+
+## Update 2026-02-20 — PATCH implémenté (schedule autorisé, launch backend-gated)
+- Scope code:
+  - `pro/web/ec/ec.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_1_game.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_play_classic.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+  - `global/web/app/modules/jeux/sessions/app_sessions_functions.php`
+- Actions réalisées:
+  - programmation:
+    - suppression du renvoi e-commerce par défaut au moment de programmer (onboarding `choose/0`)
+    - `session_init` accepte explicitement le mode non-démo via `flag_session_demo=0` même sans offre active
+  - lancement:
+    - ajout d’un garde-fou backend central `app_session_launch_guard_get(...)`
+    - application du verdict en point d’entrée `/extranet/start/game/play/{id}` avec refus propre + CTA `Voir les offres`
+  - uniformisation:
+    - `app_session_get_link(..., 'launcher', ...)` passe désormais par le funnel `/start/game/play/{id}` (backend source-of-truth)
+    - garde-fou UI local retiré de la carte agenda (la décision d’accès n’est plus côté template)
+- Vérifications:
+  - `php -l` OK sur tous les fichiers touchés
+
+## Update 2026-02-20 — Fix remaining entrypoints blocking scheduling
+- Scope code:
+  - `pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_0_offres_client.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+- Actions réalisées:
+  - widget agenda vide:
+    - CTA sans offre active redirigé vers `/extranet/start/game/choose/0` (plus vers commande e-commerce)
+  - route `/extranet/start/game/offres/`:
+    - si aucune offre active listée, redirection automatique vers `choose/0` (programmation autorisée)
+    - conservation du contexte éventuel (`id_securite_operation_evenement`, `from`)
+  - bibliothèque (programmation non-démo):
+    - suppression du retour forcé `/start/game/offres/` quand pas d’offre active
+    - envoi explicite `flag_session_demo=0` dans `session_init`
+- Vérifications:
+  - `php -l` OK sur les 3 fichiers
+
+## Update 2026-02-20 — Home EC sans offre active (widgets harmonisés)
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+- Actions réalisées:
+  - home no-offer:
+    - affichage forcé de 2 widgets uniquement (commande puis découverte bibliothèque)
+    - masquage des autres widgets de home dans ce cas
+  - mapping commande no-offer:
+    - typologie `1/8` (+ défaut) => widget abonnement
+    - typologie `2/3` => widget événement
+    - typologie `12` => widget particulier
+  - bypass règles internes abonnement en no-offer:
+    - plus de blocage par `id_pipeline_etat` / `id_solution_usage` si `offre_client_active_count==0`
+  - widget bibliothèque:
+    - nouveau widget “Découvre les jeux Cotton” enrichi (3 points + pictos)
+    - CTA vers `/extranet/games/library`
+- Vérifications:
+  - `php -l` OK sur les fichiers touchés
+
+## Résumé audit
+- Audit effectué sur les flux `start` (programmation + lancement) avec preuves `fichier:ligne`.
+- Garde-fou actuel trouvé principalement dans la carte agenda (UI) et non au point backend source-of-truth.
+- Cartographie livrée pour:
+  - flux `PROGRAMMER` (onboarding offres -> `session_init` -> write session)
+  - flux `LANCER/JOUER` (UI cards/widgets -> `app_session_get_link` -> route play/launcher)
+  - emplacement de la carte session programmée pour le futur message paywall + CTA offres.
+
+## Points d’entrée clés identifiés
+- Routing start: `pro/web/.htaccess:168`, `pro/web/.htaccess:179`, `pro/web/.htaccess:200`
+- Calcul onboarding offre active: `pro/web/ec/ec.php:63`, `pro/web/ec/ec.php:100`, `pro/web/ec/ec.php:119`
+- Create session (`session_init`): `pro/web/ec/modules/tunnel/start/ec_start_script.php:161`, `pro/web/ec/modules/tunnel/start/ec_start_script.php:258`
+- Garde-fou UI actuel (agenda): `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php:291`, `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php:536`
+- Génération des liens de lancement: `global/web/app/modules/jeux/sessions/app_sessions_functions.php:851`
+
+## Référence détaillée
+- Voir `canon/repos/pro/sessions_scheduled_paywall_audit.md`.
