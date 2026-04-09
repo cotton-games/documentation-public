@@ -1,0 +1,59 @@
+# Branches
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/SITEMAP.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/SITEMAP.md
+# Repos
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/games/README.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/games/TASKS.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/bingo.game/README.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/bingo.game/TASKS.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/bingo.game/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/blindtest/README.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/blindtest/TASKS.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/blindtest/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/quiz/README.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/quiz/TASKS.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/quiz/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+# Global specs
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/interfaces/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/data/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/runbooks/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/specs/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/specs/tests/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+# DB schema
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/data/schema/OVERVIEW.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/data/schema/MAP.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/data/schema/DDL.sql?v=aba697cdab8b7736e925739f65583040a5cf546d
+# Project status
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/README.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/DOCS_MANIFEST.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/HANDOFF.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/CHANGELOG.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/pm2-ws.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+# Notes & archive
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/notes/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/notes/archive/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+# Other
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/front/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/entrypoints.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+# Indexes (generated)
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/data/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/data/schema/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/front/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/interfaces/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/bingo.game/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/blindtest/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/games/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/global/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/play/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/pro/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/quiz/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/repos/www/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/canon/runbooks/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/notes/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/notes/archive/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/specs/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
+https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/main/specs/tests/INDEX.md?v=aba697cdab8b7736e925739f65583040a5cf546d
