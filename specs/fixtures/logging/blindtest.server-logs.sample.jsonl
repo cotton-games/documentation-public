@@ -1,0 +1,4 @@
+{"ts":"2026-01-22T14:19:03.221Z","level":"info","source":"BT_WS","msg":"Message heartbeat reçu du client."}
+{"ts":"2026-01-12T09:05:04.192Z","level":"info","source":"BT_WS","sessionId":"3m08hdd77ta8gppv0gsjkeudgs6964b64cb9d31","event":"WS_IN","wsType":"mainPlayerStarted","msg":"WS message"}
+{"ts":"2026-01-12T09:05:04.193Z","level":"info","source":"BT_WS","msg":"Début ou reprise du décompte pour la session 3m08hdd77ta8gppv0gsjkeudgs6964b64cb9d31"}
+
