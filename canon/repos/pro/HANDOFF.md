@@ -1,0 +1,2018 @@
+# Handoff — Repo `pro` (canon)
+
+Date: 2026-02-22  
+Sujet: Agenda “Nouvelle session” — mode quick multi-dates + auto-thématique bibliothèque.
+
+## Update 2026-05-06 — Affiliation TdR: signin avec compte existant
+- Scope code:
+  - `pro/web/ec/modules/compte/authentification/ec_authentification_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/notes/plan_migration_reseau_branding_contenu.md`
+  - `documentation/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+- Actions realisees:
+  - audit du lien `/utm/reseau/{seo_slug}` depuis `www`, de la redirection PRO `ec_sign.php`, de la bascule signup -> signin et du post-login;
+  - confirmation que le signup nouveau compte appelait deja `app_ecommerce_reseau_affilier_client(..., 'signup_affiliation')`;
+  - confirmation que le signin compte existant ne consommait pas le contexte `id_client_reseau` apres connexion;
+  - ajout d'un post-traitement signin qui rattache via le helper central existant;
+  - garde-fou: pas de reaffectation automatique si le compte est deja rattache a une autre TdR;
+  - addendum: le blocage `already_attached_to_other_network` pose un flash session rendu par le shell `ec.php`, sans exposer le reseau existant.
+- Verifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/compte/authentification/ec_authentification_script.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/ec.php` OK
+  - scenarios A-E verifies statiquement.
+
+## Update 2026-04-08 — `Offres & factures`: un ABN annuel direct ne doit pas glisser sur une ancre mensuelle
+- Scope code:
+  - `global/web/app/modules/ecommerce/app_ecommerce_functions.php`
+- Scope doc:
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/notes/plan_migration_reseau_branding_contenu.md`
+  - `documentation/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+- Actions réalisées:
+  - audit du read path `Offres & factures` sur la ligne `Periode en cours`;
+  - confirmation que le rendu PRO ne faisait qu'afficher la periode calculee par le helper global;
+  - confirmation de la cause racine dans `app_ecommerce_offre_client_abonnement_periode_get_detail()`:
+    - le helper historique `app_ecommerce_offre_client_abonnement_periode_en_cours_get_date_debut()` etait applique a toute frequence;
+    - ce helper avance toujours par pas mensuels;
+    - un ABN annuel pouvait donc afficher un debut glissant mensuel avant recalcul d'une fin annuelle;
+  - correction volontairement borne au moteur global:
+    - le recalcul mensuel reste reserve a `id_paiement_frequence = 1`;
+    - les abonnements annuels gardent leur ancre BDD tant qu'aucune periode Stripe live n'est exploitable.
+- Vérifications:
+  - `php -l /home/romain/Cotton/global/web/app/modules/ecommerce/app_ecommerce_functions.php` OK
+
+## Update 2026-04-08 — Bibliothèque agenda Quiz legacy V1: retour à une seule série thématique
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+- Actions réalisées:
+  - audit du flux bibliothèque Quiz dans les 2 points d'entrée agenda:
+    - liste
+    - fiche détail;
+  - confirmation que le builder multi-séries était activé uniquement par le slug `cotton-quiz`, sans distinguer `Quiz V1 legacy` et `Quiz V2`;
+  - confirmation du besoin métier:
+    - pour `id_type_produit = 1`, une seule série thématique doit être choisie;
+    - cette série est la dernière série du quiz, quel que soit le format `2` ou `4` séries;
+  - neutralisation du builder pour les clients legacy V1 dans la bibliothèque, avec purge défensive d'une éventuelle ancienne sélection stockée en session;
+  - réalignement des CTA bibliothèque sur un flux direct mono-série pour ces comptes;
+  - explicitation du bandeau de contexte en bibliothèque;
+  - durcissement du write path `start`: `quiz_lot_ids` ne valide plus qu'un seul item pour `id_type_produit = 1`.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/tunnel/start/ec_start_script.php` OK
+
+## Update 2026-04-08 — Agenda legacy Quiz V1: une session incomplète ne rebascule plus vers `view`
+- Scope code:
+  - `global/web/app/modules/jeux/sessions/app_sessions_functions.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php`
+- Scope doc:
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+- Actions réalisées:
+  - relecture du tunnel `agenda quick` et du flux bibliotheque agenda pour un client `Cotton Quiz` legacy V1 (`id_type_produit = 1`);
+  - confirmation que le polling `session_sync_state` de `step_2_setting` pouvait rediriger trop tôt vers `view`;
+  - confirmation de la cause racine dans `app_session_edit_state_get()`:
+    - une date vide / `0000-00-00` sur une session legacy V1 etait interpretee comme hors `pending`;
+    - la session etait alors marquee `locked` avant meme la programmation effective;
+  - correctif du resolver d'etat global pour garder ces sessions `pending` tant que la date n'est pas valide;
+  - garde front complementaire: la redirection polling de `step_2_setting` ne s'applique plus a une session encore sans `id_produit`.
+- Vérifications:
+  - `php -l /home/romain/Cotton/global/web/app/modules/jeux/sessions/app_sessions_functions.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php` OK
+
+## Update 2026-04-02 — Bibliothèque Quiz: le save global des séries n'upload plus deux fois les images
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/p_theme_content_ajax.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+- Actions réalisées:
+  - audit du flux d'édition rapide des questions quiz et confirmation qu'un upload image était déjà traité côté `ec_bibliotheque_script.php`;
+  - confirmation qu'après ce premier write path, le JS relançait inutilement un second upload base64 vers `ec_catalogue_series_form_manager_questions_image_save.php`;
+  - suppression de ce second upload sur le flux `js-theme-content-quick-edit`;
+  - correction complémentaire: le mode AJAX `content_library_theme_content_ajax / update_item` consomme maintenant lui aussi `support_image_file` côté serveur via le helper d'upload image quiz.
+  - lecture de `pro/logs/error_log` après reproduction: la cause racine observée est `mysqli_errno=1048`, `Column 'jour_associe' cannot be null` sur la création d'une question de remplacement sans `jour_associe`;
+  - correctif du helper de création: écriture de `''` au lieu de `NULL` pour `questions.jour_associe` quand aucun jour associé n'est attendu.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/jeux/bibliotheque/editor/p_theme_content_ajax.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+
+## Update 2026-03-31 — Sessions `pro`: la fiche détail se ferme hors `En attente`, avec synchro format croisée `pro <-> games`
+- Scope code:
+  - `global/web/app/modules/jeux/sessions/app_sessions_functions.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `games/web/includes/canvas/php/boot_lib.php`
+  - `games/web/includes/canvas/php/quiz_adapter_glue.php`
+  - `games/web/includes/canvas/php/blindtest_adapter_glue.php`
+  - `games/web/includes/canvas/php/bingo_adapter_glue.php`
+  - `games/web/includes/canvas/core/api_provider.js`
+  - `games/web/includes/canvas/core/boot_organizer.js`
+- Scope doc:
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/canon/repos/games/TASKS.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+- Actions réalisées:
+  - centralisation de l'état d'édition d'une session (`en attente` / verrouillée) côté socle session `global`;
+  - verrouillage serveur du changement de format dans `games` pour `quiz`, `blindtest` et `bingo` dès que la session officielle n'est plus `En attente`;
+  - verrouillage côté `pro` des writes de paramétrage et de remplacement de contenu dès que la session sort de `En attente`;
+  - la fiche détail `pro` passe alors en mode consultation seule, tout en restant visible hors historique jusqu'au jour J;
+  - ajout d'un endpoint léger `session_sync_state` sur `pro` pour permettre une resynchro sans navigation manuelle;
+  - ajout d'un polling organizer côté `games` pour récupérer un changement de format déclenché depuis `pro`, réinjecter `paperMode` dans l'UI organizer et repousser l'état runtime déjà pris en charge par `games`.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/tunnel/start/ec_start_script.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php` OK
+  - `php -l /home/romain/Cotton/games/web/includes/canvas/php/boot_lib.php` OK
+  - `php -l /home/romain/Cotton/games/web/includes/canvas/php/quiz_adapter_glue.php` OK
+  - `php -l /home/romain/Cotton/games/web/includes/canvas/php/blindtest_adapter_glue.php` OK
+  - `php -l /home/romain/Cotton/games/web/includes/canvas/php/bingo_adapter_glue.php` OK
+  - `php -l /home/romain/Cotton/global/web/app/modules/jeux/sessions/app_sessions_functions.php` OK
+  - le 500 relevé en recette venait bien d'un second bloc dupliqué `app_session_participation_probable_*` en fin de fichier, désormais retiré
+  - vérification JS statique non jouée via `node --check`, le runtime `games` étant servi en modules ES avec alias bundler
+
+## Update 2026-03-26 — Agenda: garde-fous sur les CTA et sur `app_jeu_get_detail()`
+- Scope code:
+  - `global/web/app/modules/jeux/sessions/app_sessions_functions.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php`
+- Scope doc:
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - confirmation par logs `pro` que l'agenda et certaines vues session déclenchaient des notices `quiz_detail` dans `app_jeu_get_detail()` et une notice séparée `cta_presentation` dans le widget CTA;
+  - ajout d'initialisations défensives dans `app_jeu_get_detail()` pour éviter les lectures hors contrat sur les sessions Cotton Quiz numériques;
+  - ajout d'une valeur par défaut locale `bloc` pour `cta_presentation` dans le widget CTA.
+- Vérifications:
+  - `php -l /home/romain/Cotton/global/web/app/modules/jeux/sessions/app_sessions_functions.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php` OK
+
+## Update 2026-03-26 — Confirmation de commande: le point d'envoi e-commerce bascule vers AI Studio transactionnel
+- Scope code:
+  - `global/web/app/modules/ecommerce/app_ecommerce_functions.php`
+- Scope doc:
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - relecture du bloc de confirmation de commande dans `app_ecommerce_commande_ajouter()` et confirmation qu'il etait encore branche sur le template Brevo legacy `287`;
+  - verification du catalogue AI Studio et du webhook transactionnel: le code `ALL_ALL_INVOICE_MONTHLY` correspond bien a une confirmation de commande, avec destinataire porte par `CONTACT_EMAIL`;
+  - conservation du bloc legacy en commentaire pour validation transitoire;
+  - remplacement de l'envoi effectif par `ai_studio_email_transactional_send('ALL', 'ALL', 'INVOICE_MONTHLY', ...)`, sans changer les gardes metier de premiere facture / type d'offre.
+- Vérifications:
+  - `php -l /home/romain/Cotton/global/web/app/modules/ecommerce/app_ecommerce_functions.php` OK
+  - validation d'integration AI Studio / n8n / Brevo non jouee localement dans ce tour
+
+## Update 2026-03-25 — EC desktop: la navigation gauche est resserree
+- Scope code:
+  - `pro/web/ec/includes/css/ec_custom.css`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - relecture du shell EC et confirmation que la largeur desktop du menu venait du theme dashboard global, pas du PHP des entrees de nav;
+  - choix d'un correctif local et reversible cote EC uniquement, sans activer les modes `sidebar-compact` / `sidebar-icons`;
+  - reduction moderee de la largeur desktop de la nav a `13.75rem`;
+  - ajustement du shell pour conserver le padding gauche historique et prendre la compression principalement sur la droite;
+  - centrage explicite du logo haut via flex;
+  - abandon du centrage par offsets heterogenes au profit d'une largeur utile unique sur les `nav-item` desktop;
+  - le logo haut, les liens et le CTA se calent maintenant dans cette meme colonne utile du menu;
+  - neutralisation des marges negatives heritees sur `ul.navbar-nav[data-simplebar]` pour supprimer le debord horizontal structurel du menu desktop;
+  - recentrage propre du bloc `navbar-collapse`, maintenant recale a `width: 100%` sans compensations laterales negatives;
+  - retrait du padding lateral propre du shell desktop, la largeur utile de navigation etant maintenant portee directement a `100%` du panneau;
+  - securisation micro-UI du footer bas: plus d'air lateral, liens d'icones rendus en flex, et `svg` non compressibles pour eviter la coupe du bouton `Contact`;
+  - adaptation mobile de la sidebar: largeur reduite y compris en etat `sidebar-menu`, override telephone plus agressif sous `576px`, et drawer borne en hauteur plutot qu'etire jusqu'en bas de page, avec scroll global du panneau pour garder le footer d'icones dans le flux visible;
+  - repartition explicite des 3 icones du footer bas en `space-between`;
+  - realignement du `margin-left` de `.main-content` sur cette nouvelle largeur.
+- Vérifications:
+  - verification CSS locale par diff;
+  - recette visuelle desktop non jouee dans ce tour.
+
+## Update 2026-03-25 — Tunnel commande EC: le step 2 n'annonce plus un essai gratuit absent du checkout Stripe
+- Scope code:
+  - `pro/web/ec/modules/ecommerce/offres/ec_offres_form_step_2.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - relecture ciblee du recap step 2 et du write path Stripe standard pour les abonnements;
+  - confirmation que le step 2 se basait seulement sur `trial_period_days`, alors que Stripe n'applique le trial que pour `INS` (hors exception client `712`);
+  - alignement du calcul du trial affiche sur la regle effectivement utilisee au checkout;
+  - conservation explicite de l'exception client `712` et de l'absence de trial en contexte delegue reseau.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/ecommerce/offres/ec_offres_form_step_2.php` OK
+
+## Update 2026-03-25 — Stripe e-commerce: `customer.subscription.updated` ne route plus un compte independant vers la sync reseau
+- Scope code:
+  - `pro/web/ec/ec_webhook_stripe_handler.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - relecture ciblee du bloc `customer.subscription.updated` / `customer.subscription.deleted`;
+  - confirmation que la sync delegation reseau etait appelee avant toute verification explicite `id_client_delegation > 0`;
+  - conservation de la lecture de l'offre par `asset_stripe_productId`, puis ajout d'un filtre amont localise au webhook;
+  - la sync delegation reseau n'est maintenant lancee que si l'offre Stripe retrouvee est effectivement deleguee;
+  - le parcours independant conserve ainsi un `stripe_action` standard/no-op et n'alimente plus l'email admin avec un libelle reseau parasite;
+  - aucun email transactionnel client `update / renewal / unsubscribe` n'est ajoute dans ce lot: ce non-cablage reste reserve au patch 3.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/ec_webhook_stripe_handler.php` OK
+
+## Update 2026-03-25 — Stripe e-commerce: compatibilite restauree sur le read path contact avant mails webhook
+- Scope code:
+  - `global/web/app/modules/entites/clients_contacts/app_clients_contacts_functions.php`
+  - `global/web/app/modules/ecommerce/app_ecommerce_functions.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - relecture ciblee du fatal prod `Call to undefined function app_client_contact_get_detail()` releve dans `app_ecommerce_commande_ajouter()`;
+  - confirmation que le helper defini cote `global` restait `client_contact_get_detail(...)`, utilise par la plupart des call sites historiques;
+  - ajout d'un alias compatible `app_client_contact_get_detail(...)` dans le module `clients_contacts`;
+  - harmonisation du second read path e-commerce `global` sur ce nommage `app_*`, sans casser les call sites legacy `client_contact_get_detail(...)`.
+- Vérifications:
+  - `php -l /home/romain/Cotton/global/web/app/modules/entites/clients_contacts/app_clients_contacts_functions.php` OK
+  - `php -l /home/romain/Cotton/global/web/app/modules/ecommerce/app_ecommerce_functions.php` OK
+
+## Update 2026-03-25 — Stripe e-commerce: idempotence persistante avant creation de commande Cotton
+- Scope code:
+  - `pro/web/ec/ec_webhook_stripe_handler.php`
+  - `global/web/app/modules/ecommerce/app_ecommerce_functions.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - relecture ciblee des write paths `payment_intent.succeeded` et `invoice.paid`;
+  - confirmation que la garde historique `invoice.id` via `commentaire_facture` restait trop tardive, car rattachee apres creation de commande;
+  - ajout d'une table de garde persistante `ecommerce_stripe_write_guards` creee a la demande cote `global`;
+  - ajout d'un verrou applicatif MySQL `GET_LOCK` par objet Stripe pour serialiser les retries concurrents sur `payment_intent.id` et `invoice.id`;
+  - ajout d'une garde secondaire sur `event.id` Stripe pour absorber les retries bruts deja completes;
+  - persistence du token Stripe dans `commentaire_facture` des l'insert de commande Cotton, pour permettre la reprise propre d'un etat partiellement finalise sans recreer de commande;
+  - aucun changement apporte a la logique metier `customer.subscription.updated`, explicitement hors lot.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/ec_webhook_stripe_handler.php` OK
+  - `php -l /home/romain/Cotton/global/web/app/modules/ecommerce/app_ecommerce_functions.php` OK
+  - validation d'integration Stripe/retries concurrents non jouee localement dans ce tour
+
+## Update 2026-03-24 — Stripe ABN: dedoublonnage `invoice.paid` + durcissement Brevo webhook-safe
+- Scope code:
+  - `pro/web/ec/ec_webhook_stripe_handler.php`
+  - `global/web/app/modules/ecommerce/app_ecommerce_functions.php`
+  - `global/web/assets/sendinblue/api/sendinblue_api_functions.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - confirmation sur Stripe qu'une seule facture Stripe et un meme `event.id` `invoice.paid` etaient rejoues apres plusieurs `500`;
+  - confirmation que le retry tombait sur des effets de bord Brevo `move list 160 -> 161`, avec sorties HTTP parasites `print_r/echo`;
+  - ajout d'un rattachement local `invoice.id Stripe -> commande Cotton` via `commentaire_facture`;
+  - dedoublonnage en entree du webhook `invoice.paid` avant toute recreation de commande;
+  - encapsulation defensive des effets secondaires webhook (`Invoice::update` Stripe, mail admin);
+  - neutralisation des sorties HTTP des helpers Brevo `lib_*` et tolerance explicite aux cas `already removed` / `already in list`.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/ec_webhook_stripe_handler.php` OK
+  - `php -l /home/romain/Cotton/global/web/app/modules/ecommerce/app_ecommerce_functions.php` OK
+  - `php -l /home/romain/Cotton/global/web/assets/sendinblue/api/sendinblue_api_functions.php` OK
+
+## Update 2026-03-24 — EC TdR: l'upload du visuel perso branding s'aligne sur le pipeline haute qualite
+- Scope code:
+  - `pro/web/ec/modules/general/branding/ec_branding_script.php`
+  - `global/web/app/modules/general/branding/app_branding_functions.php`
+  - `global/web/app/modules/general/branding/app_branding_ajax.php`
+  - `pro/web/ec/modules/general/branding/ec_branding_form.php`
+  - `pro/web/ec/modules/general/branding/ec_branding_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/canon/repos/games/README.md`
+  - `documentation/canon/repos/games/TASKS.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - audit du point d'entree EC TdR `ec_branding_script.php` et confirmation d'une cible `visuel` encore bornee a `600x240`;
+  - realignement des write paths `branding_ajouter` / `branding_modifier` sur `1600x640`;
+  - documentation du fait que le helper global borne ensuite la cible a la taille source pour eviter tout upscale artificiel;
+  - ajout d'une detection explicite des erreurs d'upload `logo` / `visuel` et des POST trop lourds, avec message clair affiche au retour dans l'EC;
+  - correction du reset branding `games`: la suppression est maintenant bornee a la couche session et ne peut plus effacer un branding reseau TdR affiche par heritage chez un affilié;
+  - documentation croisee du chainage `pro -> global -> games` pour le rendu final en jeu.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/general/branding/ec_branding_script.php` OK
+  - `php -l /home/romain/Cotton/global/web/app/modules/general/branding/app_branding_functions.php` OK
+  - `php -l /home/romain/Cotton/global/web/app/modules/general/branding/app_branding_ajax.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/general/branding/ec_branding_form.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/general/branding/ec_branding_view.php` OK
+
+## Update 2026-03-24 — Design réseau: la confirmation de sauvegarde cible le bon formulaire
+- Scope code:
+  - `pro/web/ec/modules/general/branding/ec_branding_form.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - relecture du formulaire `Design réseau` et de son JS de confirmation;
+  - confirmation d'un conflit entre l'id generic `frm` du formulaire branding et d'autres formulaires deja presents dans le shell EC;
+  - renommage vers `network-branding-form` et realignement du submit JS de la modale.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/general/branding/ec_branding_form.php` OK
+
+## Update 2026-03-24 — EC: les cookies BO de delegation sont expires des leur consommation
+- Scope code:
+  - `pro/web/ec/modules/compte/authentification/ec_authentification_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - relecture du gate BO et du point d'entree `extranet/authentication/script`;
+  - confirmation que les cookies `CQ_admin_gate_*` etaient bien consommes cote PHP, mais jamais expires cote navigateur;
+  - ajout d'une expiration explicite des deux cookies des leur premiere consommation.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/compte/authentification/ec_authentification_script.php` OK
+
+## Update 2026-03-24 — EC: la déconnexion nettoie complètement la session après un lien temporaire
+- Scope code:
+  - `pro/web/ec/modules/compte/deconnexion/ec_deconnexion_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - comparaison `develop` vs `main` sur les fichiers auth/deconnexion concernes, sans ecart detecte;
+  - relecture du script de deconnexion EC utilise par `Se deconnecter`;
+  - confirmation que seule une partie du scope de session etait nettoyee;
+  - ajout d'un nettoyage complet des variables d'authentification EC;
+  - expiration explicite du cookie de session PHP et des cookies BO historiques `CQ_admin_gate_*`.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/compte/deconnexion/ec_deconnexion_script.php` OK
+
+## Update 2026-03-24 — BO: l'accès direct admin vers l'EC ne retombe plus sur `signin`
+- Scope code:
+  - `pro/web/ec/modules/compte/authentification/ec_authentification_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - audit du flux BO historique via `www/web/bo/gate.php` et du point d'entree `extranet/authentication/script`;
+  - confirmation que les cookies BO etaient bien poses, mais que `ec_authentification_script.php` retraitait ensuite les parametres `GET` de routing comme une nouvelle requete d'authentification;
+  - protection du bloc `request` pour ne plus ecraser un flux BO deja initialise (`session_init = 1`);
+  - conservation du nouveau lien temporaire par token, sans changement de comportement.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/compte/authentification/ec_authentification_script.php` OK
+
+## Update 2026-03-24 — Session test: la démo reprend le branding session de la session source
+- Scope code:
+  - `global/web/app/modules/general/branding/app_branding_functions.php`
+  - `global/web/app/modules/jeux/sessions_branding/app_sessions_branding_functions.php`
+  - `global/web/app/modules/jeux/sessions/app_sessions_join.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - audit du CTA `Tester` sur la fiche detail de session et confirmation du write path `session_duplicate`;
+  - confirmation que la resolution runtime du branding passait encore par `app_session_branding_get_detail(...)` avec priorite `evenement > reseau > client`, sans lecture du branding session `general_branding`;
+  - ajout d'une priorite explicite sur le branding session dans le selecteur runtime;
+  - passage de l'id de session courant a `app_sessions_join.php` pour permettre cette resolution;
+  - duplication du branding session source et de ses assets lors de la creation de la session démo;
+  - ajustement du CTA `Tester` pour ouvrir directement la session démo sur `games/master/{id_securite_session}` dans un nouvel onglet, sans etape `resume`.
+- Vérifications:
+  - `php -l /home/romain/Cotton/global/web/app/modules/general/branding/app_branding_functions.php` OK
+  - `php -l /home/romain/Cotton/global/web/app/modules/jeux/sessions_branding/app_sessions_branding_functions.php` OK
+  - `php -l /home/romain/Cotton/global/web/app/modules/jeux/sessions/app_sessions_join.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/tunnel/start/ec_start_script.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php` OK
+
+## Update 2026-03-24 — Design réseau: CTA `Voir le rendu réel` sur design actif
+- Scope code:
+  - `pro/web/ec/modules/general/branding/ec_branding_view.php`
+  - `pro/web/ec/modules/general/branding/ec_branding_form.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - ajout d'une resolution serveur du meilleur contenu de demo depuis l'ecran branding reseau;
+  - priorisation d'un contenu partage avec le reseau, avec preference `blindtest`, puis `bingo`, puis `quiz`;
+  - ajout d'un fallback sur une playlist `blindtest` populaire et validee quand aucun contenu partage exploitable n'est disponible;
+  - placement final du lien `Voir sur une session démo` dans la `view`, a cote du badge d'etat de la carte, avec une icone de nouvel onglet visible;
+  - retrait du CTA en mode edition dans la `form`;
+  - chargement explicite de `ec_bibliotheque_lib.php` sur le module branding pour rendre disponibles les helpers `clib_*` necessaires a la resolution demo;
+  - le CTA poste vers le flux demo existant de la bibliotheque en nouvel onglet;
+  - absence de precreation de session au chargement: la demo n'est creee qu'au clic.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/general/branding/ec_branding_view.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/general/branding/ec_branding_form.php` OK
+
+## Update 2026-03-23 — Navigation: retrait de l'exception Beer's Corner sur `Tarifs & commande`
+- Scope code:
+  - `pro/web/ec/ec.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - audit du calcul de `show_tarifs_commande_cta` dans le shell EC;
+  - confirmation d'une exception hardcodee `id_client_reseau = 1294` masquant le CTA `Tarifs & commande` pour tous les affiliés Beer's Corner;
+  - retrait de cette exception et du commentaire legacy associe;
+  - retour a une logique de nav fondee uniquement sur l'offre active effective et les restrictions self-service generales.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/ec.php` OK
+
+## Update 2026-03-23 — Offres TdR: historique des delegations terminees et date de fin
+- Scope code:
+  - `pro/web/ec/modules/compte/offres/ec_offres_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - audit du cas TdR `Historique des offres` sur une delegation `hors cadre` terminee avec `date_fin` presente en BO;
+  - confirmation que le composant detail savait deja afficher `Abonnement terminé depuis le ...` si le contexte `hors cadre` lui etait bien fourni;
+  - correction du point d'appel historique pour marquer explicitement les lignes deleguees terminees comme `is_network_hors_cadre = 1` avant rendu;
+  - reinjection de ce flag dans `ec_offres_include_detail.php` via la boucle d'historique TdR.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/compte/offres/ec_offres_view.php` OK
+
+## Update 2026-03-23 — TdR: `Mes affiliés` clarifie la remise reseau + facture PDF affiche le pourcentage
+- Scope code:
+  - `pro/web/ec/modules/compte/client/ec_client_list.php`
+  - `pro/web/ec/modules/compte/factures/ec_factures_view_pdf.php`
+  - `global/web/app/modules/ecommerce/app_ecommerce_functions.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/CHANGELOG.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - ajout dans `Mes affiliés` d'un bloc haut dedie a la remise reseau, avec message marketing, affichage du pourcentage courant quand il existe, et fallback `0%` oriente activation des la 2e commande;
+  - ajout d'une explication inline de bas de page sur le caractere dynamique de la remise reseau et ses paliers;
+  - raffinement du tableau `Mes affiliés`: ligne `À venir` seulement si utile, mention `Remise réseau de x% !` sous `Commander` si applicable, centrage vertical des cellules et CTA sans etirement pleine largeur;
+  - complet du rendu facture PDF pour afficher `Remise réseau : x,xx %`, y compris sur des factures historiques grace a un fallback sur l'offre client liee;
+  - alignement de la generation des nouvelles lignes de commande pour stocker aussi le pourcentage dans le libelle de remise.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/compte/client/ec_client_list.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/compte/factures/ec_factures_view_pdf.php` OK
+  - `php -l /home/romain/Cotton/global/web/app/modules/ecommerce/app_ecommerce_functions.php` OK
+
+## Update 2026-03-20 — TdR/Affiliés: headers simplifies + retours home
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/modules/widget/ec_widget_client_reseau_shortcuts.php`
+  - `pro/web/ec/modules/compte/client/ec_client_list.php`
+  - `pro/web/ec/modules/general/branding/ec_branding_view.php`
+  - `pro/web/ec/modules/general/branding/ec_branding_form.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - retrait des sous-titres de header redondants sur `Mes affiliés`, `Design du réseau` et `Jeux du réseau`;
+  - ajout d'un contexte `return_to=home` depuis la home reseau et affichage conditionnel du lien `← Retour à l'accueil`;
+  - alignement du lien affilié `← Retour à la bibliothèque` sur le style `← Retour au catalogue`.
+- Vérifications:
+  - `php -l` OK sur les 6 fichiers touches
+
+## Update 2026-03-20 — Jeux du réseau: blocs d'intro passes au split media/text
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - refonte des 2 blocs d'intro/outillage de `Jeux du réseau` sur une carte `visuel a gauche / contenu a droite`;
+  - reutilisation du visuel `catalogue_contenus.png` deja present sur la home reseau;
+  - conservation des CTA existants en bas de bloc quand ils existent deja;
+  - conservation des chips de scope TdR sous le second bloc.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+
+## Update 2026-03-20 — Home TdR: hero affiliation passe au split media/text
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - refonte du hero TdR gauche sur le pattern `visuel a gauche / contenu a droite` deja utilise par les widgets home INS/CSO;
+  - remplacement de `Réseau Cotton` par le nom du compte TdR dans la partie gauche, avec retrait des pills basses;
+  - remplacement du header droit par `Ton lien d'affiliation`, dans le style des autres titres reseau;
+  - ajout d'une checklist a trois lignes avec icones `check`: `Développe ton réseau`, `Diffuse tes couleurs`, `Choisis tes jeux`;
+  - maintien de la phrase d'aide puis du lien copiable juste avant le CTA;
+  - conservation du lien copiable avec feedback, mais suppression du bouton secondaire `Copier` inline;
+  - bascule du CTA principal en pied de hero vers l'action unique `Copier le lien`;
+  - conservation du bloc de synthese reseau a droite de la 1re ligne.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/communication/home/ec_home_index.php` OK
+
+## Update 2026-03-10 — `Mon offre` réseau: résiliation Stripe fin de période et historique TdR
+- Scope code:
+  - `pro/web/ec/ec_webhook_stripe_handler.php`
+  - `pro/web/ec/modules/compte/offres/ec_offres_include_detail.php`
+  - `pro/web/ec/modules/compte/offres/ec_offres_include_list.php`
+  - `pro/web/ec/modules/compte/offres/ec_offres_view.php`
+  - `www/web/bo/cron_routine_bdd_maj.php`
+  - `global/web/app/modules/ecommerce/app_ecommerce_functions.php`
+- Scope doc:
+  - `documentation/CHANGELOG.md`
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - le webhook Stripe propage maintenant la résiliation `cancel_at_period_end` de l’offre réseau vers les offres déléguées actives, et retire ce gel en cas de réactivation;
+  - `Mon offre` affiche la résiliation programmée sur l’offre réseau et sur l’offre déléguée affilié tant que la fin effective n’est pas atteinte;
+  - les offres `En attente` hors offre réseau support sont masquées de `Mon offre`;
+  - l’historique TdR garde uniquement l’offre réseau terminée, pas les offres déléguées terminées.
+- Vérifications:
+  - `php -l` OK sur `ec_webhook_stripe_handler.php`, `ec_offres_include_detail.php`, `ec_offres_include_list.php`, `ec_offres_view.php`, `cron_routine_bdd_maj.php`, `app_ecommerce_functions.php`
+
+## Update 2026-03-10 — `Mon offre` affilié: offre déléguée clarifiée
+- Scope code:
+  - `pro/web/ec/modules/compte/offres/ec_offres_include_detail.php`
+- Scope doc:
+  - `documentation/CHANGELOG.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - détection explicitée du cas affilié avec offre déléguée;
+  - retrait des mentions de résiliation dans `Période d'abonnement` pour ce cas;
+  - affichage d’une ligne `Abonnement du ... au ...` basée sur la période courante si disponible, sinon `date_debut` / `date_fin`;
+  - verrou explicite des branches CTA Stripe / résiliation sur les offres déléguées affilié.
+- Vérifications:
+  - `php -l pro/web/ec/modules/compte/offres/ec_offres_include_detail.php` OK
+
+## Update 2026-03-10 — `Mon offre` réseau: synthèse facturation simplifiée
+- Scope code:
+  - `pro/web/ec/modules/compte/offres/ec_offres_include_detail.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - branche spécifique offre réseau support simplifiée dans `Mon offre`;
+  - titre métier figé `Abonnement réseau`;
+  - ajout des lignes conditionnelles `montant négocié` / `abonnements affiliés` / `abonnements affiliés hors négociation`;
+  - la ligne `hors négociation` affiche maintenant aussi la remise réseau appliquée et un préfixe `+` en cas de cumul avec le cadre;
+  - le cas `pending_payment` affiche un message et un CTA plus directs, sans `Période en cours`;
+  - ajout du lien direct `/extranet/account/network`;
+  - retrait des éléments de type fiche produit uniquement pour cette carte.
+- Données branchées:
+  - `app_ecommerce_reseau_facturation_get_detail(...)`
+  - `app_ecommerce_reseau_contrat_couverture_get_detail(...)`
+- Vérifications:
+  - `php -l pro/web/ec/modules/compte/offres/ec_offres_include_detail.php` OK
+
+## Update 2026-03-10 — `Mon offre`: portail Stripe dédié réseau
+- Scope code:
+  - `global/web/app/modules/ecommerce/app_ecommerce_functions.php`
+  - `pro/web/ec/modules/compte/offres/ec_offres_include_detail.php`
+- Scope doc:
+  - `documentation/notes/plan_migration_reseau_branding_contenu.md`
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - extraction de la création de session Billing Portal vers un helper global routé par offre;
+  - ajout du choix de configuration Stripe:
+    - `network` pour l’offre réseau support dédiée;
+    - `standard` optionnelle pour les autres offres;
+    - fallback Stripe par défaut conservé seulement hors offre réseau dédiée.
+  - ajout d’un blocage explicite côté `Mon offre` quand la configuration portail réseau n’est pas renseignée.
+- Vérifications:
+  - `php -l global/web/app/modules/ecommerce/app_ecommerce_functions.php` OK
+  - `php -l pro/web/ec/modules/compte/offres/ec_offres_include_detail.php` OK
+
+## Update 2026-03-09 — Fermeture 2A contrat cadre réseau
+- Scope code:
+  - `global/web/app/modules/ecommerce/app_ecommerce_functions.php`
+  - `www/web/bo/www/modules/ecommerce/reseau_contrats/bo_reseau_contrats_list.php`
+  - `pro/web/ec/modules/compte/client/ec_client_script.php`
+- Scope doc:
+  - `documentation/notes/plan_migration_reseau_branding_contenu.md`
+  - `documentation/canon/repos/global/TASKS.md`
+  - `documentation/canon/repos/www/README.md`
+  - `documentation/canon/repos/www/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’un moteur global de couverture commerciale réseau:
+    - absorption des délégations historiques par ancienneté
+    - reclassement déterministe `cadre / hors_cadre`
+    - helper d’affiliation réseau partagé avec auto-attribution conditionnelle.
+  - alignement du BO `reseau_contrats` sur ce moteur:
+    - montant négocié
+    - quota inclus
+    - offre cible auto
+    - statuts affiliés lisibles.
+  - branchement du signup PRO sur le helper partagé.
+- Vérifications:
+  - `php -l` OK sur les 3 fichiers code modifiés.
+- Points de vigilance:
+  - le modèle de persistance reste encore legacy pour les délégations (`id_client = siège`, `id_client_delegation = affilié`);
+  - 2B reste hors périmètre et n’est pas engagée par ce patch.
+
+## Update 2026-03-06 — Réseau Étape 0 (PRO, DEV)
+- Scope code:
+  - `pro/web/ec/modules/compte/client/ec_client_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Audit rapide des points d’entrée utilisés:
+  - route `.htaccess`: `/extranet/account/network` -> `/ec/ec.php?t=compte&m=client&p=list`
+  - menu réseau: `pro/web/ec/ec.php` (item `Mon réseau`)
+  - UI réseau active: `pro/web/ec/modules/compte/client/ec_client_list.php`
+  - constat: pas de dossier `pro/web/ec/modules/account/network/*` dans ce repo
+- Actions réalisées (Étape 0 seulement):
+  - ajout du bloc “Développer mon réseau” en tête de page:
+    - affichage du lien d’affiliation du siège (`/utm/reseau/{seo_slug}`)
+    - bouton `Copier le lien` (clipboard navigateur + fallback `execCommand`)
+    - aide métier explicite:
+      - transmission du lien pour rejoindre le réseau
+      - rappel “affiliation != accès actif (dépend de l’offre effective)”
+    - sous-section de projection sobre:
+      - “Depuis cette page, vous pourrez piloter vos affiliations réseau.”
+  - ajout d’un encart métier en haut de la page réseau pour clarifier:
+    - affiliation != accès actif
+    - design réseau partagé
+    - contenus réseau (cadrage étape suivante)
+    - onboarding orienté siège
+  - ajout d’un CTA métier vers la personnalisation design réseau:
+    - `/extranet/account/branding/view`
+  - ajout de statuts explicites dans la liste affiliés:
+    - `Affilié`
+    - `Accès actif`: `Offre propre` / `Via réseau` / `Inactif`
+    - `Design réseau partagé`: `Oui/Non`
+  - correctif post-audit “affiliés pas à jour”:
+    - suppression du filtre `id_etat<3` dans la liste affiliés (`ec_client_list.php`) pour afficher tous les affiliés rattachés au siège via `id_client_reseau`.
+    - suppression du même filtre dans le widget résumé (`ec_widget_client_reseau_resume.php`) pour cohérence compteur vs liste.
+  - implémentation volontairement minimale:
+    - pas de nouveau resolver global
+    - pas de modification de persistance branding
+    - pas de changement bibliothèque `network`
+    - pas de workflow d’email, pas de désaffiliation, pas de pré-affiliation persistée
+- Vérifications:
+  - `php -l pro/web/ec/modules/compte/client/ec_client_list.php` OK
+- Next step (Étape 1):
+  - centraliser la notion d’offre effective et l’aligner sur dashboard/tunnel/bibliothèque.
+  - introduire le mode technique de personnalisation design réseau in-game.
+  - introduire le scope contenu `network` (list/view/script + guards tunnel).
+
+## Update 2026-03-04 — Bibliothèque Quiz: robustesse édition/view + navigation + démo
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - correction critique édition question quiz:
+    - conservation de `lien_support` (support image existant) lors du save d’une question quand aucun nouvel upload n’est effectué.
+  - robustesse UI view série quiz (`L`/`T`):
+    - retours à la ligne forcés sur contenus textuels longs (question/réponse/propositions) pour éviter les débordements et la casse de layout.
+  - pagination filtre admin `A compléter`:
+    - conservation de `cotton_state=incomplete` dans les liens de pagination, évitant le retour involontaire sur le filtre par défaut.
+  - CTA démo depuis la view bibliothèque:
+    - suppression du passage intermédiaire par `start/game/resume/*`.
+    - redirection directe vers `games/master/{id_securite_session}`.
+    - ouverture du lien en nouvel onglet.
+- Vérifications:
+  - `php -l` OK sur les 3 fichiers patchés.
+
+## Update 2026-03-04 — Admin `Les jeux`: Contrôle des liens (itérations UX correction)
+- Scope code:
+  - `pro/web/ec/modules/jeux/controle_liens/ec_controle_liens_lib.php`
+  - `pro/web/ec/modules/jeux/controle_liens/ec_controle_liens_list.php`
+  - `pro/web/ec/modules/jeux/controle_liens/ec_controle_liens_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - restitution UI basculée en mode “une ligne par lien en anomalie” (au lieu d’une ligne par occurrence).
+  - action `Corriger` recâblée vers une correction groupée sur toutes les occurrences liées au lien.
+  - détail `Corriger` affiché inline sous la ligne concernée (pas de panneau séparé en haut de page).
+  - bloc upload image conditionné à la présence d’au moins une occurrence quiz liée au lien, affiché sous le champ URL.
+  - harmonisation visuelle avec la bibliothèque:
+    - boutons `btn-color-*` / `btn-outline-color-*`
+    - notices et liens
+    - fond jaune “édition bibliothèque” pour la ligne sélectionnée + détail inline.
+  - ergonomie scroll:
+    - action `Corriger` conserve le contexte visuel de la ligne ciblée après rechargement (ancre + recentrage).
+  - correction_url:
+    - fallback d’affichage et nouveaux résultats dirigés vers la fiche contenu (`/games/library/{jeu}/{id}`), plus adaptée à la correction item.
+- Vérifications:
+  - `php -l` OK sur les fichiers du module `controle_liens`.
+
+## Update 2026-03-04 — Admin `Les jeux`: Contrôle des liens YouTube (V1 scan on-demand)
+- Scope code:
+  - `pro/web/ec/ec.php`
+  - `pro/web/.htaccess`
+  - `pro/web/ec/modules/jeux/controle_liens/ec_controle_liens_lib.php`
+  - `pro/web/ec/modules/jeux/controle_liens/ec_controle_liens_list.php`
+  - `pro/web/ec/modules/jeux/controle_liens/ec_controle_liens_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/games/TASKS.md` (audit uniquement, pas de code `games`)
+- Actions réalisées:
+  - ajout d’un nouvel accès admin-only dans `Les jeux`:
+    - entrée sous-menu: `Contrôle des liens`
+    - visibilité restreinte à l’admin Cotton (`id_client=10`)
+    - route: `/extranet/games/links-control`
+  - ajout du script d’action:
+    - route: `/extranet/games/links-control/script`
+    - modes: `scan_all` et `scan_errors`
+  - implémentation d’un scan V1 à la demande:
+    - périmètre contenu:
+      - contenus `Cotton`
+      - contenus `Communauté` publiés
+    - occurrences scannées:
+      - playlists/morceaux
+      - séries quiz/questions (support question + support réponse quand présent)
+    - déduplication en mémoire des checks par `videoId`
+    - restitution persistée par occurrence métier
+  - méthode de check minimale viable:
+    - extraction `videoId` depuis URLs YouTube usuelles (et ID brut 11 chars)
+    - check technique via endpoint oEmbed YouTube
+    - statuts: `ok`, `invalid_url`, `unavailable`, `technical_error`
+    - non-couverture explicitée: blocage géographique pays/région non affirmé en V1
+  - stockage minimal:
+    - table `content_links_check_results` (dernier scan uniquement)
+    - pas d’historique multi-scans avancé
+    - pas de table de liaison dédiée
+  - page admin `Contrôle des liens`:
+    - bouton `Lancer un scan`
+    - bouton `Retester les liens en erreur`
+    - résumé: dernier scan / total occurrences / anomalies
+    - tableau des anomalies + action `Corriger`
+  - priorisation:
+    - tri anomalies par sessions actives (date du jour), puis à venir, puis autres
+    - fallback: `checked_at DESC`, puis statut
+- Vérifications:
+  - `php -l` OK sur les 4 fichiers PHP modifiés/ajoutés du module + `ec.php`.
+- TODO QA manuelle:
+  - valider les 8 cas du brief (visibilité admin/non-admin, scan, périmètre Cotton+Communauté publiée, tri, action Corriger).
+
+## Update 2026-03-04 — Bibliothèque: publication communauté admin-only (consentement owner conservé)
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_edit.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/p_theme_save.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - suppression de l’auto-publication communauté côté validation owner (quiz + playlists):
+    - plus d’auto bascule `id_etat=2`/`online=1` depuis le flag de partage.
+    - plus d’insertion auto `community_items` au moment de la validation owner.
+  - publication communauté déplacée en admin-only (`id_client=10`):
+    - nouveaux modes script `content_library_admin_publish_community` / `content_library_admin_unpublish_community`.
+    - bouton view communauté recâblé:
+      - `Certifier ce contenu` => publication
+      - `Annuler la certification` => dépublication (`status='hidden'`).
+    - alias legacy conservé: `content_library_admin_certify` => publication communauté.
+    - pour playlists, publication/dépublication propagée sur `blindtest` et `bingo` (même source perso).
+  - suppression de la mutation métier “perso -> Cotton” pour cette fonctionnalité:
+    - publication admin sans forcer `origin='cotton'`.
+    - l’auteur source reste inchangé.
+  - verrou auteur recadré:
+    - déclenchement sur présence d’un `community_items.status='published'` (et non plus `origin='cotton'`).
+    - effets: blocage owner non-admin sur modification/suppression/édition contenu/édition flag après publication.
+    - après dépublication admin: verrou levé (cohérent avec l’existant basé sur le statut publié).
+    - UX: depuis l’onglet `mine`, un contenu certifié/verrouillé expose désormais aussi l’action `Signaler`.
+  - visibilité communauté alignée:
+    - règle conjointe `flag_share_community=1` ET `community_items.status='published'`.
+    - garde view `type=community` ajoutée pour bloquer les accès directs non conformes (exception admin sur tous contenus perso pour audit/modération).
+    - mode admin `A certifier` (ex `Non publiées`) aligné sur “consenties (`flag=1`) et non publiées”.
+    - ajout du filtre admin `Privées` pour les contenus perso avec `flag_share_community=0`.
+    - cas admin auteur: exclusion “mes contenus” levée sur tous les filtres `community` pour que l’admin ait une vue complète du catalogue communauté (y compris ses propres contenus perso).
+    - quiz: suppression du mode transition admin qui listait toutes les séries perso en `community`; désormais même logique que playlists (published requis hors filtres admin dédiés).
+    - itération: publication admin force désormais aussi le statut legacy source (`online=1`/`id_etat=2`), et le garde listing legacy `community` est conservé pour compatibilité transversale.
+  - pilotage admin du consentement (itération):
+    - toggle admin `flag_share_community` réactivé dans l’éditeur méta pour les contenus non certifiés.
+    - sauvegarde backend du flag réactivée pour admin uniquement avant certification.
+    - une fois certifié (`community_items.status='published'`), le flag n’est plus modifiable via save méta (dépublication via action admin dédiée).
+  - itération UX navigation admin:
+    - depuis la fiche contenu, `Retour au catalogue` conserve `community_state` (`unpublished`/`private`) pour revenir sur le bon filtre admin (`Non certifiées` / `Privées`) au lieu de `A la une`.
+  - itération UX filtres admin communauté:
+    - dans `Non certifiées` / `Privées`, tri par défaut inchangé (`date_ajout DESC, id DESC`).
+    - ajout d’un lien de bascule de tri sous la ligne de résultats: `Trier par popularité` / retour tri date.
+    - en cards liste, affichage du volume d’utilisations (12 mois) uniquement pour admin sur ces deux filtres.
+    - en cards liste, ajout de la date de création (`jj/mm/aaaa`) affichée au-dessus de ce compteur (admin, filtres dédiés uniquement).
+  - itération UX libellé méta partage:
+    - en vue `mine`, libellé renommé de `Série/Playlist partagée` vers `Partage autorisé` (la valeur reste `oui/non`).
+  - itération UX éditeur méta:
+    - checkbox renommée de `Partager ce contenu avec la communauté Cotton.` vers `Autoriser le partage de ce contenu avec la communauté Cotton.`
+  - itération UX admin Cotton Quiz (catalogue):
+    - ajout du filtre dédié `A compléter` (admin only) sur l’onglet `Cotton` pour afficher les séries quiz non éligibles catalogue (contrainte qualité non satisfaite: réponse/propositions incomplètes).
+    - cartes de ce filtre taggées `A compléter`.
+    - propagation de l’état de filtre (`cotton_state=incomplete`) dans les URLs list/view pour conserver le retour catalogue sur le bon contexte.
+    - implémentation backend minimale via inversion du filtre qualité quiz existant dans `clib_list_get` et `clib_rubriques_filtered_get`.
+- Vérifications:
+  - `php -l` OK sur les 6 fichiers PHP modifiés.
+- TODO QA manuelle:
+  - exécuter la campagne de 10 cas demandée (quiz + playlists + publication/dépublication + locks UI/backend + combinaisons flag/status).
+
+## Update 2026-03-02 — Menu EC: `Tarifs & commande` masqué si offre active (exception tête de réseau)
+- Scope code:
+  - `pro/web/ec/ec.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’une règle centralisée d’affichage du CTA `Tarifs & commande`:
+    - masqué quand le client a une offre active,
+    - conservé pour les clients tête de réseau (`flag_client_reseau_siege=1`) même avec offre active.
+  - restrictions historiques conservées:
+    - pas de CTA pour `id_client_contact_type=3`,
+    - exclusion spécifique réseau Beer's Corner (`id_client_reseau=1294`) maintenue pour les non-têtes de réseau.
+  - `flag_fonction_commande` aligné sur cette même règle pour cohérence des usages.
+- Vérifications:
+  - `php -l pro/web/ec/ec.php` OK
+
+## Update 2026-03-02 — Sessions orphelines: rattachement post-commande sans impact checkout Stripe
+- Scope code:
+  - `global/web/app/modules/ecommerce/app_ecommerce_functions.php`
+  - `global/web/app/modules/jeux/sessions/app_sessions_functions.php`
+  - `pro/web/ec/modules/ecommerce/offres/ec_offres_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/HANDOFF.md`
+- Actions réalisées:
+  - déplacement du hook de rattachement au niveau SI (validation offre) au lieu du webhook Stripe:
+    - déclenchement dans `app_ecommerce_offre_client_valider(...)` uniquement quand l’offre passe réellement à l’état actif.
+  - extension du rattachement des sessions futures:
+    - orphelines (`id_offre_client=0`),
+    - et sessions déjà liées à une offre absente/inactive (cas renouvellement).
+  - protection multi-offres:
+    - pas de réécriture si la session est déjà rattachée à une autre offre encore active.
+  - synchro des données visibles en agenda:
+    - mise à jour `nb_joueurs_max` depuis la jauge de la nouvelle offre active au moment du rattachement.
+  - durcissement anti-régression paiement:
+    - `ec_offres_script.php` tolère checkout sans `customer` imposé, et ajoute fallback de redirection + logs d’erreur Stripe.
+- Effets de bord connus:
+  - en cas de renouvellement vers une offre à jauge plus faible, `nb_joueurs_max` des sessions futures rattachées peut diminuer.
+- Vérifications:
+  - `php -l` OK sur les fichiers patchés (`global` + `pro`).
+  - aucun rattachement direct conservé dans `ec_webhook_stripe_handler.php` (évite d’impacter l’accès checkout Stripe).
+
+## Update 2026-02-28 — Home ABN/PAK: renommage CTA widget `Les jeux Cotton`
+- Scope code:
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - libellé CTA du widget home ABN/PAK (`media_kit_slot`) modifié:
+    - avant: `Accéder à la bibliothèque`
+    - après: `Accéder aux jeux`
+  - URL CTA inchangée: `/extranet/games/library`
+- Vérifications:
+  - `php -l pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php` OK
+
+## Update 2026-02-28 — Fix 404 visuel home ABN/PAK après repositionnement
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - correction du helper de rendu du widget `Les jeux Cotton` (closure): ajout de `$conf` et `$app_client_detail` dans le `use(...)`.
+  - effet: conservation des URLs absolues d’assets (ex: `/ec/images/...`) et suppression du 404 observé sur `/extranet/ec/images/...`.
+- Vérifications:
+  - `php -l pro/web/ec/modules/communication/home/ec_home_index.php` OK
+- TODO (QA manuelle):
+  - ABN/PAK: vérifier que le visuel charge en `/ec/images/...` avec le widget en 2e position
+
+## Update 2026-02-28 — Annulation fallback visuel (retour au comportement précédent)
+- Scope code:
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - suppression du fallback `onerror` ajouté sur les images du widget `Les jeux Cotton`.
+  - retour au rendu visuel initial (`cotton-media-kit-portail.jpg` uniquement), demandé après constat que le visuel était correct avant le changement de position.
+- Vérifications:
+  - `php -l pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php` OK
+- TODO (QA manuelle):
+  - confirmer en home ABN/PAK que le visuel est bien rendu avec le placement en 2e position
+
+## Update 2026-02-28 — Fix home ABN/PAK: visuel widget `Les jeux Cotton` (404)
+- Scope code:
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’un fallback image dans les 2 rendus du widget (`media_kit_slot` + rendu standard):
+    - source principale: `cotton-media-kit-portail.jpg`
+    - fallback auto sur erreur: `cotton-media-kit.jpg`
+  - objectif: éviter l’affichage cassé (404) selon environnement/asset disponible.
+- Vérifications:
+  - `php -l pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php` OK
+- TODO (QA manuelle):
+  - home ABN/PAK: vérifier que le visuel du widget charge sans 404
+
+## Update 2026-02-28 — Home EC ABN/PAK: widget `Les jeux Cotton` déplacé en 2e position
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - home ABN/PAK: rendu du widget `Les jeux Cotton` déplacé juste après le widget agenda (2e position).
+  - ajout d’une garde de rendu pour éviter toute duplication du widget plus bas dans la grille home.
+  - comportement des profils hors ABN/PAK conservé.
+- Vérifications:
+  - `php -l pro/web/ec/modules/communication/home/ec_home_index.php` OK
+- TODO (QA manuelle):
+  - ABN: ordre visuel = agenda puis `Les jeux Cotton`
+  - PAK: ordre visuel = agenda puis `Les jeux Cotton`
+  - non ABN/PAK: absence de régression d’ordre/affichage
+
+## Update 2026-02-28 — Home EC ABN/PAK: remplacement `Media Kit` -> `Les jeux Cotton`
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’une variante compacte `media_kit_slot` dans `ec_widget_jeux_discover_library.php` pour réutiliser le contenu métier `Les jeux Cotton` dans le gabarit visuel du widget home `Media Kit`.
+  - home EC (`ec_home_index.php`): remplacement conditionnel des includes `Media Kit` par la variante `Les jeux Cotton` uniquement si `client_pipeline_etat_nom` vaut `ABN` ou `PAK`.
+  - pipelines hors ABN/PAK: comportement conservé (widget `Media Kit` inchangé).
+  - CTA du nouveau widget: accès direct à la bibliothèque (`/extranet/games/library`).
+- Vérifications:
+  - `php -l pro/web/ec/modules/communication/home/ec_home_index.php` OK
+  - `php -l pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php` OK
+- TODO (QA manuelle):
+  - valider en home EC client ABN: widget `Les jeux Cotton` à la place de `Media Kit`
+  - valider en home EC client PAK: widget `Les jeux Cotton` à la place de `Media Kit`
+  - valider profils non ABN/PAK: `Media Kit` toujours affiché
+  - contrôle responsive de la grille home (taille/encombrement du bloc inchangés)
+
+## Update 2026-02-27 — Quiz formulaires: champ commentaire compact + aide
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - champ `Commentaire` affiché en monoligne (`input text`) dans les formulaires quiz ciblés.
+  - retour à la ligne forcé après `Bonne réponse` (avant le bloc des fausses propositions).
+  - positionnement harmonisé: `Commentaire` placé sous les champs `Fausse proposition`.
+  - suppression du `mb-2` sous le texte “Les fausses propositions sont essentielles pour la version numérique du quiz.”
+  - espacement des boutons de soumission augmenté à `mt-4` sur les formulaires quiz ciblés.
+  - ajout d’une mention d’aide sous le champ: `À l’attention du quiz master.`
+  - champ conservé facultatif (contrat backend inchangé).
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php` OK
+
+## Update 2026-02-27 — Quiz formulaires: propositions regroupées, support en dernier
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - dans les formulaires quiz (bibliothèque + série perso), déplacement du bloc `Type support` (et champs liés) en bas de formulaire.
+  - regroupement des 3 champs propositions ensemble, juste après `Commentaire`.
+  - harmonisation des labels en `Fausse proposition 1/2/3`.
+  - suppression de la proposition 4 dans les formulaires série perso pour alignement global.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php` OK
+
+## Update 2026-02-27 — Quiz: champ `Commentaire` réintégré dans les formulaires d’édition
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout du champ `Commentaire` dans les formulaires quiz suivants:
+    - création de question en série perso
+    - édition de question en série perso
+    - création d’une question de remplacement (lot temporaire, contexte session client)
+    - modification d’une question existante (lot temporaire, contexte admin bibliothèque)
+  - préremplissage du commentaire existant en modes édition.
+  - aucun changement backend requis: validation/persistance `commentaire` déjà en place.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_content.php` OK
+
+## Update 2026-02-27 — Bibliothèque: `A la une` / `En ce moment` en mode strict “en cours”
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - tri `A la une` (`preset=now`, type `cotton`) recalé sur une fenêtre stricte:
+    - `today >= jour_associe_debut`
+    - `today <= jour_associe_fin`
+  - badge `En ce moment` aligné sur la même règle stricte (suppression de la tolérance “J-90”).
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+
+## Update 2026-02-27 — Fix édition meta admin: préservation du référencement Cotton/Communauté
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/p_theme_save.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_edit.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Constat:
+  - une édition meta admin sur une série Cotton/Communauté pouvait faire passer `community_items.status='hidden'`, retirant la série de la liste.
+- Actions réalisées:
+  - `p_theme_save.php`: les champs de partage communauté ne sont plus injectés en update lorsque l’éditeur n’est pas l’auteur.
+  - `t_theme_edit.php`: case de partage affichée uniquement à l’auteur.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/editor/p_theme_save.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/editor/t_theme_edit.php` OK
+
+## Update 2026-02-27 — Admin: bypass lock “en cours d’utilisation” sur édition/suppression
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - backend:
+    - `clib_content_edit_or_delete_allowed(...)` autorise désormais le compte admin (`id_client=10`) à modifier/supprimer une thématique même si elle est utilisée dans des sessions en cours/à venir.
+    - ajout de logs dédiés de bypass admin: `CONTENT_EDIT_ADMIN_BYPASS_IN_USE` / `CONTENT_DELETE_ADMIN_BYPASS_IN_USE`.
+  - view:
+    - bandeau “en cours d’utilisation” conservé.
+    - verrou UI levé uniquement pour admin (`$is_theme_mutation_locked=false` côté admin), afin de garder les actions visibles et actives.
+    - non-admin inchangé (verrou maintenu).
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+
+## Update 2026-02-27 — Bibliothèque quiz: usage list `temp_lots` corrigé (`T` vs `L`)
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - extension de `clib_usage_get(...)` avec un mode token quiz explicite (`L|T`, défaut `L`).
+  - en mode `T`:
+    - filtre strict `id_type_produit=5`
+    - match uniquement via `FIND_IN_SET('T{id}', lot_ids)`
+    - exclusion des matches `id_produit`/`community_items` pour éviter les collisions d’ID numériques avec les lots catalogue.
+  - la list bibliothèque appelle désormais `clib_usage_get(..., 'T')` sur l’onglet admin `Lots temporaires`.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+
+## Update 2026-02-27 — Bibliothèque list: pagination mobile responsive
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’un scope CSS pagination dédié (`clib-pagination-wrap`, `clib-pagination`) dans la page list bibliothèque.
+  - en mobile (`max-width:575.98px`), le bloc pagination passe en scroll horizontal (`overflow-x:auto`) pour éviter le débordement.
+  - en desktop, pagination conservée centrée avec retour à la ligne possible.
+- Vérification:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+
+## Update 2026-02-27 — Quiz `A la une`: thématiques du moment + badge `En ce moment`
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - alignement Quiz avec les playlists en `preset=now` (`A la une`, onglet `Cotton`):
+    - priorité SQL sur la fenêtre date `jour_associe_debut/fin` (au lieu de la règle legacy `flag_une`).
+    - chargement des champs `jour_associe_debut/fin` aussi pour Quiz en list.
+  - activation du badge `En ce moment` sur les séries Quiz avec la même règle date que les playlists.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+
+## Update 2026-02-27 — Badge `Populaire`: exclusion des lots temporaires `T`
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’une garde `type !== 'temp_lots'` sur le calcul et l’affichage du badge `Populaire` dans la list bibliothèque.
+  - effet: pas de badge `Populaire` sur les cards de lots temporaires admin; badge conservé pour les contenus catalogue (`Cotton`/`Communauté`/`Mes`).
+- Vérification:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+
+## Update 2026-02-27 — CTA admin lot temporaire: démo mono-lot (sans duplication de session)
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - CTA `Lancer une démo` (vue admin lot temporaire) rerouté vers `ec_bibliotheque_script.php` (`mode=content_library_temp_lot_demo`) au lieu de `session_duplicate`.
+  - nouveau backend dédié:
+    - `session_init` démo quiz
+    - puis `session_theme` avec `id_catalogue_produit='T{id}'` (lot temporaire courant uniquement)
+  - résultat: la démo créée ne reprend plus la session liée complète; elle contient uniquement la série du lot temporaire consulté.
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php` OK
+
+## Update 2026-02-27 — Lots temporaires admin: suppression du badge “en cours d’utilisation”
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - neutralisation du lock d’usage sur la vue lot temporaire (`$is_temp_lot_view`), pour ne plus afficher le badge:
+    - `Cette série est en cours d’utilisation...`
+    - `Modification et suppression temporairement impossible.`
+  - changement limité au contexte lot temporaire, sans impact sur les séries/playlists standards.
+- Vérification:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+
+## Update 2026-02-27 — Onglet admin `Lots temporaires`: tri décroissant par récence
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajustement du tri de `clib_quiz_temp_lots_admin_list_get(...)` pour afficher les lots du plus récent au plus ancien.
+  - ordre SQL appliqué: `ORDER BY t.date_ajout DESC, t.id DESC` (au lieu de `session_date DESC`).
+- Vérification:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+
+## Update 2026-02-27 — Modale admin lot temporaire: URL support question affichée
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - dans le bloc `Support(s) actuel(s)` (modale édition admin), le lien `Support question` affiche désormais l’URL complète:
+    - rendu: `Support question : {url cliquable}`
+- Vérification:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+
+## Update 2026-02-27 — Quiz lot temporaire (admin): masquage proposition 4 en édition
+- Scope code:
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - retrait du champ `Prop. 4` (`name="proposition_4"`) dans le formulaire d’édition admin de question (lot temporaire / contexte bibliothèque)
+  - objectif: alignement UI avec le flux de remplacement existant (3 fausses propositions affichées)
+- Vérifications:
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+
+## Update 2026-02-25 — Fix responsive home INS/CSO quand la sidebar est visible
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/includes/css/ec_custom.css`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement_cso.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_evenement.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_particulier.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’un scope explicite “home no-offer INS/CSO” avec classe de contexte sur la `row`:
+    - `home-ins-cso-nooffer-grid`
+  - ajout d’un marquage de rôle par widget dans ce scope:
+    - `home-nooffer-widget-offer`
+    - `home-nooffer-widget-library`
+  - ajout de règles CSS desktop `>=992px` sur le scope INS/CSO no-offer:
+    - ratio `2/3 - 1/3` appliqué même sans classe body `sidebar-*` (fix desktop moyen)
+    - renfort conservé en états sidebar (`sidebar-menu`, `sidebar-icons`, `sidebar-compact`)
+    - widget offre forcé à `66.666%` (2/3)
+    - widget library forcé à `33.333%` (1/3)
+  - extension du marquage `offer` au widget particulier
+  - mise à jour du visuel widget library:
+    - remplacement de la bannière par `cotton-media-kit-portail.jpg`
+    - mobile aligné au rendu desktop (visuel unique plein largeur, sans scroll horizontal)
+  - aucune modification du comportement hors scope (autres homes/profils inchangés)
+- Vérifications:
+  - `php -l` OK:
+    - `ec_home_index.php`
+    - `ec_widget_ecommerce_abonnement.php`
+    - `ec_widget_ecommerce_abonnement_cso.php`
+    - `ec_widget_ecommerce_evenement.php`
+    - `ec_widget_ecommerce_particulier.php`
+    - `ec_widget_jeux_discover_library.php`
+
+## Update 2026-02-24 — Stepper mobile-first tunnel agenda (Option A)
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_stepper.php` (nouveau)
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout d’un composant stepper compact réutilisable (Option A):
+    - ligne `Étape X/5 — {libellé}`
+    - mini barre de progression
+    - non cliquable
+  - intégration centralisée dans le header start:
+    - mobile: stepper au-dessus du titre
+    - desktop: stepper inline à gauche du titre
+  - mapping appliqué:
+    - step 1 `Jeu`: `start/game/choose/*?from=agenda&mode=quick`
+    - step 2 `Contenu`: `start/agenda/mode/*`
+    - step 3 `Paramètres`: `start/game/setting/*` en quick agenda + flow bibliothèque agenda
+    - step 4 `Récap`: `start/game/resume/*` et `start/game/resume-batch/*`
+    - step 5 `C’est prêt !`: `start/game/view/*`
+  - couleur du stepper:
+    - barre remplie branchée sur les classes couleur jeu existantes `bg-color-{seo_slug_jeu}`
+    - aucun hardcode de palette spécifique stepper
+  - pont bibliothèque thématique (agenda):
+    - pivot `agenda/mode` -> bibliothèque enrichi avec `from=agenda&mode=library`
+    - conservation du contexte dans les URLs list/view
+    - affichage stepper `Étape 2/5 — Contenu` sur list + view seulement dans ce contexte
+    - redirection bibliothèque -> setting enrichie avec `tunnel=agenda` pour conserver l’étape 3
+- Vérifications:
+  - `php -l` OK:
+    - `ec_start_include_header.php`
+    - `ec_start_include_stepper.php`
+    - `ec_start_script.php`
+    - `ec_bibliotheque_list.php`
+    - `ec_bibliotheque_view.php`
+    - `ec_bibliotheque_script.php`
+- Point d’attention:
+  - le stepper affiche `4/5 Récap` sur `resume` et `5/5 C’est prêt !` sur `view`; en quick batch, l’écran final reste `resume-batch` (pas de page `view` unique).
+
+## Update 2026-02-23 — Bibliothèque: view read-only lot temporaire `T{id}`
+- Scope code:
+  - `pro/web/.htaccess`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Actions réalisées:
+  - ajout route explicite:
+    - `/extranet/games/library/temp/T{id}` -> `ec_bibliotheque_view.php` (token transporté)
+  - `ec_bibliotheque_view.php` étendu avec un mode `lot temporaire`:
+    - validation token (`^T\\d+$`) + fallback `id` numérique
+    - chargement `questions_lots_temp` (`id`, `nom`, `descriptif_court`, `question_ids`, `date_ajout`)
+    - parsing `question_ids` JSON puis récupération des questions `questions.id` en ordre strict via `ORDER BY FIELD(...)`
+    - rendu sur la même page view bibliothèque (mêmes blocs/styles/classes), avec libellés:
+      - titre: `Série auto-générée — {nom}`
+      - identifiant: `T{id}`
+      - méta date d’ajout
+    - mode read-only strict:
+      - actions modifier/supprimer/usage masquées
+      - aucun write DB
+  - intégration qualité de vie:
+    - depuis la fiche session quiz, les séries `T{id}` ont désormais un lien `Voir le détail` vers la route temp
+    - helper URL session->bibliothèque étendu (`item_type=quiz_temp_lot`)
+  - sécurité d’accès:
+    - lot temp introuvable -> alerte UI cohérente
+    - accès direct hors contexte session restreint (admin `id_client=10`)
+- Vérifications:
+  - `php -l` OK:
+    - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+    - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+- Tests manuels à exécuter:
+  - créer une session quiz papier auto (`lot_ids` avec `T,T,T,L`)
+  - depuis la fiche session, cliquer `Voir le détail` sur un lot `T`:
+    - vérifier rendu aligné avec la view bibliothèque standard
+    - vérifier ordre des questions identique au JSON `question_ids`
+    - vérifier absence d’actions d’édition/suppression/reorder
+  - vérifier qu’un lot temp inexistant affiche bien l’alerte “introuvable”
+
+## Update 2026-02-23 — Quiz auto papier `T,T,T,L` (pickers V2 + compat Pro)
+- Scope code:
+  - `global/web/app/modules/jeux/cotton_quiz/app_cotton_quiz_functions.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/pro/README.md`
+- Actions réalisées:
+  - ajout d’un module V2 de génération quiz papier (sans toucher à la génération V1 legacy):
+    - helpers token `L/T` (`normalize/parse`)
+    - contexte partagé (`excluded_ids`, `question20_used`, `client_id`, `session_date`)
+    - 3 builders 6 questions ordonnées:
+      - `qz_build_temp_history`
+      - `qz_build_temp_arts`
+      - `qz_build_temp_sciences`
+    - persistance lots temporaires via `questions_lots_temp` avec retour token `T{id}` (`qz_create_temp_lot`)
+    - orchestrateur `qz_build_paper_auto_lot_ids_csv(...)` avec idempotence si `lot_ids` contient déjà `T`
+  - branchement agenda quick:
+    - uniquement pour `game=quiz` + mode papier (`flag_controle_numerique=0`)
+    - production `lot_ids` final: `T,T,T,L`
+    - numérique et autres jeux inchangés
+  - application session sécurisée:
+    - validation stricte du CSV lot tokens (`[LT]?\\d+`)
+    - normalisation nombre nu -> `L{id}`
+  - compat UI Pro avec tokens `T`:
+    - fiche session quiz V2: parsing `T/L`, affichage d’un libellé “Temporaire”, détail lot `T` si disponible
+    - liste sessions: affichage des noms de lots `T` (fallback `TEMP #id`)
+    - suppression de slot quiz: support `T` sans crash
+    - bibliothèque en contexte session quiz: parsing lot_ids compatible `T`
+  - logs ajoutés:
+    - `QUIZ_PAPER_AUTO_TEMP_BUILD_START/OK/ERR`
+    - `QUIZ_PAPER_AUTO_TEMP_PERSIST_OK/ERR`
+    - `QUIZ_PAPER_AUTO_APPLY_OK/ERR`
+- Vérifications:
+  - `php -l` OK sur tous les fichiers PHP touchés (pro + global)
+- Notes:
+  - purge `questions_lots_temp` non implémentée dans ce patch (TODO tracé)
+  - audit exhaustif UX `T` sur toutes les surfaces Pro à compléter (TODO tracé)
+
+## Update 2026-02-23 — Stabilisation finale widgets home EC (INS/CSO + liens commande)
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/ec.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement_cso.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/pro/home_widgets_ins_cso.md`
+- Actions réalisées:
+  - correction du bug CTA widgets commande -> `/extranet/dashboard`:
+    - cause: closure home no-offer sans capture de `$url_ecommerce`
+    - fix: `use (..., $url_ecommerce, ...)` dans `ec_home_index.php`
+  - correction URL doublonnée `extranet/extranet`:
+    - URLs commande passées en root-relative dans `ec.php`
+    - suffixes conservés:
+      - abonnement: `/extranet/ecommerce/offers/abonnement/s1/1`
+      - événement: `/extranet/ecommerce/offers/evenement/s1/6`
+      - particulier: `/extranet/ecommerce/offers/particulier/s1/1`
+  - widget CSO:
+    - CTA fixé explicitement sur `/extranet/ecommerce/offers/abonnement/s1/1`
+    - suppression de la note `L'essai gratuit est réservé aux nouveaux clients.`
+  - widget découverte (final):
+    - titre `Les jeux Cotton`
+    - sous-titre `Parcours les catalogues Blind Test, Bingo Musical et Cotton Quiz.`
+    - CTA fixe `Découvrir les jeux`
+    - bulle icônes:
+      - sombre uniquement pour typologie événement (2/3)
+      - blanche sinon
+    - carte cliquable globalement (`stretched-link`)
+    - alignement vertical des bullets centré texte/icone
+- Vérifications:
+  - `php -l` OK sur les fichiers touchés
+
+## Update 2026-02-23 — PATCH UI home INS/CSO (discover + CSO offer refonte)
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement_cso.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/pro/home_widgets_ins_cso.md` (nouveau)
+- Actions réalisées:
+  - home no-offer:
+    - ajout d’un ordonnancement par pipeline:
+      - INS: découverte puis offre
+      - CSO (et autres non-INS): offre puis découverte
+  - widget découverte:
+    - titre dynamique:
+      - INS: `DÉCOUVRE LES JEUX`
+      - CSO: `REDÉCOUVRE LES JEUX`
+    - CTA dynamique:
+      - INS: `Découvrir les jeux`
+      - CSO: `Redécouvrir les jeux`
+    - header transformé en bannière 3 visuels jeux:
+      - `ec/images/communication/actualites/cotton-blind-test-display.jpg`
+      - `ec/images/communication/statique/visuel-jeu-bingo-musical.jpg`
+      - `ec/images/communication/statique/visuel-jeu-cotton-quiz.jpg`
+    - bullets remplacées selon brief + pictos en cercle plein coloré par typologie (20/22/21)
+  - widget CSO “Choisir une offre”:
+    - suppression de la pastille `Reprise d'abonnement`
+    - reprise du layout et remplacement des textes:
+      - titre: `✨ Fidélise ta clientèle et apporte de la nouveauté.`
+      - intro + 3 bullets (sans engagement / sessions illimitées / prêt en 2 minutes)
+      - CTA: `🚀 Je choisis mon offre`
+      - note bas de carte conservée: `L'essai gratuit est réservé aux nouveaux clients.`
+- Vérifications:
+  - `php -l` OK sur les 3 fichiers modifiés
+
+## Update 2026-02-23 — PATCH UX INS/CSO CHR (home widget + offers labels)
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement_cso.php` (nouveau)
+  - `global/web/app/modules/ecommerce/widget/app_ecommerce_bloc_offre_tarifaire_abn.php`
+- Scope doc:
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+  - `documentation/canon/repos/pro/ecommerce_ins_cso.md` (nouveau)
+- Actions réalisées:
+  - audit INS/CSO:
+    - source de vérité = pipeline client (`clients.id_pipeline_etat`) résolu vers un nom via `referentiels_clients_pipeline_etats.nom`
+    - preuve code:
+      - lecture nom pipeline côté EC: `pro/web/ec/ec.php:60`
+      - fonction source: `global/web/app/modules/entites/clients/app_clients_functions.php:676`
+      - SQL: `SELECT nom FROM referentiels_clients_pipeline_etats WHERE id = ...`
+  - home widget (segment CHR):
+    - cas `offre_client_active_count==0` + typologie CHR + pipeline `CSO` -> widget de réactivation (sans wording essai)
+    - CTA vers la page offers CHR via `$url_ecommerce`
+    - `INS` conserve le widget essai existant
+    - non-CHR inchangé
+  - page offers ABN:
+    - CTA conditionné sur segment CHR + pipeline:
+      - `INS` => `Essayer gratuitement`
+      - `CSO` => `S'abonner`
+    - ajout note contextuelle CSO:
+      - `L'essai gratuit est réservé aux nouveaux clients.`
+    - non-CHR inchangé
+- Hors scope confirmé:
+  - aucun changement appliqué au tunnel Stripe / confirmation (`ec_offres_script.php` non modifié)
+
+## Update 2026-02-23 — Programmation rapide: toggle récurrence + aperçu commun
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+- Actions réalisées:
+  - step2 quick:
+    - remplacement du toggle initial par un segmented control “chips” lisible:
+      - `Dates libres` / `Récurrence`
+      - actif: fond violet + texte blanc
+      - inactif: fond blanc + border violet + texte violet
+      - pilotage via hidden `schedule_mode`
+    - repositionnement de la zone date/heure après les paramètres jeu (la section `Version du jeu`, quand présente, passe avant la programmation)
+    - mode `Dates libres`: conservation du multi-lignes existant (add/remove) avec adaptation des noms de champs frontend (`free_session_dates[]`, `free_session_times[]`)
+    - mode `Récurrence`: fréquence `weekly|biweekly|monthly`, règle mensuelle (`nth_weekday` / `last_weekday`), date de fin, horaires multiples (add/remove)
+      - champs récurrence postés explicitement (`name=` sur fréquence/jour/jusqu'au/règles mensuelles)
+      - reconstruction serveur des occurrences (weekly/biweekly/monthly) dans `session_setting_multi`
+      - application des exclusions (`excluded_occurrences`) côté serveur
+      - correction du bug de création partielle (cas observé: seule la 1re session créée)
+    - finitions UI retours (itération complémentaire):
+      - chips `Dates libres` / `Récurrence` forcés sous le label `Programmation`
+      - suppression du titre `Dates et heures` en mode `Dates libres`
+      - suppression du titre `Horaires` en mode `Récurrence`
+      - texte aide `Dates libres` ajusté:
+        - `Ajoute tes sessions une par une, elles seront créées dans l'ordre chronologique.`
+      - labels ajustés:
+        - `Heure de session` (mode dates libres)
+        - `Heure(s) de session(s) (Appliquée(s) à toutes les dates.)` (mode récurrence)
+      - microcopies ajoutées:
+        - suppression de `Chaque horaire ajoute une session à chaque occurrence.`
+      - bouton renommé:
+        - `+` (dates libres)
+        - `+` (récurrence horaires)
+      - ajout horaire récurrence:
+        - chaque nouvel horaire est prérempli à `+1h` du dernier horaire existant
+      - rendu récurrence:
+        - titre horaire affiché une seule fois (non dupliqué sur les lignes ajoutées)
+        - bouton suppression horaire centré verticalement sur sa ligne
+      - uniformisation des champs récurrence (hauteurs/alignements desktop-mobile)
+  - aperçu/confirmation commun:
+    - compteur avec pluralisation corrigée:
+      - `1 session sera créée`
+      - `X sessions seront créées`
+    - mode `Dates libres`:
+      - bloc aperçu masqué (redondant avec la zone de saisie)
+    - mode `Récurrence`:
+      - bloc aperçu conservé
+      - suppression d’occurrence au cas par cas réactivée dans la preview (`✕`)
+    - exclusions stockées en hidden `excluded_occurrences` (JSON)
+    - payload submit normalisé en hidden `session_dates[]` / `session_times[]` pour réutiliser `frm_mode=session_setting_multi`
+    - limite douce 40: warning + case de confirmation obligatoire au-delà
+    - badge compteur redimensionné (lisible, non surdimensionné)
+  - backend `session_setting_multi` renforcé:
+    - validation longueurs identiques `session_dates[]` / `session_times[]`
+    - validation format date/heure, dédoublonnage et tri (via normalisation existante)
+    - garde-fou hard limit `200` occurrences (refus serveur explicite)
+  - logs structurés:
+    - `AGENDA_QUICK_PREVIEW_BUILD` (depuis métadonnées preview soumises)
+    - `AGENDA_QUICK_OCCURRENCE_REMOVE` (depuis exclusions soumises)
+    - `AGENDA_QUICK_SUBMIT` (mode, count, over_soft_limit)
+- Vérifications:
+  - `php -l pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php` OK
+  - `php -l pro/web/ec/modules/tunnel/start/ec_start_script.php` OK
+
+## Update 2026-02-23 — Finitions UX (step2 quick + fiche session + lib view apply)
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Actions réalisées:
+  - start step 2 agenda quick:
+    - titre header quick passé à `Paramètres des sessions`
+    - gestion multi-dates: suppression de ligne disponible, avec au moins une ligne obligatoire
+    - bouton suppression ligne date/heure harmonisé avec `+ Ajouter une date`
+    - bouton suppression ligne masqué si une seule ligne reste
+  - fiche session agenda:
+    - `Voir le détail` harmonisé responsive:
+      - desktop inline à côté du titre
+      - mobile sous le titre (dans le même bloc)
+    - boutons de modif harmonisés:
+      - mobile `Modifier`
+      - desktop `Modifier la playlist` / `Modifier cette série`
+    - quiz séries:
+      - suppression unitaire avec modale de confirmation
+      - bouton suppression visible seulement si >1 série
+      - suppression de la dernière série => suppression de la session quiz
+  - bibliothèque view (contexte remplacement session):
+    - CTA `Appliquer à cette session` -> `Remplacer`
+    - aide texte -> `Choisir cette playlist/série en remplacement dans ma session`
+- Vérifications:
+  - `php -l` OK sur les fichiers modifiés
+
+## Update 2026-02-23 — Bibliothèque contexte session (nav_ctx) + Quiz slot-by-slot
+- Scope code:
+  - `pro/web/ec/ec.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+- Actions réalisées:
+  - bibliothèque:
+    - contexte explicite URL requis: conservation `id_securite_session` uniquement si `nav_ctx=agenda`
+    - auto-purge sécurité: si `id_securite_session` est présent sans `nav_ctx`, purge immédiate du contexte serveur (`$_SESSION['library_session_ctx']`)
+    - propagation `nav_ctx=agenda` sur URLs de navigation (liste/view, filtres, pagination, retours) quand le contexte session est actif
+    - purge forcée depuis le menu `Les jeux`: liens menu enrichis avec `clear_session_ctx=1` (+ purge client `localStorage/sessionStorage` best-effort)
+    - menu actif contextualisé:
+      - `nav_ctx=agenda` => menu `Mon agenda` actif
+      - forçage explicite ajouté aussi sur la bibliothèque en `context=session` + `id_securite_session` (visu/modif thématique en contexte session)
+      - sans `nav_ctx` => comportement standard bibliothèque
+    - bandeau optionnel `Contexte session actif` retiré (liste/view) pour alléger l’UI
+  - Quiz (modification depuis fiche session):
+    - ajout `slot_index` sur les liens `Modifier cette série`
+    - application backend “slot par slot” dans `content_library_apply_session_theme` (remplace uniquement le slot ciblé)
+  - Quiz (fiche session):
+    - ajout bouton `✕` rouge “Supprimer cette série” à côté de `Modifier cette série`
+    - nouveau mode script `session_quiz_slot_delete` (suppression unitaire + compactage de `lot_ids`)
+  - suppression session Quiz:
+    - robustesse restauration du CTA “Supprimer la session” en cas de détail session quiz partiel (`phase_courante` absent => phase 0)
+  - correction flux pivot -> bibliothèque:
+    - `Choisir une thématique` ne transporte plus `id_securite_session` (évite le faux contexte “changer une thématique”)
+  - fiche session agenda -> bibliothèque:
+    - ajout explicite `nav_ctx=agenda` sur les liens sortants (liste + détail thématique)
+- Vérifications:
+  - `php -l` OK sur tous les fichiers touchés
+
+## Update 2026-02-22 — Micro-ajustements UX/copies (pivot + bibliothèque + start step jeu)
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_agenda_mode.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_1_game.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+- Actions réalisées:
+  - pivot `start/agenda/mode`:
+    - titre page dynamique par jeu (`Nouvelle(s) session(s) de ...`)
+    - CTA des 2 blocs en couleur du jeu choisi
+    - textes de blocs clarifiés:
+      - `Programmation rapide : une ou plusieurs sessions`
+      - `Choisir une thématique : une session à la fois`
+    - descriptions blocs adaptées au jeu (quiz: séries / bingo-blind: playlists)
+  - flux pivot -> bibliothèque (`Choisir une thématique`):
+    - suppression du transport `id_securite_session` (plus de faux contexte session)
+    - suppression de la session pré-initialisée si encore vide/incomplète (anti session fantôme)
+  - start choix jeu:
+    - titre: `Je programme mes sessions de jeu`
+    - CTA cartes: `Créer mes jeux`
+  - bibliothèque:
+    - ajout d’un helper commun pour lien de retour session:
+      - `clib_session_back_url_if_owned_get`
+      - `clib_session_back_link_html_get`
+    - bandeaux contextuels `context=session` (view + list) enrichis avec lien inline:
+      - `— Retour à la session`
+    - lien affiché uniquement si session valide et appartenant au client courant
+- Vérifications:
+  - `php -l` OK sur tous les fichiers touchés
+
+## Update 2026-02-22 — Pivot déplacée après step 1 + harmonisation détail contenu
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_agenda_mode.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+  - `pro/web/ec/ec.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_offre_client_bloc.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_0_offres_client.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+- Actions réalisées:
+  - flux agenda “Nouvelle session” rerouté vers `step_1_game` en premier:
+    - CTA agenda -> `start/game/choose/*?from=agenda&mode=quick`
+    - en multi-offres -> `start/game/offres/0?from=agenda&mode=quick`
+  - pivot de programmation déplacée après sélection du jeu:
+    - après `session_init` en quick mode, redirection vers `start/agenda/mode/{id_offre}` avec `id_securite_session` + `seo_slug_jeu`
+    - fallback direct sur la pivot: message “Choisis d’abord un jeu” + bouton retour step 1
+  - pivot UI mise à jour (Variante A):
+    - titre `Nouvelle session`
+    - sous-titre `Comment veux-tu programmer tes prochaines sessions ?`
+    - 2 cards avec images locales:
+      - `prog_rapide.jpg` -> CTA `Programmer par date(s)`
+      - `prog_choisir_thematique.jpg` -> CTA `Choisir une thématique`
+  - `agenda_mode_select` renforcé:
+    - contexte post-step1: quick -> `step_2_setting` multi-dates ; library -> bibliothèque filtrée jeu + session
+    - fallback legacy conservé si pas de session/jeu
+  - fiche session (agenda view) alignée:
+    - liens `Voir le détail` conservés à côté du nom playlist/série
+    - bouton de modification maintenu à droite
+    - Blindtest/Bingo: sous-titre + détail playlist internes masqués (détail via bibliothèque VIEW)
+- Vérifications:
+  - `php -l` OK:
+    - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+    - `pro/web/ec/modules/tunnel/start/ec_start_agenda_mode.php`
+    - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+    - `pro/web/ec/ec.php`
+    - `pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php`
+    - `pro/web/ec/modules/widget/ec_widget_ecommerce_offre_client_bloc.php`
+    - `pro/web/ec/modules/tunnel/start/ec_start_step_0_offres_client.php`
+    - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+
+## Update 2026-02-22 — Agenda mode, multi-dates, auto-thème, changement de thème
+- Scope code:
+  - `pro/web/.htaccess`
+  - `pro/web/ec/ec.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_agenda_mode.php` (nouveau)
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_1_game.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_4_resume_batch.php` (nouveau)
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php`
+- Actions réalisées:
+  - nouveau point d’entrée agenda:
+    - `/extranet/start/agenda/mode/{id_offre}` avec 2 choix:
+      - A: programmer par date(s) + thématiques auto
+      - B: choisir une thématique avant (bibliothèque)
+  - mode quick:
+    - propagation du contexte `from=agenda&mode=quick`
+    - step 2 multi-dates (ajout/suppression de lignes date+heure)
+    - nouveau `frm_mode=session_setting_multi`:
+      - création N sessions (1/date)
+      - application settings sur chaque session
+      - attribution auto-thématique Cotton, puis `session_theme`
+      - résumé batch `/extranet/start/game/resume-batch/{batch_token}`
+  - auto-thématique:
+    - ranking réutilisé depuis la bibliothèque (`clib_list_get(..., preset='themes')`)
+    - stats popularité réutilisées (`clib_popularity_stats_for_items_get`)
+    - anti-répétition par jeu (365j), fallback 180/30/0, anti-doublon intra-lot “si possible”
+    - logs: `AGENDA_QUICK_CREATE_BATCH`, `AGENDA_QUICK_THEME_PICK`, `AGENDA_QUICK_CREATE_DONE`
+  - changement de thématique sur session existante:
+    - CTA “Changer la thématique” conservé sur la fiche détail session (retiré des cartes agenda)
+    - bibliothèque appelée avec `id_securite_session`, atterrissage sur la liste filtrée jeu
+    - bandeau jaune “Modification de thématique” affiché en bibliothèque (liste + fiche)
+    - mode `content_library_apply_session_theme` pour appliquer `session_theme` sans recréer de session
+- Vérifications:
+  - `php -l` OK sur tous les fichiers PHP modifiés
+- Points d’attention:
+  - marqueur `auto_theme=1` porté dans les logs structurés + batch session store (pas de colonne DB dédiée ajoutée)
+  - pour le flux “changer thématique”, l’application se fait depuis la bibliothèque (sélection explicite) sur la session existante
+  - quiz auto en agenda quick: 4 séries tirées et sérialisées dans `lot_ids` via le flux `session_theme`
+
+## Update 2026-02-22 — Ajustements post-recette agenda quick / quiz détail
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Actions réalisées:
+  - agenda cards:
+    - restauration du CTA d’accès session avec garde-fou offre active conservé (`app_session_launch_guard_get`)
+    - en cas de blocage, CTA pointe vers `cta_url` guard (commande/offres) avec libellé guard
+  - Quiz V2 détail session:
+    - suppression du CTA global “Changer la thématique”
+    - affichage des séries par défaut, ouverture détail série par série
+    - actions par série: `Voir le détail` puis `Modifier`
+    - drag-and-drop de l’ordre des séries avec sauvegarde automatique immédiate
+  - bibliothèque (modification de session):
+    - bandeau jaune “Modification de thématique” en haut de page (liste + fiche)
+    - navigation de modification orientée vers la liste bibliothèque filtrée (pas vers une fiche série spécifique)
+- Vérifications:
+  - `php -l` OK sur les fichiers PHP modifiés
+
+## Update 2026-02-22 — Documentation routing/flux + micro-fixs UX
+- Scope doc:
+  - `documentation/canon/repos/pro/README.md`
+  - `documentation/canon/repos/pro/TASKS.md`
+  - `documentation/canon/repos/pro/HANDOFF.md`
+- Mises à jour documentées:
+  - routes/flux start agenda quick confirmés dans README:
+    - `start/agenda/mode/*`
+    - `frm_mode=session_setting_multi`
+    - résumé batch `start/game/resume-batch/{batch_token}`
+  - quick quiz:
+    - auto-thème sur 4 séries
+  - changement de thématique session existante:
+    - entrée depuis fiche session
+    - redirection vers liste bibliothèque filtrée jeu
+    - bandeau bibliothèque contextualisé par jeu (quiz/bingo/blindtest)
+  - fiche session:
+    - labels harmonisés `Modifier la playlist` / `Modifier cette série`
+    - réordonnancement Quiz V2: retour sur fiche détail (pas résumé)
+
+## Update 2026-03-19 — PRO EC: verrou submit programmateur + pagination bibliothèque
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_include_header.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_1_game.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_agenda_mode.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_sessions_form_mode_calendrier_V3.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php`
+- Actions réalisées:
+  - tunnel `start`:
+    - ajout d'un garde JS commun sur les formulaires `session_init`, `agenda_mode_select` et `session_setting[_multi]`
+    - le premier submit désactive le CTA et bloque toute réentrance clic / clavier
+    - si une validation locale bloque l'envoi réel (ex: quick mode invalide), le garde est relâché proprement
+  - programmateur calendrier:
+    - `onsubmit` passe en garde réelle `return loading(event);`
+    - ajout d'un état busy front unique (`data-is-submitting`, `aria-busy`, bouton désactivé, loader affiché)
+    - une seconde soumission pendant la navigation est rejetée, y compris via `Enter`
+    - reset du busy sur `pageshow` pour permettre une nouvelle tentative après retour navigateur / erreur bloquante
+  - bibliothèque:
+    - les CTA `Créer un ...`, `Choisir cette ...`, `Remplacer` et `Continuer` (builder quiz) sont verrouillés au premier submit
+    - le verrou est aussi appliqué quand le submit part après confirmation modale
+    - grille `Mes` limitée à `11` contenus quand la carte `Ajouter une playlist/série` est visible
+    - maintien à `12` contenus quand cette carte est absente
+    - filtrage `remplacement depuis session` déplacé dans `clib_list_get(...)` pour préserver pagination et contexte `id_securite_session/nav_ctx/slot_index`
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/tunnel/start/ec_start_include_header.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/tunnel/start/ec_start_step_1_game.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/tunnel/start/ec_start_agenda_mode.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/tunnel/start/ec_start_step_2_setting.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/widget/ec_widget_jeux_sessions_form_mode_calendrier_V3.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_list.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_lib.php` OK
+- Next steps:
+  - QA manuelle sur spam clic / touche `Enter` sur `step_1_game`, `agenda_mode`, `step_2_setting`, programmateur calendrier et bibliothèque
+  - QA manuelle sur remplacement playlist et série depuis fiche session, y compris page 2+
+
+## Update 2026-02-22 — Agenda fiche session -> VIEW bibliothèque contextualisée
+- Scope code:
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php`
+- Actions réalisées:
+  - fiche session agenda:
+    - ajout/normalisation des liens `Voir le détail` vers la VIEW bibliothèque pour Quiz/Bingo/Blindtest
+    - params standard transmis: `context=session`, `id_securite_session`, `return_to=session_view`, `item_type`, `item_id`
+    - Bingo/Blindtest: `Voir le détail` positionné à gauche de `Modifier la playlist`
+  - bibliothèque VIEW:
+    - support landing direct par `item_type + item_id` en contexte session
+    - validation session (`id_securite_session`) côté client connecté avant activation du mode contextuel
+    - bandeau haut daté par jeu:
+      - `Playlist du Blindtest programmé le jj/mm/aaaa`
+      - `Playlist du Bingo Musical programmé le jj/mm/aaaa`
+      - `Série du Quiz programmé le jj/mm/aaaa`
+    - CTA usage remplacé par un bouton unique `Retour à la session`
+    - CTA démo masqué en contexte session
+    - lien `← Retour au catalogue` masqué en contexte session
+    - log structuré ajouté: `LIB_VIEW_CONTEXT_SESSION`
+- Vérifications:
+  - `php -l pro/web/ec/modules/tunnel/start/ec_start_sessions_view.php` OK
+  - `php -l pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_view.php` OK
+- TODO QA:
+  - valider quick 1 date et N dates en conditions réelles
+  - valider fallback anti-répétition (365/180/30/0) avec historique dense
+  - valider non-régression complète des flux start standard + bibliothèque existants
+
+## Update 2026-02-20 — PATCH implémenté (schedule autorisé, launch backend-gated)
+- Scope code:
+  - `pro/web/ec/ec.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_1_game.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_script.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_play_classic.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php`
+  - `global/web/app/modules/jeux/sessions/app_sessions_functions.php`
+- Actions réalisées:
+  - programmation:
+    - suppression du renvoi e-commerce par défaut au moment de programmer (onboarding `choose/0`)
+    - `session_init` accepte explicitement le mode non-démo via `flag_session_demo=0` même sans offre active
+  - lancement:
+    - ajout d’un garde-fou backend central `app_session_launch_guard_get(...)`
+    - application du verdict en point d’entrée `/extranet/start/game/play/{id}` avec refus propre + CTA `Voir les offres`
+  - uniformisation:
+    - `app_session_get_link(..., 'launcher', ...)` passe désormais par le funnel `/start/game/play/{id}` (backend source-of-truth)
+    - garde-fou UI local retiré de la carte agenda (la décision d’accès n’est plus côté template)
+- Vérifications:
+  - `php -l` OK sur tous les fichiers touchés
+
+## Update 2026-02-20 — Fix remaining entrypoints blocking scheduling
+- Scope code:
+  - `pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php`
+  - `pro/web/ec/modules/tunnel/start/ec_start_step_0_offres_client.php`
+  - `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php`
+- Actions réalisées:
+  - widget agenda vide:
+    - CTA sans offre active redirigé vers `/extranet/start/game/choose/0` (plus vers commande e-commerce)
+  - route `/extranet/start/game/offres/`:
+    - si aucune offre active listée, redirection automatique vers `choose/0` (programmation autorisée)
+    - conservation du contexte éventuel (`id_securite_operation_evenement`, `from`)
+  - bibliothèque (programmation non-démo):
+    - suppression du retour forcé `/start/game/offres/` quand pas d’offre active
+    - envoi explicite `flag_session_demo=0` dans `session_init`
+- Vérifications:
+  - `php -l` OK sur les 3 fichiers
+
+## Update 2026-02-20 — Home EC sans offre active (widgets harmonisés)
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+  - `pro/web/ec/modules/widget/ec_widget_ecommerce_abonnement.php`
+  - `pro/web/ec/modules/widget/ec_widget_jeux_discover_library.php`
+- Actions réalisées:
+  - home no-offer:
+    - affichage forcé de 2 widgets uniquement (commande puis découverte bibliothèque)
+    - masquage des autres widgets de home dans ce cas
+  - mapping commande no-offer:
+    - typologie `1/8` (+ défaut) => widget abonnement
+    - typologie `2/3` => widget événement
+    - typologie `12` => widget particulier
+  - bypass règles internes abonnement en no-offer:
+    - plus de blocage par `id_pipeline_etat` / `id_solution_usage` si `offre_client_active_count==0`
+  - widget bibliothèque:
+    - nouveau widget “Découvre les jeux Cotton” enrichi (3 points + pictos)
+    - CTA vers `/extranet/games/library`
+- Vérifications:
+  - `php -l` OK sur les fichiers touchés
+
+## Résumé audit
+- Audit effectué sur les flux `start` (programmation + lancement) avec preuves `fichier:ligne`.
+- Garde-fou actuel trouvé principalement dans la carte agenda (UI) et non au point backend source-of-truth.
+- Cartographie livrée pour:
+  - flux `PROGRAMMER` (onboarding offres -> `session_init` -> write session)
+  - flux `LANCER/JOUER` (UI cards/widgets -> `app_session_get_link` -> route play/launcher)
+  - emplacement de la carte session programmée pour le futur message paywall + CTA offres.
+
+## Points d’entrée clés identifiés
+- Routing start: `pro/web/.htaccess:168`, `pro/web/.htaccess:179`, `pro/web/.htaccess:200`
+- Calcul onboarding offre active: `pro/web/ec/ec.php:63`, `pro/web/ec/ec.php:100`, `pro/web/ec/ec.php:119`
+- Create session (`session_init`): `pro/web/ec/modules/tunnel/start/ec_start_script.php:161`, `pro/web/ec/modules/tunnel/start/ec_start_script.php:258`
+- Garde-fou UI actuel (agenda): `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php:291`, `pro/web/ec/modules/tunnel/start/ec_start_sessions_list_bloc.php:536`
+- Génération des liens de lancement: `global/web/app/modules/jeux/sessions/app_sessions_functions.php:851`
+
+## Référence détaillée
+- Voir `canon/repos/pro/sessions_scheduled_paywall_audit.md`.
+
+## Update 2026-03-19 — Home TdR: hero reseau premium avec lien d'affiliation intégré
+- Scope code:
+  - `pro/web/ec/modules/communication/home/ec_home_index.php`
+- Actions réalisées:
+  - audit ciblé de la home TdR, de `Mes affiliés` et des widgets réseau pour réutiliser les conventions déjà en place;
+  - remplacement de l'intro haute par deux blocs distincts sur une ligne desktop:
+    - bloc gauche `Réseau Cotton` en `2/3` avec image de fond, lien d'affiliation integre et pills
+    - bloc droit `Mes affiliés` en `1/3` via la vraie carte raccourci existante
+    - bloc lien d'affiliation avec copie immédiate
+    - retour en colonne sur mobile
+  - réemploi du JS de copie et de la construction d'URL d'affiliation déjà présents sur la home;
+  - branchement d'un visuel local existant `ec/images/communication/statique/communication-statique-cible-reseaux-franchises.jpg` avec fallback gradient.
+- Vérifications:
+  - `php -l /home/romain/Cotton/pro/web/ec/modules/communication/home/ec_home_index.php` OK
