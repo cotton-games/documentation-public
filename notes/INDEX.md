@@ -1,0 +1,40 @@
+<!-- Generated file — do not edit manually. Run npm run docs:sitemap -->
+
+# Index — notes
+
+## Pages
+- [audit-bingo-player-register-reinscription-2026-02-10.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/audit-bingo-player-register-reinscription-2026-02-10.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [audit-content-library-session-demo-2026-02-12.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/audit-content-library-session-demo-2026-02-12.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [audit-contrat-offre-reseau-2026-03-06.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/audit-contrat-offre-reseau-2026-03-06.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [audit-etape2-bo-contrat-cadre-reseau-2026-03-06.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/audit-etape2-bo-contrat-cadre-reseau-2026-03-06.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [audit-etape2a-offre-reseau-dediee-2026-03-08.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/audit-etape2a-offre-reseau-dediee-2026-03-08.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [audit-event-id-players-2026-02-10.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/audit-event-id-players-2026-02-10.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [audit-front-logs-info.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/audit-front-logs-info.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [audit-pro-mes-joueurs-runtime-bridge-2026-04-03.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/audit-pro-mes-joueurs-runtime-bridge-2026-04-03.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [bingo-audit-summary.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/bingo-audit-summary.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [branding_par_type_de_jeu.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/branding_par_type_de_jeu.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [branding-effective-resolution-map-2026-03-06.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/branding-effective-resolution-map-2026-03-06.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [canvas-organizer-structure.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/canvas-organizer-structure.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [content-model-map-2026-03-06.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/content-model-map-2026-03-06.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [deactivation-contract-2026-03-06.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/deactivation-contract-2026-03-06.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [delegation-write-path-2026-03-06.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/delegation-write-path-2026-03-06.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [event-id-mutating-actions-runbook-2026-02-10.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/event-id-mutating-actions-runbook-2026-02-10.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [implementation-etape2-bo-contrat-cadre-reseau-2026-03-06.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/implementation-etape2-bo-contrat-cadre-reseau-2026-03-06.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [logging-api-callers-audit.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/logging-api-callers-audit.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [logging-audit-bingo-compliance.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/logging-audit-bingo-compliance.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [logging-audit-blindtest-compliance.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/logging-audit-blindtest-compliance.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [logging-audit-quiz-compliance.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/logging-audit-quiz-compliance.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [logging-bingo-timeline-coverage.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/logging-bingo-timeline-coverage.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [logging-blindtest-timeline-coverage.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/logging-blindtest-timeline-coverage.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [logging-post-rollback.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/logging-post-rollback.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [logging-quiz-raw-logs-execution-plan.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/logging-quiz-raw-logs-execution-plan.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [logging-quiz-timeline-coverage.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/logging-quiz-timeline-coverage.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [logging-workplan-cross-game.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/logging-workplan-cross-game.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [logs-viewer-bingo-audit.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/logs-viewer-bingo-audit.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [offer-lifecycle-hooks-2026-03-06.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/offer-lifecycle-hooks-2026-03-06.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [offer-resolution-map-2026-03-06.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/offer-resolution-map-2026-03-06.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [plan_migration_reseau_branding_contenu.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/plan_migration_reseau_branding_contenu.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+- [recommendations.md](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/recommendations.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
+
+## Sous-dossiers
+- [archive/](https://raw.githubusercontent.com/cotton-games/documentation-public/refs/heads/develop/notes/archive/INDEX.md?v=3e069a2e33117e0fb73cbb7dce85be28255e1381)
