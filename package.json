@@ -1,0 +1,9 @@
+{
+  "name": "cotton-documentation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "docs:sitemap": "node scripts/gen-sitemap.mjs"
+  }
+}
+
