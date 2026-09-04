@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+cd "$(git rev-parse --show-toplevel)"
+
+# Run only if staged markdown docs changed (add/modify).
+if ! git diff --cached --name-only --diff-filter=ACM | grep -E '\.md$' >/dev/null; then
+  exit 0
+fi
+
+echo "[pre-commit] Regenerating SITEMAP.md and per-folder INDEX.md files..."
+npm run docs:sitemap >/dev/null
+
+# Re-stage generated files.
+mapfile -t regen_files < <(find . -path "./.git" -prune -o \( -name "INDEX.md" -o -name "SITEMAP.md" \) -print)
+if [[ ${#regen_files[@]} -gt 0 ]]; then
+  git add "${regen_files[@]}"
+fi
+
+echo "[pre-commit] Documentation index refreshed."
