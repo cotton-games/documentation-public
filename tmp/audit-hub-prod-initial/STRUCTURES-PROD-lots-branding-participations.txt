@@ -1,0 +1,65 @@
+championnats_sessions_lots
+    #	Nom	Type	Interclassement	Attributs	Null	Valeur par défaut	Commentaires	Extra	Action
+	1	id Primaire	mediumint(9)		UNSIGNED	Non	Aucun(e)		AUTO_INCREMENT	Modifier Modifier	Supprimer Supprimer	
+	2	id_championnat_session	mediumint(9)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	3	phase_numero	smallint(4)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	4	nom	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	5	descriptif_court	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	6	descriptif_long	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	7	lien_url	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	8	lien_libelle	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	9	lien_target	tinyint(1)			Non	0			Modifier Modifier	Supprimer Supprimer	
+	10	video_code	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	11	online	tinyint(1)			Non	0			Modifier Modifier	Supprimer Supprimer	
+	12	position	tinyint(3)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	13	flag_une	tinyint(1)			Non	0			Modifier Modifier	Supprimer Supprimer	
+	14	seo_slug	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	15	seo_meta_title	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	16	seo_meta_description	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	17	design_icone	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	18	design_css_class	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	19	date_ajout	datetime			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	20	date_maj	datetime			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	21	id_user_ajout	tinyint(3)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	22	id_user_maj	tinyint(3)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+
+general_branding
+	#	Nom	Type	Interclassement	Attributs	Null	Valeur par défaut	Commentaires	Extra	Action
+	1	id Primaire	int(11)			Non	Aucun(e)		AUTO_INCREMENT	Modifier Modifier	Supprimer Supprimer	
+	2	id_type_branding Index	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	3	id_related Index	int(11)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	4	color_background_1	varchar(7)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	5	color_font_1	varchar(7)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	6	color_background_2	varchar(7)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	7	color_font_2	varchar(7)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	8	fonction_bonus_flag	tinyint(1)			Oui	0			Modifier Modifier	Supprimer Supprimer	
+	9	fonction_bonus_title	varchar(255)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	10	fonction_bonus_text	text	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	11	rs_flag	tinyint(1)			Oui	0			Modifier Modifier	Supprimer Supprimer	
+	12	rs_facebook_url	varchar(255)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	13	rs_facebook_title	varchar(255)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	14	rs_instagram_url	varchar(255)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	15	rs_instagram_title	varchar(255)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	16	rs_website_url	varchar(255)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	17	rs_website_title	varchar(255)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	18	rs_google_review_url	varchar(255)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	19	rs_google_review_title	varchar(255)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	20	fonction_agenda_flag	tinyint(1)			Oui	0			Modifier Modifier	Supprimer Supprimer	
+	21	font_family_name	varchar(255)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	22	font_family_url	varchar(255)	latin1_swedish_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	23	valable_jusqu_au Index	date			Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	24	online	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	25	date_ajout	datetime			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+
+championnats_sessions_participations_probables
+	#	Nom	Type	Interclassement	Attributs	Null	Valeur par défaut	Commentaires	Extra	Action
+	1	id Primaire	mediumint(8)		UNSIGNED	Non	Aucun(e)		AUTO_INCREMENT	Modifier Modifier	Supprimer Supprimer	
+	2	id_championnat_session Index	mediumint(9)			Non	0			Modifier Modifier	Supprimer Supprimer	
+	3	id_joueur Index	mediumint(8)		UNSIGNED	Non	0			Modifier Modifier	Supprimer Supprimer	
+	4	id_equipe Index	mediumint(8)		UNSIGNED	Non	0			Modifier Modifier	Supprimer Supprimer	
+	5	source	varchar(32)	utf8_general_ci		Non	play			Modifier Modifier	Supprimer Supprimer	
+	6	date_ajout	datetime			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	7	date_maj	datetime			Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	8	ip	varchar(45)	utf8_general_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	9	id_user_ajout	mediumint(8)		UNSIGNED	Non	0			Modifier Modifier	Supprimer Supprimer	
+	10	id_user_maj	mediumint(8)		UNSIGNED	Non	0			Modifier Modifier	Supprimer Supprimer	

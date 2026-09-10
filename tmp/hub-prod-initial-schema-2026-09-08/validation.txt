@@ -1,0 +1,24 @@
+PASS conforme : premier appel 0 DDL ; deuxième appel 0 DDL cumulés.
+PASS ancien_enum : premier appel 1 DDL ; deuxième appel 1 DDL cumulés.
+PASS nullable : premier appel 1 DDL ; deuxième appel 1 DDL cumulés.
+PASS defaut : premier appel 1 DDL ; deuxième appel 1 DDL cumulés.
+PASS extra : premier appel 1 DDL ; deuxième appel 1 DDL cumulés.
+PASS ordre_enum : premier appel 1 DDL ; deuxième appel 1 DDL cumulés.
+PASS casse_valeur : premier appel 1 DDL ; deuxième appel 1 DDL cumulés.
+PASS lecture_echouee : premier appel 0 DDL ; deuxième appel 0 DDL cumulés.
+PASS colonne_absente : premier appel 0 DDL ; deuxième appel 0 DDL cumulés.
+PASS metadata_partielle : premier appel 0 DDL ; deuxième appel 0 DDL cumulés.
+
+Commande sonde : php tmp/hub-prod-initial-schema-2026-09-08/probe-schema-ensure.php
+Contre-épreuve : même sonde conforme sur Global HEAD antérieur, exit 1 attendu : un ALTER au lieu de zéro, status_reads=0.
+php -l ../global/web/app/modules/jeux/hubs/app_games_hubs_functions.php : OK.
+php ../global/web/tests/hub_player_roster_registration_state_test.php : OK.
+php ../global/web/tests/hub_remote_control_contract_test.php : OK.
+php ../global/web/tests/hub_publication_prizes_contract_test.php : OK.
+php ../global/web/tests/hub_players_stats_projection_contract_test.php : OK.
+PRECHECK vérifié statiquement : SELECT/SHOW uniquement, aucun DATABASE(), schéma explicite, 73 objets attendus cohérents avec precheck-tables.json.
+Contrat : 11 tables Hub, 181 colonnes, QR 4/4, stats 10/10, aucune colonne dupliquée ; 2 contrats programmation supplémentaires.
+MariaDB 10.11.14 isolé, socket /tmp/cotton-hub-schema-qltok4ft/s.sock, --no-defaults --skip-networking : SHOW COLUMNS status retourne Type enum('created','active','left','completed','failed'), Null NO, Default created, Extra vide. Serveur arrêté. Pas une certification 10.3, pas un test DDL complet.
+npm run docs:sitemap : OK, index rechargés.
+git diff --check (documentation et Global) : OK.
+Aucune connexion DB DEV/PROD ni exécution du PRECHECK distant ; DDL final et POSTCHECK non produits avant retour PROD.
