@@ -1,0 +1,4 @@
+{"ts":"2026-01-21T08:03:26.663Z","level":"warn","source":"BINGO_WS","msg":"❌ Aucun remote actif pour le jeu 14432 ou socket non prêt"}
+{"ts":"2026-01-21T08:03:26.663Z","level":"info","source":"BINGO_WS","sessionId":"gggivprift979svf9d2uigg5br6970866421d99","tags":["song_start"],"gameID":"14432","trackID":3097,"trackPosition":2,"numPassedSongs":2,"event_id":"14fd9cfa-1e49-468b-90cc-4774e37ce8d0","latencyMs":63.3,"msg":"session_update via API ok"}
+{"ts":"2026-01-22T14:45:58.843Z","level":"info","source":"BINGO_WS","tags":["verification"],"msg":"The player with id 43931 asked a verification with lines' indices 0"}
+

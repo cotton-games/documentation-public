@@ -1,0 +1,145 @@
+# Docs Manifest (Codex maintenance rules)
+
+<!-- NOTE TO CODEX:
+1) Only edit inside AUTO-UPDATE blocks.
+2) If code changes impact an interface / DB write / entrypoint, update the matching canon doc blocks.
+3) Keep IDs stable. Do not rename files without updating README.md index block.
+4) Prefer short diffs: update only relevant blocks.
+-->
+
+## Update triggers (mapping)
+<!-- AUTO-UPDATE:BEGIN id="manifest-triggers" owner="codex" -->
+## Snippet à coller dans tous les prompts Codex (Docs obligatoire)
+
+0) Mettre à jour `canon/repos/<repo>/TASKS.md` (obligatoire, update-not-append).
+0bis) Si changement fonctionnel : mettre à jour `canon/repos/<repo>/README.md`.
+0ter-bis) Toute évolution sur les offres, la facturation réseau ou une périodicité (`id_paiement_frequence`, `montant_socle_ht`, agrégats mensuel/annuel) doit déclencher une mise à jour de la doc produit et des notes métier concernées.
+0ter) Après toute modification de documentation : exécuter `npm run docs:sitemap` pour régénérer `SITEMAP.md` (version publique).
+0quater) L’entrée publique unique est `START.md` (raw complet) → `SITEMAP.md` (raw complet) → carte repo → manifest/doc ciblée.
+0quinquies) Avant tout patch évolutif, consulter le journal global AI Studio public pour identifier les scripts, pages, workflows ou dossiers potentiellement modifiés hors workspace local, afin de recharger depuis les serveurs les éléments concernés avant audit/patch : `https://global.cotton-quiz.com/ai_studio/hub/api/public_reader.php?f=documentation%2Fgeneral%2F0_ROADMAP.md&token=C4BOQcmxkXAT0JfWajhb`
+1) Déterminer `changed files` via `git diff --name-only`.
+2) Appliquer les “Routing rules” de ce fichier (`DOCS_MANIFEST.md`) et ouvrir uniquement les docs ciblés (pas de scan global).
+3) Mettre à jour uniquement les blocs `AUTO-UPDATE` des docs ciblés (si pertinents).
+4) Mettre à jour `HANDOFF.md` (toujours) : résumé + fichiers modifiés + docs touchées + TODO.
+5) Si aucune règle ne match et que la zone est nouvelle → ajouter une règle au manifest (pas de scan global).
+
+| Change in codebase | Match (paths/globs) | Update this documentation | Block IDs |
+|---|---|---|---|
+| Toute action (code ou doc) | *(règle transversale, sans glob)* | `canon/repos/<repo>/TASKS.md` (update-not-append) | n/a |
+| Changement fonctionnel (flux/actions/contracts/env/log/DB writes) | *(règle transversale, sans glob)* | `canon/repos/<repo>/README.md` | n/a |
+| Changement offre / périodicité / facturation réseau | `global/web/app/modules/ecommerce/app_ecommerce_functions.php`, `pro/web/ec/modules/compte/offres/**`, `www/web/bo/www/modules/ecommerce/reseau_contrats/**`, `www/web/bo/www/modules/ecommerce/offres_clients/**` | `notes/plan_migration_reseau_branding_contenu.md` + `canon/repos/global/TASKS.md` + `canon/repos/pro/README.md` + `canon/repos/pro/TASKS.md` | n/a |
+| Changement d'offre client en propre / Customer Portal commercial | `global/web/app/modules/ecommerce/**`, `pro/web/ec/modules/compte/offres/**`, `pro/web/ec/modules/ecommerce/**`, configuration portail Stripe | `canon/interfaces/ecommerce-offer-change.md` + `canon/repos/global/README.md` + `canon/repos/global/TASKS.md` + `canon/repos/pro/README.md` + `canon/repos/pro/TASKS.md` + `canon/repos/www/README.md` + `canon/repos/www/TASKS.md` | n/a |
+| Add/modify Canvas bridge payload/response or auth/idempotence behavior | `games/web/games_ajax.php`, `games/web/global_ajax.php`, `games/web/includes/canvas/php/**` | `canon/interfaces/canvas-bridge.md` | `bridge-contract`, `bridge-examples` |
+| Add/modify an action / handler mapping (WS ↔ Canvas API ↔ PHP glue) | `games/web/includes/canvas/php/*_adapter_glue.php`, `games/web/includes/canvas/php/prizes_glue.php`, `bingo.game/ws/**`, `blindtest/web/server/**`, `quiz/web/server/**` | `canon/interfaces/actions.md` | `actions-list`, `actions-matrix` |
+| New env var / port / endpoint / rewrite (PM2, WS, vhosts) | `**/.htaccess`, `**/pm2-*.ecosystem.config.cjs`, `**/version.txt`, `**/.env*`, `bingo.game/ws/**`, `blindtest/web/server/**`, `quiz/web/server/**` | `canon/entrypoints.md` + `canon/runbooks/dev.md` + `pm2-ws.md` | `entrypoints-table`, `dev-env` |
+| Git hygiene / secrets / templates (private → public mirroring risk) | `**/.gitignore`, `**/config.php`, `**/config.local.php`, `**/global_config.php`, `**/global_config.local.php`, `**/*secrets*.env*`, `**/*.env*`, `**/*.pem`, `**/*.key`, `**/*.sql`, `**/*.log`, `**/_ops_local/**`, `**/_local/**` | `canon/runbooks/security.md` + `canon/runbooks/mirroring.md` + `HANDOFF.md` | `security-rules`, `handoff-status` |
+| WS Bingo changes | `bingo.game/ws/**` | `canon/interfaces/actions.md` + `canon/interfaces/canvas-bridge.md` (+ `canon/data/bingo-write-map.md` si writes) | `actions-list`, `actions-matrix`, `bridge-contract`, `bridge-examples`, `write-map`, `write-sources` |
+| User-facing change likely (UI/assets) | `games/web/**`, `www/web/**`, `pro/web/**`, `global/web/**` | `CHANGELOG.md` (+ `HANDOFF.md` si changement notable) | `changelog-latest`, `handoff-status` |
+
+## Procédure anti-rescan (Codex)
+
+But : mettre à jour la doc sans rescanner l’ensemble du dépôt.
+
+1) Déterminer les fichiers modifiés : `changed = git diff --name-only <base>`
+2) Appliquer les règles de routing ci-dessous (match par `paths/globs`) pour obtenir `targets.docs`
+3) Ouvrir **uniquement** les documents listés dans `targets.docs` (pas de scan global)
+4) Éditer **uniquement** les sections marquées `AUTO-UPDATE` dans ces documents
+5) Si aucune règle ne match, **ajouter une règle** (paths/globs → docs), puis mettre à jour la doc correspondante
+6) Log obligatoire : consigner dans `HANDOFF.md` (Actions réalisées + docs touchées + next steps)
+
+---
+
+## Routing rules (paths/globs → docs)
+
+> Chaque règle est déterministe : un fichier modifié match un glob → ouvre les docs indiqués.
+
+| ID | Match (paths/globs) | Docs à ouvrir (ordre) | Notes |
+|---:|---|---|---|
+| R1 | `**/games_ajax.php` `**/global_ajax.php` `**/*canvas*` | `canon/interfaces/canvas-bridge.md` | Contrat bridge Canvas / exemples |
+| R2 | `**/ws/**` `**/*actions*` `**/*adapter*` `**/*glue*` | `canon/interfaces/actions.md` | Mapping actions/handlers |
+| R3 | `**/.env*` `**/secrets*.env*` | `canon/entrypoints.md` `canon/runbooks/dev.md` | Variables d’env, setup local/dev |
+| R4 | `**/pm2-*.ecosystem.config.*` `**/version.txt` | `pm2-ws.md` `canon/runbooks/prod.md` | Runbook PM2 / WS |
+| R5 | `**/*.sql` `**/migrations/**` `**/*schema*` (hors migration QR Hub R12, lectures legacy R15 et pack Hub R16) | `canon/data/bingo-write-map.md` | Writes DB / schémas / migrations |
+| R6 | `**/bingo*/**` | `canon/data/bingo-write-map.md` `canon/interfaces/actions.md` | Bingo = actions + writes |
+| R7 | `**/*service-token*` `**/*auth*` `**/*token*` `**/*header*` | `canon/runbooks/security.md` | Tokens, headers sensibles, logs safe |
+| R8 | `**/.gitignore` `**/config.php` `**/config.local.php` `**/secrets*.env*` `**/*.pem` `**/*.key` `**/*.sql` `**/*.log` `**/_ops_local/**` | `canon/runbooks/security.md` | Hygiène git / fuites / artefacts |
+| R9 | `www/**` `**/ui/**` `**/assets/**` `**/*.css` `**/*.html` | `CHANGELOG.md` | User-facing changes |
+| R19 | `pro/web/ec/ec.php` (styles CTA découverte) | `canon/repos/pro/README.md` `canon/repos/pro/TASKS.md` `CHANGELOG.md` `HANDOFF.md` | États hover/focus du CTA de commande ; aucune modification des autres liens |
+| R20 | `global/web/tests/schedule_plan*` `global/web/app/modules/jeux/programmation/app_programming_recommendations_functions.php` (SchedulePlan) `global/web/app/modules/jeux/sessions/app_sessions_functions.php` (suppression individuelle) `pro/web/ec/modules/jeux/bibliotheque/ec_bibliotheque_script.php` `pro/web/ec/modules/tunnel/start/ec_start_schedule_draft_helpers.php` `pro/web/ec/modules/tunnel/start/ec_start_script.php` (programmation) | `canon/repos/global/README.md` `canon/repos/global/TASKS.md` `canon/repos/pro/README.md` `canon/repos/pro/TASKS.md` `CHANGELOG.md` `HANDOFF.md` | Réconciliation Hub actif vide et compensation des brouillons ; aucune modification Master/Remote/Play ou rendu Agenda : les cibles runtime R11/R13 sont à ouvrir mais à modifier seulement si leur contrat change |
+| R21 | `documentation/notes/hub-main-promotion-2026-09-09*` | `HANDOFF.md` `canon/runbooks/prod.md` `canon/repos/blindtest/TASKS.md` `canon/repos/quiz/TASKS.md` | Procédure de promotion incrémentale Games/Pro/Global et extension WS Blindtest/Quiz, manifestes ; fusion locale distincte de la copie manuelle, aucune garantie de copie à chaud |
+| R10 | `**/SITEMAP.md` `**/DOCS_MANIFEST.md` `**/README.md` | `HANDOFF.md` | Gouvernance + cohérence doc |
+| R11 | `global/web/app/modules/jeux/programmation/app_programming_recommendations_functions.php` `global/web/tests/hub_quiz_demo_substitution_test.php` `games/web/tests/hub_demo_error_feedback_test.mjs` `games/web/includes/canvas/core/hub_player_qr.js` `games/web/tests/hub_player_qr_test.mjs` `global/web/app/modules/jeux/hubs/app_games_hub_player_qr_functions.php` `global/web/tests/hub_player_qr_storage_test.*` `global/web/tests/hub_player_qr_temporal_test.php` `global/web/tests/hub_player_qr_continuation_test.php` `global/web/tests/hub_player_qr_master_command_test.php` `games/web/modules/app_hub_view_helpers.php` `games/web/modules/app_hub_remote_ajax.php` `global/web/app/modules/jeux/hubs/app_games_hubs_functions.php` | `canon/repos/games/README.md` `canon/repos/games/TASKS.md` `canon/repos/global/README.md` `canon/repos/global/TASKS.md` `canon/interfaces/canvas-bridge.md` | Contrats Hub Master/Remote/Play et projections UI ; bridge-contract |
+
+| R12 | `migrations/hub_player_qr_dev.sql` `specs/tests/hub_player_qr_migration_test.py` | `canon/runbooks/hub-player-qr-migration.md` `canon/data/schema/OVERVIEW.md` `canon/repos/global/README.md` `canon/repos/global/TASKS.md` `canon/repos/games/README.md` `canon/repos/games/TASKS.md` `canon/runbooks/security.md` | Migration QR manuelle DEV ; DDL snapshot non déclaré migré ; sans données ni secret |
+
+| R13 | `global/web/app/modules/operations/evenements/app_evenements_functions.php` `global/web/app/modules/jeux/sessions/app_sessions_functions.php` `pro/web/ec/modules/tunnel/start/**` `games/web/modules/app_orga_ajax.php` `games/web/player_canvas.php` `games/web/remote_canvas.php` `**/hub_legacy*test.php` | `canon/repos/global/README.md` `canon/repos/global/TASKS.md` `canon/repos/pro/README.md` `canon/repos/pro/TASKS.md` `canon/repos/games/README.md` `canon/repos/games/TASKS.md` `canon/interfaces/canvas-bridge.md` `CHANGELOG.md` `HANDOFF.md` | Compatibilité runtime legacy Hub : lecture, réparation explicite, anciennes routes, portée des données et préparation sans offre ; audit détaillé dans notes, sitemap/index générés |
+| R14 | `documentation/tmp/hub-prod-initial-schema-2026-09-08/**` `global/web/app/modules/jeux/hubs/app_games_hubs_functions.php` (guard schema status) | `canon/repos/global/README.md` `canon/repos/global/TASKS.md` `canon/repos/pro/TASKS.md` `canon/repos/blindtest/TASKS.md` `HANDOFF.md` | Paquet schéma Hub PROD initial (13 CREATE InnoDB), PRE/POST contrôles et garde status ciblée ; aucune donnée/backfill/déploiement |
+| R15 | `/tmp/cotton-hub-audit/10-prod-refresh-readonly.sql` `/tmp/cotton-hub-audit/11-prod-refresh-complement-readonly.sql` `/tmp/cotton-hub-audit/12-runtime-explain-readonly.sql` `/tmp/cotton-hub-audit/13-runtime-source-hashes-readonly.sql` `/tmp/cotton-hub-audit/REFRESH.md` `/tmp/cotton-hub-audit/RETOUR-REFRESH.md` | `canon/repos/global/TASKS.md` `HANDOFF.md` | Actualisation opérateur des sources legacy du backfill initial ; uniquement lectures, volumes datés, schéma manquant explicite, aucune migration déclarée exécutée ; artefacts locaux hors versionnement |
+| R16 | `documentation/tmp/hub-prod-backfill-2026-09-08/**` `documentation/tmp/hub-prod-backfill-2026-09-09/**` | `canon/repos/global/TASKS.md` `HANDOFF.md` | Préparation locale backfill Hub59/70 : attributs, manifeste, SQL19 diagnostic et20–23 avec sorties hors bloc pour phpMyAdmin, captures PRE/POST ; révision FIXED_70 avec ajouts hors lot différés ; aucune exécution par l’agent, retours opérateur distingués ; batch09/09 et verrous sources/cibles, tokens hors versionnement, publication au compte |
+
+| R17 | `documentation/tmp/hub-prod-code-2026-09-09/**` `documentation/notes/hub-prod-code-migration-2026-09-09.md` | `canon/repos/{global,games,pro,play,www,bingo.game,blindtest,quiz}/TASKS.md` `HANDOFF.md` | Audit migration code Hub vers main, conflits/séquences Git et validation candidate ; manifeste applicatif ordonné sans déploiement, aucune mutation du pack DB ; README seulement si comportement modifié |
+
+| R18 | `pro/web/ec/modules/widget/ec_widget_jeux_sessions_cta.php` `pro/web/ec/modules/tunnel/start/ec_start_agenda_mode.php` `pro/web/ec/modules/tunnel/start/ec_start_script.php` `pro/web/ec/modules/tunnel/start/ec_programming_environment_parity_test.php` `documentation/notes/hub-dev-prod-parity-2026-09-09.md` | `canon/repos/pro/README.md` `canon/repos/pro/TASKS.md` `canon/repos/games/TASKS.md` `HANDOFF.md` | Parité des entrées Agenda Hub DEV/PROD ; audit des différences métier et environnement, suivi séparé du fallback Remote Bingo ; aucune activation PROD implicite |
+
+## Server restart markers
+
+But : rendre les relances WS **déterministes** et ne pas oublier de bump le “marker de restart”.
+
+| Service | Match (paths/globs) | Marker à bump |
+|---|---|---|
+| WS Bingo | `bingo.game/**` | `bingo.game/version.txt` |
+| WS Blindtest | `blindtest/web/server/**` | `blindtest/web/server/restart_serveur.txt` |
+| WS Quiz | `quiz/web/server/**` | `quiz/web/server/restart_serveur.txt` |
+
+## Post-edit required actions (si un glob match)
+
+Si `changed files` match une règle ci-dessus, alors **Codex doit aussi bump le marker correspondant** (même si la modif est “mineure”).
+
+Format de bump (une ligne unique) :
+- `restart DD-MM-YYYY/NN`
+- `DD-MM-YYYY` = date du jour
+- `NN` = compteur (2 chiffres recommandé, 2–3 acceptés), incrémenté si on bump plusieurs fois le même jour
+- Si le fichier est vide / absent / hors format : le réinitialiser à `restart <date_du_jour>/01`
+
+Règle générale : pour toute modification, `HANDOFF.md` doit être mis à jour (au minimum : résumé + docs touchées).
+
+### AI agent usage rules (quick)
+- Start from the single entrypoint: `https://github.com/cotton-games/documentation-public/raw/develop/SITEMAP.md` (`SITEMAP.md` in-repo).
+- Trust hierarchy: `canon/` (source of truth) > `notes/` (non-canon context); use `HANDOFF.md` for current status and `CHANGELOG.md` for user-facing changes.
+- Editing rule: only change canon content inside `AUTO-UPDATE` blocks; keep block IDs stable. Humans edit outside blocks.
+
+### AI workflow rule (roles)
+- Web AI agent (ex: ChatGPT web) = orchestrator only (plan + prompts + validation).
+  - **Does not write code** and does not provide patches/diffs in chat.
+  - **Chooses the strategy** and compiles the available information (canon + evidence) to implement it.
+  - If **structural information is missing** (entrypoints, file locations, data flow, DB writes, WS/API contracts, env vars, side effects),
+    the agent must request a **Codex audit** to retrieve verified details and avoid regressions.
+  - Deliverable: **one or more clear, actionable prompts** for **Codex in VS Code** to apply the changes
+    (scope, files to touch, acceptance checks, and any required doc updates).
+- Codex (or IDE agent) = executor for all code/doc edits in the repo; apply update triggers to keep canon docs aligned.
+- Consignation obligatoire: log every change in `HANDOFF.md` (“Actions réalisées”).
+
+### No guessing / Evidence required
+- Web agent orchestrates; do not infer missing facts.
+- Any prod/deploy recommendation must cite proof (canon doc link, captured command output, or a Codex audit result).
+- Accepted sources of truth: `canon/*`, output of commands run by the user/admin, and server config snapshots (env/PM2/reverse-proxy) pasted or captured.
+<!-- AUTO-UPDATE:END id="manifest-triggers" -->
+
+## Canon documentation (do not bloat)
+- Canon documentation should be contractual, short, and link to code paths.
+- Historical analysis goes to `notes/` (never canon).
+
+## Snippet "documentation" à inclure dans tes prompts Codex
+Colle ce bloc en fin de prompt pour forcer une mise à jour de doc cohérente.
+
+> **Docs (obligatoire)**
+> - Met à jour `canon/repos/<repo>/TASKS.md` (obligatoire, update-not-append).
+> - Si changement fonctionnel : `canon/repos/<repo>/README.md`.
+> - Mets à jour la documentation canon concernée **uniquement** dans les blocs `AUTO-UPDATE` (IDs stables).
+> - Applique le mapping “Update triggers” ci-dessus :
+>   - Interface Canvas (payload/response) → `canon/interfaces/canvas-bridge.md`
+>   - Actions/handlers → `canon/interfaces/actions.md`
+>   - Env vars / ports / endpoints → `canon/entrypoints.md` (+ `canon/runbooks/dev.md` si présent)
+>   - DB writes / tables → `canon/data/bingo-write-map.md` (+ usage si besoin)
+> - Si changement visible pour l’utilisateur : mets à jour `CHANGELOG.md` (bloc `changelog-latest`).
+> - Si tu ajoutes une nouvelle surface (nouveau type de changement), complète le tableau “Update triggers”.

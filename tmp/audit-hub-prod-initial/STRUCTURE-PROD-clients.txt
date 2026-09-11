@@ -1,0 +1,95 @@
+	#	Nom	Type	Interclassement	Attributs	Null	Valeur par défaut	Commentaires	Extra	Action
+	1	id Primaire	mediumint(9)		UNSIGNED	Non	Aucun(e)		AUTO_INCREMENT	Modifier Modifier	Supprimer Supprimer	
+	2	flag_client_reseau_siege	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	3	id_client_reseau	mediumint(9)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	4	numero	varchar(12)	utf8_general_ci		Non	0			Modifier Modifier	Supprimer Supprimer	
+	5	code_client	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	6	id_solution_usage	tinyint(2)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	7	id_type	tinyint(2)		UNSIGNED	Non	0			Modifier Modifier	Supprimer Supprimer	
+	8	id_typologie	tinyint(2)		UNSIGNED	Non	0			Modifier Modifier	Supprimer Supprimer	
+	9	id_acquisition_canal	tinyint(2)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	10	id_zone_pays	smallint(5)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	11	id_zone_departement	smallint(5)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	12	id_quiz_frequence	tinyint(2)		UNSIGNED	Non	0			Modifier Modifier	Supprimer Supprimer	
+	13	id_etat	tinyint(2)		UNSIGNED	Non	1			Modifier Modifier	Supprimer Supprimer	
+	14	id_pipeline_etat	tinyint(2)		UNSIGNED	Non	1			Modifier Modifier	Supprimer Supprimer	
+	15	code_langue	char(2)	utf8_general_ci		Non	FR			Modifier Modifier	Supprimer Supprimer	
+	16	nom_social	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	17	nom	varchar(255)	utf8_general_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	18	adresse	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	19	adresse_2	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	20	cp	varchar(255)	utf8_general_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	21	ville	varchar(255)	utf8_general_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	22	pays	varchar(255)	utf8_general_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	23	code_pays	char(2)	utf8_general_ci		Oui	FR			Modifier Modifier	Supprimer Supprimer	
+	24	tel	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	25	heure_preference_appel	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	26	fax	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	27	siret	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	28	tva_intracommunautaire	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	29	horaires_ouvertures	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	30	id_erp_jauges	smallint(5)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	31	id_reservation	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	32	flag_activite_evenements	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	33	flag_activite_jeux	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	34	flag_activite_restauration	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	35	commentaire_interne	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	36	flag_sans_commande	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	37	flag_non_assujetti_tva	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	38	flag_offre_lancement	tinyint(1)		UNSIGNED ZEROFILL	Non	1			Modifier Modifier	Supprimer Supprimer	
+	39	flag_espace_client_aide	tinyint(1)		UNSIGNED	Non	1			Modifier Modifier	Supprimer Supprimer	
+	40	remise_pourcentage	tinyint(3)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	41	commandes_payees_nb	smallint(5)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	42	commandes_payees_montant	decimal(8,2)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	43	descriptif_court	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	44	descriptif_long	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	45	lien_url	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	46	lien_libelle	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	47	lien_target	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	48	lien_url_site_web	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	49	lien_url_site_web_reservation	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	50	lien_url_fb	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	51	lien_url_instagram	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	52	lien_url_tiktok	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	53	lien_url_linkedin	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	54	lien_url_youtube	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	55	flag_support_1	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	56	flag_support_2	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	57	flag_support_3	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	58	flag_streaming_apple_music	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	59	flag_streaming_deezer	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	60	flag_streaming_qobuz	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	61	flag_streaming_spotify	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	62	flag_streaming_youtube_music	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	63	flag_streaming_autre	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	64	flag_adherent_bar_bars	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	65	video_code	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	66	flag_mandat_sepa_acceptation	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	67	mandat_sepa_acceptation_date	datetime			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	68	mandat_sepa_raison_sociale	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	69	mandat_sepa_adresse	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	70	mandat_sepa_iban	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	71	mandat_sepa_bic	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	72	mandat_sepa_banque_nom	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	73	mandat_sepa_rum	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	74	online	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	75	position	tinyint(3)			Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	76	flag_une	tinyint(1)			Non	0			Modifier Modifier	Supprimer Supprimer	
+	77	seo_slug	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	78	seo_meta_title	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	79	seo_meta_description	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	80	design_icone	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	81	design_css_class	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	82	commentaire	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	83	ip	varchar(15)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	84	date_ajout	datetime			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	85	date_maj	datetime			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	86	id_securite	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	87	id_user_ajout	tinyint(3)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	88	id_user_maj	tinyint(3)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	89	asset_recurseeve_customerId	varchar(255)	utf8_general_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	90	asset_recurseeve_billingContactId	varchar(255)	utf8_general_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	91	asset_recurseeve_usageReferenceId	varchar(255)	utf8_general_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	92	asset_stripe_customerId	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	93	lp_reseau_couleur_principale	char(7)	utf8_general_ci		Non				Modifier Modifier	Supprimer Supprimer	
+	94	lp_reseau_couleur_secondaire	char(7)	utf8_general_ci		Non				Modifier Modifier	Supprimer Supprimer	

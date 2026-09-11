@@ -1,0 +1,47 @@
+{
+  "documentation": {
+    "head": "31d501a42d5847cdeb3005544aa6182cf8cf121e",
+    "branch": "develop",
+    "status": ""
+  },
+  "global": {
+    "head": "9b41cbd0cf6c0abde96309ed683f3b17b91b0ada",
+    "branch": "hub_soiree",
+    "status": ""
+  },
+  "pro": {
+    "head": "7a4449ada69800ee47e1a296a214be5ec581d889",
+    "branch": "hub_soiree",
+    "status": ""
+  },
+  "games": {
+    "head": "1c58c3b3d827d50d8663c9e661d5f7af8c1d14eb",
+    "branch": "hub_soiree",
+    "status": ""
+  },
+  "play": {
+    "head": "4a7c22623ca2e8f0eef6dc176c51a4ed1876e733",
+    "branch": "hub_soiree",
+    "status": ""
+  },
+  "www": {
+    "head": "56b31c84566ea88f3a2a2e6750d96164eaa88ea6",
+    "branch": "hub_soiree",
+    "status": ""
+  },
+  "quiz": {
+    "head": "cabfdb16fe31ed9b34dde5b7832a2d751a838111",
+    "branch": "hub_soiree",
+    "status": ""
+  },
+  "blindtest": {
+    "head": "67f6cb0e3aac44832e9743cb83ed6dac87ab1e10",
+    "branch": "hub_soiree",
+    "status": ""
+  },
+  "bingo.game": {
+    "head": "42b829e63fc79675841b069ada2ceb293abef786",
+    "branch": "hub_soiree",
+    "status": ""
+  }
+}

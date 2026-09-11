@@ -1,0 +1,4579 @@
+{
+  "generatedAt": "2026-02-03T10:12:25.257Z",
+  "scanRoot": "../games/web",
+  "ignore": [
+    ".git",
+    "node_modules",
+    "dist"
+  ],
+  "fileExtensions": [
+    "js",
+    "ts",
+    "mjs",
+    "cjs",
+    "jsx",
+    "vue",
+    "php",
+    "html",
+    "htm"
+  ],
+  "filesScanned": 54,
+  "totals": {
+    "uniqueEvents": 154,
+    "occurrences": 502
+  },
+  "events": [
+    {
+      "name": "audio/unlocked",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 706,
+          "kind": "on",
+          "snippet": "Bus.on('audio/unlocked', async () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/yt_loader.js",
+          "line": 63,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('audio/unlocked'); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "bingo/medals/updated",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2404,
+          "kind": "on",
+          "snippet": "Bus.on('bingo/medals/updated', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 576,
+          "kind": "emit",
+          "snippet": "if (anyMedalChange) { try { Bus.emit('bingo/medals/updated'); } catch {} }"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "bingo/stateSnapshot",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 662,
+          "kind": "on",
+          "snippet": "const offStateSnap = Bus.on('bingo/stateSnapshot', (state) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 602,
+          "kind": "emit",
+          "snippet": "Bus.emit('bingo/stateSnapshot', m);"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "branding/updated",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/session_modals.js",
+          "line": 1966,
+          "kind": "emit",
+          "snippet": "Bus.emit('branding/updated', { branding: canonicalBranding, token });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 784,
+          "kind": "on",
+          "snippet": "Bus.on('branding/updated', ({ branding, token }) => {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "forceFullCurrent",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/session_modals.js",
+          "line": 1105,
+          "kind": "emit",
+          "snippet": "Bus.emit('forceFullCurrent', { active: willForceFull });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 776,
+          "kind": "on",
+          "snippet": "Bus.on('forceFullCurrent', (payload = {}) => {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "game:ws:message",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 49,
+          "kind": "on",
+          "snippet": "Bus.on('game:ws:message', (msg = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 273,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:message', data);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 246,
+          "kind": "on",
+          "snippet": "const off = Bus.on('game:ws:message', (m) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 691,
+          "kind": "on",
+          "snippet": "Bus.on('game:ws:message', (msg) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 678,
+          "kind": "on",
+          "snippet": "Bus.on('game:ws:message', (msg) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4784,
+          "kind": "on",
+          "snippet": "Bus.on('game:ws:message', (msg) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 423,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:message', { type: 'mainPlayerStarted', remainingTime: m.remainingTime });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 458,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:message', { type: 'mainPlayerStarted', remainingTime: m.remainingTime });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 642,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:message', { type: 'mainPlayerResume', remainingTime: remaining });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 687,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:message', { type: 'mainPlayerStarted', remainingTime: __remainingLeft });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 703,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:message', { type: 'mainPlayerResume', remainingTime: __remainingLeft });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 715,
+          "kind": "on",
+          "snippet": "Bus.on('game:ws:message', (msg) => {"
+        }
+      ],
+      "counts": {
+        "emit": 6,
+        "on": 6,
+        "once": 0
+      }
+    },
+    {
+      "name": "game:ws:send",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 1104,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('game:ws:send', { type: 'demo_reset', payload: { sessionId, game: gameSlug } }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/end_game.js",
+          "line": 8,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:send', { type, payload });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/logger.global.js",
+          "line": 262,
+          "kind": "emit",
+          "snippet": "window.Bus.emit('game:ws:send', {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/logger.global.js",
+          "line": 285,
+          "kind": "emit",
+          "snippet": "window.Bus.emit('game:ws:send', {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_modals.js",
+          "line": 939,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('game:ws:send', { type: 'update_session_infos', payload }); }"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_sync.js",
+          "line": 35,
+          "kind": "emit",
+          "snippet": "const wsSend  = (type, payload = {}) => Bus.emit('game:ws:send', { type, payload });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_sync.js",
+          "line": 188,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:send', { type: tag, payload });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 376,
+          "kind": "on",
+          "snippet": "Bus.on('game:ws:send', ({ type, payload = {}, _cid } = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 18,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:send', { type, payload });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 846,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:send', {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 2303,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:send', {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 2309,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:send', { type: 'player_quit' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 195,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:send', { type, payload: finalPayload });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 354,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:send', { type, payload: enriched });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 357,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:send', { type: 'scores_editing', payload: {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 293,
+          "kind": "emit",
+          "snippet": "Bus.emit('game:ws:send', { type, payload: finalPayload });"
+        }
+      ],
+      "counts": {
+        "emit": 15,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "game/awaitingFinal",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2230,
+          "kind": "on",
+          "snippet": "Bus.on('game/awaitingFinal', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1590,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('game/awaitingFinal'); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_sync.js",
+          "line": 223,
+          "kind": "on",
+          "snippet": "_offAwaiting = Bus.on('game/awaitingFinal', () => {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "game/ended",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 579,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/ended', { reason: 'resume-ended' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2267,
+          "kind": "on",
+          "snippet": "Bus.on('game/ended', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2396,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/ended', { forced: true });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1593,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/ended');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_sync.js",
+          "line": 220,
+          "kind": "on",
+          "snippet": "_offEnded   = Bus.on('game/ended',   (evt = {}) => { sendIfNotBingo(); onEnd();});"
+        }
+      ],
+      "counts": {
+        "emit": 3,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "game/init",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 718,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/init');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_sync.js",
+          "line": 201,
+          "kind": "on",
+          "snippet": "Bus.on('game/init', () => { onInit(); });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_sync.js",
+          "line": 211,
+          "kind": "on",
+          "snippet": "_offInit = Bus.on('game/init', () => { onInit(); });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "game/next",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2274,
+          "kind": "on",
+          "snippet": "Bus.on('game/next', ({ index }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1639,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('game/next', { index: next }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1679,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('game/next', { index: idx }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1712,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('game/next', { index: prev }); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 3,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "game/paused",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 582,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/paused', { reason: 'resume-required' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2250,
+          "kind": "on",
+          "snippet": "Bus.on('game/paused', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1547,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/paused');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 223,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/paused');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_sync.js",
+          "line": 217,
+          "kind": "on",
+          "snippet": "_offPaused  = Bus.on('game/paused',  () => { sendIfNotBingo(); onPause(); });"
+        }
+      ],
+      "counts": {
+        "emit": 3,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "game/reset",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1354,
+          "kind": "on",
+          "snippet": "Bus.on('game/reset',              () => document.body.classList.remove('is-preplay'));  // sécurité globale (si tu as cet event)"
+        }
+      ],
+      "counts": {
+        "emit": 0,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "game/started",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2239,
+          "kind": "on",
+          "snippet": "Bus.on('game/started', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2468,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 611,
+          "kind": "on",
+          "snippet": "const offPhaseFun = Bus.on('game/started', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1406,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1459,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1467,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1494,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1516,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1521,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1539,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1630,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1659,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1699,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1732,
+          "kind": "emit",
+          "snippet": "Bus.emit('game/started');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_sync.js",
+          "line": 214,
+          "kind": "on",
+          "snippet": "_offStarted = Bus.on('game/started', () => { sendIfNotBingo(); onPlay(); });"
+        }
+      ],
+      "counts": {
+        "emit": 12,
+        "on": 3,
+        "once": 0
+      }
+    },
+    {
+      "name": "intro/ended",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 1463,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('intro/ended'); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "jingle/loading",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2496,
+          "kind": "on",
+          "snippet": "Bus.on('jingle/loading', () => refreshControls(), updateNextDisabled());"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1413,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('jingle/loading', { reason: 'intro' }); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "jingle/ready",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 751,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('jingle/ready', { reason }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2497,
+          "kind": "on",
+          "snippet": "Bus.on('jingle/ready',   () => refreshControls(), updateNextDisabled());"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 334,
+          "kind": "emit",
+          "snippet": "Bus.emit('jingle/ready', { source:'global' });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "jingle/unready",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 401,
+          "kind": "emit",
+          "snippet": "Bus.emit('jingle/unready', { source: 'yt', error: e?.data ?? 'unknown' });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "onAfterNextSelected",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1353,
+          "kind": "on",
+          "snippet": "Bus.on('onAfterNextSelected',     () => document.body.classList.remove('is-preplay'));  // sécurité au changement de question"
+        }
+      ],
+      "counts": {
+        "emit": 0,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "options/updated",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 338,
+          "kind": "on",
+          "snippet": "Bus.on('options/updated', (payload) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2303,
+          "kind": "on",
+          "snippet": "Bus.on('options/updated', () => { refreshControls(); updateNextDisabled(); updateManualSupportCTA(); updateTimerVisibility(); });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/blindtest_ui.js",
+          "line": 9,
+          "kind": "on",
+          "snippet": "const offOpts = Bus.on('options/updated', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/quiz_ui.js",
+          "line": 20,
+          "kind": "on",
+          "snippet": "const offOpts = Bus.on('options/updated', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1335,
+          "kind": "on",
+          "snippet": "Bus.on('options/updated', ({ options, gameSlug }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_modals.js",
+          "line": 815,
+          "kind": "emit",
+          "snippet": "Bus.emit('options/updated', { options, token, gameSlug });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_modals.js",
+          "line": 1096,
+          "kind": "emit",
+          "snippet": "Bus.emit('options/updated', { options: next, token, gameSlug });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 538,
+          "kind": "emit",
+          "snippet": "Bus.emit('options/updated', { options: next, token, gameSlug });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 660,
+          "kind": "emit",
+          "snippet": "Bus.emit('options/updated', { options: { songDuration }, source: 'remote' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 795,
+          "kind": "on",
+          "snippet": "Bus.on('options/updated', ({ options = {}, token }) => {"
+        }
+      ],
+      "counts": {
+        "emit": 4,
+        "on": 6,
+        "once": 0
+      }
+    },
+    {
+      "name": "organizer/canControlNow?",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 1269,
+          "kind": "on",
+          "snippet": "Bus.on('organizer/canControlNow?', (cb) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 353,
+          "kind": "emit",
+          "snippet": "Bus.emit('organizer/canControlNow?', (res) => { ok = !!res; });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/answer:pending",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 796,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/answer:pending', { selectedOption });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/answered:update",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1886,
+          "kind": "on",
+          "snippet": "Bus.on('player/answered:update', ({ hasAnswered: flag }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 382,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/answered:update', { hasAnswered: !!m.hasAnswered });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 424,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/answered:update', { hasAnswered: !!m.hasAnswered });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/answerResult",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1802,
+          "kind": "on",
+          "snippet": "Bus.on('player/answerResult', (m = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 459,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/answerResult', m);"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/bingo:phase",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1760,
+          "kind": "on",
+          "snippet": "Bus.on('player/bingo:phase', ({ name, win, winnerName, wonPhase }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 496,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/bingo:phase', { name: info.name, win: false });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 541,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/bingo:phase', { name: info.name, win: false });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 581,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/bingo:phase', {"
+        }
+      ],
+      "counts": {
+        "emit": 3,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/bingo:phasefailure",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1797,
+          "kind": "on",
+          "snippet": "Bus.on('player/bingo:phasefailure', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 591,
+          "kind": "emit",
+          "snippet": "['phase_failure', () => {Bus.emit('player/bingo:phasefailure');}],"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/bingo:progress",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 2009,
+          "kind": "on",
+          "snippet": "Bus.on('player/bingo:progress', ({ index1based }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 563,
+          "kind": "emit",
+          "snippet": "if (idx1 > 0) Bus.emit('player/bingo:progress', { index1based: idx1 });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/bingo:resetGrid",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1844,
+          "kind": "on",
+          "snippet": "Bus.on('player/bingo:resetGrid', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 547,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/bingo:resetGrid', {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/bingo:setGrid",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 963,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/bingo:setGrid', {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1951,
+          "kind": "on",
+          "snippet": "Bus.on('player/bingo:setGrid', ({ numbers, cells, checked, gridNumber }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 244,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/bingo:setGrid', {"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/bingo:winner",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 589,
+          "kind": "emit",
+          "snippet": "// Bus.emit('player/bingo:winner', { name: m?.winner_name ?? null, grid_number: m?.grid_number ?? null, prize_label: m?.prize_label ?? null, won_phase: m?.won_phase ?? null });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/branding",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 2084,
+          "kind": "on",
+          "snippet": "Bus.on('player/branding', (branding) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 666,
+          "kind": "emit",
+          "snippet": "['update_branding', (m) => Bus.emit('player/branding', m?.branding || {})],"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/end",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1650,
+          "kind": "on",
+          "snippet": "Bus.on('player/end', (m = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 494,
+          "kind": "emit",
+          "snippet": "if (finished) Bus.emit('player/end', m);"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 620,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/end', m);"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/error",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 269,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/error', { message: 'Aucun identifiant joueur — veuillez vous inscrire.' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 280,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/error', { message: 'Aucun identifiant joueur — veuillez vous inscrire.' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 285,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/error', { message: 'Session différente — veuillez vous réinscrire.' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 613,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/error', { message });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 617,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/error', { message });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 709,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/error', { message: 'Session inconnue — configuration incomplète.' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 718,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/error', { message: 'Auth bingo papier incomplète (player_id manquant).' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 745,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/error', { message: 'Auth bingo papier incomplète (player_id manquant).' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 750,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/error', { message: 'Grille introuvable — merci de recharger ou de récupérer une grille.' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 754,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/error', { message: 'Auth bingo incomplète (player_id, id_grid ou token).' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 786,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/error', { message: 'Identifiant joueur introuvable. Inscris-toi d’abord.' });"
+        }
+      ],
+      "counts": {
+        "emit": 11,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/forceFullCurrent",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1768,
+          "kind": "emit",
+          "snippet": "// Bus.emit('player/forceFullCurrent', { enabled: true });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/forceRevealNow",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1835,
+          "kind": "on",
+          "snippet": "Bus.on('player/forceRevealNow', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 451,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/forceRevealNow');"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/instance",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 332,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('player/instance', { player: ytPlayer }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/bingo.js",
+          "line": 42,
+          "kind": "on",
+          "snippet": "const off = Bus.on('player/instance', ({ player }) => {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/main:startState",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1892,
+          "kind": "on",
+          "snippet": "Bus.on('player/main:startState', ({ started }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 389,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/main:startState', { started: mainStarted });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 430,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/main:startState', { started: mainStarted });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 509,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/main:startState', { started: true });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 568,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/main:startState', { started: true });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 600,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/main:startState', { started: true });"
+        }
+      ],
+      "counts": {
+        "emit": 5,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/notifications",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 520,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/notifications', { items: m.notifications });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/options:clear",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1745,
+          "kind": "on",
+          "snippet": "Bus.on('player/options:clear', () => { if ($options) $options.innerHTML = ''; });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 400,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/options:clear');"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 440,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/options:clear');"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/options:hold",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 2015,
+          "kind": "on",
+          "snippet": "Bus.on('player/options:hold', ({ options }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 397,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/options:hold', { options: m.options }); // on les garde côté UI"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 437,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/options:hold', { options: m.options });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/options:proposals",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1723,
+          "kind": "on",
+          "snippet": "Bus.on('player/options:proposals', ({ options }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 395,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/options:proposals', { options: m.options });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 435,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/options:proposals', { options: m.options });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/paper:listen",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 97,
+          "kind": "on",
+          "snippet": "Bus.on('player/paper:listen', async ({ sessionId: sid, playerId, playerName, gridId } = {}) => {"
+        }
+      ],
+      "counts": {
+        "emit": 0,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/paper:quit",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 90,
+          "kind": "on",
+          "snippet": "Bus.on('player/paper:quit', ({ sessionId: sid, playerId, playerName }) => {"
+        }
+      ],
+      "counts": {
+        "emit": 0,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/players:update",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1921,
+          "kind": "on",
+          "snippet": "Bus.on('player/players:update', ({ total, players, playerRank, playerScore }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 443,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/players:update', { total: m.totalPlayers, players: m.players });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 461,
+          "kind": "emit",
+          "snippet": "['updatePlayers', (m) => Bus.emit('player/players:update', {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 513,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/players:update', {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 605,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/players:update', { total, players: m.players });"
+        }
+      ],
+      "counts": {
+        "emit": 4,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/points:update",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1941,
+          "kind": "on",
+          "snippet": "Bus.on('player/points:update', ({ points }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 378,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/points:update', { points: Number(m.pointsAvailable) });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 420,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/points:update', { points: Number(m.pointsAvailable) });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/ready",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 802,
+          "kind": "on",
+          "snippet": "Bus.on('player/ready', (payload) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 329,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/ready', { source: 'yt' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 989,
+          "kind": "emit",
+          "snippet": "try { GameStore.set('status.playerReady', true); Bus.emit('player/ready', { source: 'support-prepared' }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1031,
+          "kind": "emit",
+          "snippet": "try { GameStore.set('status.playerReady', true); Bus.emit('player/ready', { source: 'support-started' }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1594,
+          "kind": "on",
+          "snippet": "Bus.on('player/ready', (info) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 704,
+          "kind": "on",
+          "snippet": "Bus.on('player/ready', async (info) => {"
+        }
+      ],
+      "counts": {
+        "emit": 3,
+        "on": 3,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/registered",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 347,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/registered', { role: m.role || 'player' });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/running:update",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1677,
+          "kind": "on",
+          "snippet": "Bus.on('player/running:update', (m = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 360,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/running:update', runningMetaFrom(m));"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 412,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/running:update', runningMetaFrom(m));"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 502,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/running:update', { ...meta, index1based });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 545,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/running:update', { theme: '', indexLabel: '#1/?', phaseLabel: info.name, titleQZ: '', index1based: 1 });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 560,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/running:update', { ...meta, index1based: (Number.isFinite(cur1) ? cur1 : undefined) });"
+        }
+      ],
+      "counts": {
+        "emit": 5,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/sessionEnded",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 2029,
+          "kind": "on",
+          "snippet": "Bus.on('player/sessionEnded', async (m = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 670,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/sessionEnded', { message });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/sessionInfos",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 2034,
+          "kind": "on",
+          "snippet": "Bus.on('player/sessionInfos', ({ prizes, mainTitle, paperMode }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 664,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/sessionInfos', m);"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/song:meta",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1946,
+          "kind": "on",
+          "snippet": "Bus.on('player/song:meta', ({ songDuration }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 364,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/song:meta', { songDuration: lastSongDuration });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 416,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/song:meta', { songDuration: lastSongDuration });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/state",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1605,
+          "kind": "on",
+          "snippet": "Bus.on('player/state', ({ game_status }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 357,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/state', { game_status: st });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 408,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/state', { game_status: st });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 492,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/state', { game_status });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 527,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/state', { game_status: status });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 538,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/state', { game_status: info.game_status });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 580,
+          "kind": "emit",
+          "snippet": "if (next !== -1) Bus.emit('player/state', { game_status: info.game_status });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 596,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/state', { game_status: playing ? 'En cours' : 'Pause' });"
+        }
+      ],
+      "counts": {
+        "emit": 7,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/time:start",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/play/play-ui.js",
+          "line": 1748,
+          "kind": "on",
+          "snippet": "Bus.on('player/time:start', ({ remainingTime }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 447,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/time:start', { remainingTime: rt });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 507,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/time:start', { remainingTime: Number(m.clip_duration) });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 566,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/time:start', { remainingTime: Number(m.clip_duration) });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 598,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/time:start', { remainingTime: Number(m.remainingTime) });"
+        }
+      ],
+      "counts": {
+        "emit": 4,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "player/unready",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 805,
+          "kind": "on",
+          "snippet": "Bus.on('player/unready', (payload) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 399,
+          "kind": "emit",
+          "snippet": "Bus.emit('player/unready', { source: 'yt', error: e?.data ?? 'unknown' });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "prizes/updated",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/session_modals.js",
+          "line": 1967,
+          "kind": "emit",
+          "snippet": "Bus.emit('prizes/updated',   { prizes: session.prizes, mainTitle: session.mainTitle, token });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 789,
+          "kind": "on",
+          "snippet": "Bus.on('prizes/updated', ({ prizes, mainTitle, token }) => {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "q/set",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2227,
+          "kind": "on",
+          "snippet": "Bus.on('q/set',          ({ index, total }) => { renderQuestionIndex(index, total); updateNextDisabled(); });"
+        }
+      ],
+      "counts": {
+        "emit": 0,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "question/rendered",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 910,
+          "kind": "on",
+          "snippet": "Bus.on('question/rendered', () => refit());"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 1324,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('question/rendered', { index: idx }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 1353,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('question/rendered', { index: idx }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_sync.js",
+          "line": 202,
+          "kind": "on",
+          "snippet": "Bus.on('question/rendered', () => { onNext(); });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_sync.js",
+          "line": 234,
+          "kind": "on",
+          "snippet": "_offRendered = Bus.on('question/rendered', () => { sendIfNotBingo(); onNext(); });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 3,
+        "once": 0
+      }
+    },
+    {
+      "name": "quiz/interseries/end",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 1660,
+          "kind": "emit",
+          "snippet": "Bus.emit('quiz/interseries/end');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2025,
+          "kind": "emit",
+          "snippet": "Bus.emit('quiz/interseries/end'); // le player stoppera la pause et relancera"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2035,
+          "kind": "emit",
+          "snippet": "Bus.emit('quiz/interseries/end', { reason: 'prev-resume' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1669,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('quiz/interseries/end', { reason: 'prev-resume' }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 279,
+          "kind": "on",
+          "snippet": "Bus.on('quiz/interseries/end', endHandler);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 301,
+          "kind": "on",
+          "snippet": "Bus.on('quiz/interseries/end', endHandler);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 406,
+          "kind": "on",
+          "snippet": "Bus.on('quiz/interseries/end', (payload = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 483,
+          "kind": "emit",
+          "snippet": "['skipPause', (m) => Bus.emit('quiz/interseries/end', m)],"
+        }
+      ],
+      "counts": {
+        "emit": 5,
+        "on": 3,
+        "once": 0
+      }
+    },
+    {
+      "name": "quiz/interseries/ended",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2430,
+          "kind": "on",
+          "snippet": "Bus.on('quiz/interseries/ended', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 280,
+          "kind": "on",
+          "snippet": "Bus.on('quiz/interseries/ended', endHandler);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 302,
+          "kind": "on",
+          "snippet": "Bus.on('quiz/interseries/ended', endHandler);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 328,
+          "kind": "emit",
+          "snippet": "Bus.emit('quiz/interseries/ended', { lotId: nextLot, reason: endedReason });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 415,
+          "kind": "on",
+          "snippet": "Bus.on('quiz/interseries/ended', (payload = {}) => {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 4,
+        "once": 0
+      }
+    },
+    {
+      "name": "quiz/interseries/pause",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 299,
+          "kind": "on",
+          "snippet": "Bus.on('quiz/interseries/pause', pauseHandler);"
+        }
+      ],
+      "counts": {
+        "emit": 0,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "quiz/interseries/resume",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 300,
+          "kind": "on",
+          "snippet": "Bus.on('quiz/interseries/resume', resumeHandler);"
+        }
+      ],
+      "counts": {
+        "emit": 0,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "quiz/interseries/start",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2425,
+          "kind": "on",
+          "snippet": "Bus.on('quiz/interseries/start', ({ lotId, lotName, lotOrder, duration, manual }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 224,
+          "kind": "emit",
+          "snippet": "Bus.emit('quiz/interseries/start', {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/bingo:correction:master",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4944,
+          "kind": "on",
+          "snippet": "Bus.on('remote/bingo:correction:master', ({ numbers }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 157,
+          "kind": "emit",
+          "snippet": "if (g === 'bingo') Bus.emit('remote/bingo:correction:master', { numbers: bingoMasterNumbersFromPreload() });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/bingo:correction:played",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4949,
+          "kind": "on",
+          "snippet": "Bus.on('remote/bingo:correction:played', ({ numbers }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 556,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/bingo:correction:played', { numbers: bingoPlayedNumbers(playedCount) });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 608,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/bingo:correction:played', { numbers: bingoPlayedNumbers(playedCount) });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/bingo:phase",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4905,
+          "kind": "on",
+          "snippet": "Bus.on('remote/bingo:phase', ({ name, win }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 551,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/bingo:phase', { name: info.name, win: false });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 620,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/bingo:phase', { name: info.name, win: true });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/bingo:winner",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4537,
+          "kind": "on",
+          "snippet": "Bus.on('remote/bingo:winner', ({ id, name, prize_label, won_phase, grid_number }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 582,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/bingo:winner', winner);"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 629,
+          "kind": "emit",
+          "snippet": "if (winner.name) Bus.emit('remote/bingo:winner', winner);"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/branding",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5210,
+          "kind": "on",
+          "snippet": "Bus.on('remote/branding', (branding) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 503,
+          "kind": "emit",
+          "snippet": "['update_branding', (m) => Bus.emit('remote/branding', m?.branding || {})],"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/controls:mode",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4957,
+          "kind": "on",
+          "snippet": "Bus.on('remote/controls:mode', ({ mode }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 480,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/controls:mode', { mode: 'default' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 486,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/controls:mode', { mode: 'quizBetweenSeries' });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/currentIndex",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4842,
+          "kind": "on",
+          "snippet": "Bus.on('remote/currentIndex', ({ index, total }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 204,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/currentIndex', { index: idx, total });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/end",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4723,
+          "kind": "on",
+          "snippet": "Bus.on('remote/end', (m) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 513,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/end', m);"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/error",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5221,
+          "kind": "on",
+          "snippet": "Bus.on('remote/error', (payload = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 396,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/error', { message });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 401,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/error', { message });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 504,
+          "kind": "emit",
+          "snippet": "['songStuck', () => Bus.emit('remote/error', { message: 'Le player principal a signalé un blocage.' })],"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 536,
+          "kind": "emit",
+          "snippet": "['gameStateError', (m) => Bus.emit('remote/error', { message: m?.message || 'Erreur état de jeu' })],"
+        }
+      ],
+      "counts": {
+        "emit": 4,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/firstClickDetected",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4690,
+          "kind": "on",
+          "snippet": "Bus.on('remote/firstClickDetected', (payload = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 505,
+          "kind": "emit",
+          "snippet": "['firstClickDetected', () => Bus.emit('remote/firstClickDetected')],"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/forcedDisconnect",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4718,
+          "kind": "on",
+          "snippet": "Bus.on('remote/forcedDisconnect', (m = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 407,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/forcedDisconnect', m || {});"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/forceFullCurrent",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5114,
+          "kind": "on",
+          "snippet": "Bus.on('remote/forceFullCurrent', ({ active } = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 647,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/forceFullCurrent', { active });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/gameResumed",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5274,
+          "kind": "on",
+          "snippet": "Bus.on('remote/gameResumed', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 535,
+          "kind": "emit",
+          "snippet": "['GAME_RESUMED', (m) => Bus.emit('remote/gameResumed', m)],"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/indexChanged",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5145,
+          "kind": "on",
+          "snippet": "Bus.on('remote/indexChanged', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 450,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/indexChanged', { index: currentIndex });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/local:set_duration",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 3477,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/local:set_duration', { seconds: ch.value });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 707,
+          "kind": "on",
+          "snippet": "Bus.on('remote/local:set_duration', ({ seconds }) => {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/notifications",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 564,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/notifications', { items: m.notifications });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 631,
+          "kind": "emit",
+          "snippet": "['notification', (m) => { Bus.emit('remote/notifications', { items: [m] }); }],"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/now",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4817,
+          "kind": "on",
+          "snippet": "Bus.on('remote/now', ({ item, label }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 203,
+          "kind": "emit",
+          "snippet": "if (now) Bus.emit('remote/now', { item: now, label: labelFor(now, g) });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/options:correct",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4936,
+          "kind": "on",
+          "snippet": "Bus.on('remote/options:correct', ({ text }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 375,
+          "kind": "emit",
+          "snippet": "if (found) Bus.emit('remote/options:correct', { text: optionTextFromWS(found, g) });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/options:proposals",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4926,
+          "kind": "on",
+          "snippet": "Bus.on('remote/options:proposals', ({ options }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 369,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/options:proposals', { options });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/options:update",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4913,
+          "kind": "on",
+          "snippet": "Bus.on('remote/options:update', (o = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 435,
+          "kind": "emit",
+          "snippet": "if (Object.keys(opts).length) Bus.emit('remote/options:update', opts);"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 466,
+          "kind": "emit",
+          "snippet": "if (Object.keys(opts).length) Bus.emit('remote/options:update', opts);"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/played",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5107,
+          "kind": "on",
+          "snippet": "Bus.on('remote/played', ({ items }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 212,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/played', { items: buildPlayedListForUI(idx) });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/played:allGrouped",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5080,
+          "kind": "on",
+          "snippet": "Bus.on('remote/played:allGrouped', ({ groups }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 530,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/played:allGrouped', { groups });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/players:update",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 3153,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/players:update', { total: out.players.length, players: out.players });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4491,
+          "kind": "on",
+          "snippet": "Bus.on('remote/players:update', ({ total, players }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 420,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/players:update', { total: m.totalPlayers, players: m.players });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 455,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/players:update', { total, players: m.players });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 506,
+          "kind": "emit",
+          "snippet": "['updatePlayers', (m) => Bus.emit('remote/players:update', { total: m.totalPlayers, players: m.players })],"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 558,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/players:update', {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 612,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/players:update', { total, players: m.players });"
+        }
+      ],
+      "counts": {
+        "emit": 6,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/playlist:snapshot",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4883,
+          "kind": "on",
+          "snippet": "Bus.on('remote/playlist:snapshot', ({ items = [], total = 0, game = 'quiz' } = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 156,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('remote/playlist:snapshot', { items: playlist.items, total: playlist.total, game: g }); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/playlist:update",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4893,
+          "kind": "on",
+          "snippet": "Bus.on('remote/playlist:update', ({ total, game }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5138,
+          "kind": "on",
+          "snippet": "Bus.on('remote/playlist:update', () => {"
+        }
+      ],
+      "counts": {
+        "emit": 0,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/present",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 362,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('remote/present', m); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/primaryDisconnected",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5227,
+          "kind": "on",
+          "snippet": "Bus.on('remote/primaryDisconnected', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 534,
+          "kind": "emit",
+          "snippet": "['PRIMARY_DISCONNECTED', () => Bus.emit('remote/primaryDisconnected')],"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/primaryInteractionRequired",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4682,
+          "kind": "on",
+          "snippet": "Bus.on('remote/primaryInteractionRequired', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 427,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/primaryInteractionRequired', { reason: 'firstClickMissing' });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/quiz:betweenSeries",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5002,
+          "kind": "on",
+          "snippet": "Bus.on('remote/quiz:betweenSeries', ({ nextLotName, minutes }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 490,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/quiz:betweenSeries', {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/registered",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 391,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/registered', { role: m.role || 'secondary' });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/sessionEnded",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5215,
+          "kind": "on",
+          "snippet": "Bus.on('remote/sessionEnded', (payload = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 533,
+          "kind": "emit",
+          "snippet": "['SESSION_ENDED', (m) => Bus.emit('remote/sessionEnded', m)],"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/sessionInfos",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5156,
+          "kind": "on",
+          "snippet": "Bus.on('remote/sessionInfos', ({ prizes, mainTitle, paperMode, manualAdvance }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 502,
+          "kind": "emit",
+          "snippet": "['update_session_infos', (m) => Bus.emit('remote/sessionInfos', m)],"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/startSupportAck",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5124,
+          "kind": "on",
+          "snippet": "Bus.on('remote/startSupportAck', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 650,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/startSupportAck', {});"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/state",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4554,
+          "kind": "on",
+          "snippet": "Bus.on('remote/state', (m) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 397,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/state', { game_status: 'En attente' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 402,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/state', { game_status: 'En attente' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 414,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/state', { game_status, paperAwaitingFinal: awaiting, remainingTime: pickRemaining(m), current_phase: currentPhase });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 442,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/state', { game_status: gs, paperAwaitingFinal: awaiting, remainingTime: pickRemaining(m), current_phase: currentPhase });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 550,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/state', { game_status, remainingTime: pickRemaining(m), current_phase: Number(m.current_phase) });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 588,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/state', { game_status });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 619,
+          "kind": "emit",
+          "snippet": "if (next != -1) Bus.emit('remote/state', { game_status: info.game_status, current_phase: next });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 635,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/state', { game_status: playing ? 'En cours' : 'Pause', remainingTime: pickRemaining(m), current_phase: currentPhase });"
+        }
+      ],
+      "counts": {
+        "emit": 8,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/supportEnded",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5131,
+          "kind": "on",
+          "snippet": "Bus.on('remote/supportEnded', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 653,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/supportEnded', {});"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/timer:pause",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4806,
+          "kind": "on",
+          "snippet": "Bus.on('remote/timer:pause', ({ remainingTime }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 695,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/timer:pause', { remainingTime: __remainingLeft });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/timer:resume",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4811,
+          "kind": "on",
+          "snippet": "Bus.on('remote/timer:resume', ({ remainingTime }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 702,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/timer:resume', { remainingTime: __remainingLeft });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/upcoming",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 4867,
+          "kind": "on",
+          "snippet": "Bus.on('remote/upcoming', (payload = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 211,
+          "kind": "emit",
+          "snippet": "Bus.emit('remote/upcoming', { items: sliced, labels, start, numbers, total });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "remote/videoMeta",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 501,
+          "kind": "emit",
+          "snippet": "['updateVideoMeta', (m) => Bus.emit('remote/videoMeta', m)],"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "reply:${cid}",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 275,
+          "kind": "emit",
+          "snippet": "if (cid) Bus.emit(`reply:${cid}`, data);"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "session/init",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 542,
+          "kind": "emit",
+          "snippet": "Bus.emit('session/init', { session: s });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2215,
+          "kind": "on",
+          "snippet": "Bus.on('session/init',   () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/logger.global.js",
+          "line": 516,
+          "kind": "on",
+          "snippet": "window.Bus.on('session/init', ({ session } = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_modals.js",
+          "line": 829,
+          "kind": "on",
+          "snippet": "Bus.on('session/init', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 213,
+          "kind": "on",
+          "snippet": "Bus.on('session/init', () => ensureWSBoot());"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 260,
+          "kind": "on",
+          "snippet": "Bus.on('session/init', async ({ session }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 309,
+          "kind": "emit",
+          "snippet": "setTimeout(() => { if (!__didRegister) Bus.emit('session/init', { session }); }, 1000);"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5363,
+          "kind": "emit",
+          "snippet": "Bus.emit('session/init', { session: { sessionId } });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ui.js",
+          "line": 5366,
+          "kind": "emit",
+          "snippet": "Bus.emit('session/init', { session: {} });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 727,
+          "kind": "on",
+          "snippet": "Bus.on('session/init', async ({ session }) => {"
+        }
+      ],
+      "counts": {
+        "emit": 4,
+        "on": 6,
+        "once": 0
+      }
+    },
+    {
+      "name": "session/set",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/logger.global.js",
+          "line": 520,
+          "kind": "on",
+          "snippet": "window.Bus.on('session/set', ({ sessionId }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 699,
+          "kind": "on",
+          "snippet": "Bus.on('session/set', ({ sessionId: sid }) => {"
+        }
+      ],
+      "counts": {
+        "emit": 0,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/endGame",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2384,
+          "kind": "on",
+          "snippet": "Bus.on('srv/endGame', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 450,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/endGame', {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/forceFullCurrent",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2288,
+          "kind": "on",
+          "snippet": "Bus.on('srv/forceFullCurrent', ({ active } = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 542,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/forceFullCurrent', { active });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 677,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/forceFullCurrent', { active });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/nextSong",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 872,
+          "kind": "on",
+          "snippet": "Bus.on('srv/nextSong', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 474,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/nextSong', m);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 647,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/nextSong', { reason: 'remote' });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/notifications",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 533,
+          "kind": "on",
+          "snippet": "const off1 = Bus.on('srv/notifications', (payload) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 631,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/notifications', { items: { log_type: LOG.LocalMilestone, message: FIRST_SONG_LINES[2], ts: now     }});"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 632,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/notifications', { items: { log_type: LOG.LocalMilestone, message: FIRST_SONG_LINES[1], ts: now + 1 }});"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 633,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/notifications', { items: { log_type: LOG.LocalMilestone, message: FIRST_SONG_LINES[0], ts: now + 2 }});"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 641,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/notifications', { items: { log_type: LOG.LocalMilestone, message: MONEY_TIME_LINE, ts: Date.now() }});"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 657,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/notifications', { items: { log_type: LOG.LocalFun, message: pickNonRepeating(bag), ts: Date.now() }});"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 690,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/notifications', { items: winnersOnly });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/bingo.js",
+          "line": 242,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/notifications', {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 394,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/notifications', { items: m });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 398,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/notifications', { items: m });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 622,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/notifications', { items: m.notifications });"
+        }
+      ],
+      "counts": {
+        "emit": 10,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/paper/finalizeEnd",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2401,
+          "kind": "on",
+          "snippet": "Bus.on('srv/paper/finalizeEnd', finalizePaperAwaitingEnd);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/session_sync.js",
+          "line": 229,
+          "kind": "on",
+          "snippet": "_offFinalize = Bus.on('srv/paper/finalizeEnd', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 459,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/paper/finalizeEnd');"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/phaseOver",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 583,
+          "kind": "on",
+          "snippet": "const off2 = Bus.on('srv/phaseOver', (m) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/bingo.js",
+          "line": 214,
+          "kind": "on",
+          "snippet": "Bus.on('srv/phaseOver', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 437,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/phaseOver', normalizedPhaseOver);"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/phaseUpdate",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 604,
+          "kind": "on",
+          "snippet": "const off3 = Bus.on('srv/phaseUpdate', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 697,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/phaseUpdate');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 425,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/phaseUpdate');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 604,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/phaseUpdate');"
+        }
+      ],
+      "counts": {
+        "emit": 3,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/playerUpdate",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2305,
+          "kind": "on",
+          "snippet": "Bus.on('srv/playerUpdate', (payload = {}) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 696,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/playerUpdate', { players: GameStore.get('players'), total: GameStore.get('totalPlayers') });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 384,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/playerUpdate', payload);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 390,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/playerUpdate', { players: GameStore.get('players'), total: GameStore.get('totalPlayers') });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 613,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/playerUpdate', {"
+        }
+      ],
+      "counts": {
+        "emit": 4,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/prevSong",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 879,
+          "kind": "on",
+          "snippet": "Bus.on('srv/prevSong', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 481,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/prevSong', m);"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/startSupport",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 867,
+          "kind": "on",
+          "snippet": "Bus.on('srv/startSupport', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 545,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/startSupport');"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/supportEnded",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 548,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('srv/supportEnded'); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/toggleInterseriesPause",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 862,
+          "kind": "on",
+          "snippet": "Bus.on('srv/toggleInterseriesPause', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 468,
+          "kind": "emit",
+          "snippet": "['togglePause', (m) => Bus.emit('srv/toggleInterseriesPause', m)],"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "srv/togglePlayPause",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 857,
+          "kind": "on",
+          "snippet": "Bus.on('srv/togglePlayPause', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 466,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/togglePlayPause', m);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 637,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/togglePlayPause', { play: true, source: 'remote' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 642,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/togglePlayPause', { play: false, source: 'remote' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 668,
+          "kind": "emit",
+          "snippet": "Bus.emit('srv/togglePlayPause', { play: true, source: 'remote' });"
+        }
+      ],
+      "counts": {
+        "emit": 4,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/ended",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2300,
+          "kind": "on",
+          "snippet": "Bus.on('support/ended', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 391,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/ended'); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1186,
+          "kind": "emit",
+          "snippet": "audio.addEventListener('ended', () => { try { Bus.emit('support/ended'); } catch {} });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1201,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/ended'); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1220,
+          "kind": "emit",
+          "snippet": "video.addEventListener('ended', () => { try { Bus.emit('support/ended'); } catch {} });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1233,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/ended'); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1308,
+          "kind": "on",
+          "snippet": "Bus.on('support/ended', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 829,
+          "kind": "on",
+          "snippet": "Bus.on('support/ended', () => {"
+        }
+      ],
+      "counts": {
+        "emit": 5,
+        "on": 3,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/ended/suppress:off",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1307,
+          "kind": "on",
+          "snippet": "Bus.on('support/ended/suppress:off', () => { suppressEndedUi = false; });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/bingo.js",
+          "line": 190,
+          "kind": "emit",
+          "snippet": "Bus.emit('support/ended/suppress:off');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 345,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/ended/suppress:off'); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/ended/suppress:on",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1306,
+          "kind": "on",
+          "snippet": "Bus.on('support/ended/suppress:on',  () => { suppressEndedUi = true;  });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/bingo.js",
+          "line": 175,
+          "kind": "emit",
+          "snippet": "Bus.emit('support/ended/suppress:on');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 129,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/ended/suppress:on'); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/error",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1187,
+          "kind": "emit",
+          "snippet": "audio.addEventListener('error', () => { try { Bus.emit('support/error'); } catch {} });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1221,
+          "kind": "emit",
+          "snippet": "video.addEventListener('error', () => { try { Bus.emit('support/error'); } catch {} });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1313,
+          "kind": "on",
+          "snippet": "Bus.on('support/error', () => {"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/loading",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2458,
+          "kind": "on",
+          "snippet": "Bus.on('support/loading', () => refreshControls());"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 653,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/loading'); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 923,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/loading'); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 963,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/loading'); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1103,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/loading'); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1135,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/loading'); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 5,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/manualAwaiting",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 94,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/manualAwaiting', { awaiting: !!v }); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/overlays/hide",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1303,
+          "kind": "on",
+          "snippet": "Bus.on('support/overlays/hide', ({ delay = 0 } = {}) => { try { hideVideoOverlays(delay); } catch {} });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/bingo.js",
+          "line": 124,
+          "kind": "emit",
+          "snippet": "setTimeout(() => Bus.emit('support/overlays/hide', { delay: 0 }), 3000);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 393,
+          "kind": "emit",
+          "snippet": "setTimeout(() => Bus.emit('support/overlays/hide', { delay: 0 }), 3000); // puis cache après 3s"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/overlays/show",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1302,
+          "kind": "on",
+          "snippet": "Bus.on('support/overlays/show', () => { try { showVideoOverlays(); } catch {} });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/bingo.js",
+          "line": 123,
+          "kind": "emit",
+          "snippet": "Bus.emit('support/overlays/show');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 176,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/overlays/show', { delay: 0 }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 392,
+          "kind": "emit",
+          "snippet": "Bus.emit('support/overlays/show');        // affiche les masques"
+        }
+      ],
+      "counts": {
+        "emit": 3,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/playstate",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2296,
+          "kind": "on",
+          "snippet": "Bus.on('support/playstate', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 82,
+          "kind": "emit",
+          "snippet": "Bus.emit('support/playstate', { playing: !!v });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/preplay/started",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 798,
+          "kind": "on",
+          "snippet": "Bus.on('support/preplay/started', (payload) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2495,
+          "kind": "on",
+          "snippet": "Bus.on('support/preplay/started', () => refreshControls(), updateNextDisabled());"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 752,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/preplay/started', { token: currentSupportToken, source: 'yt-resume' }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1024,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/preplay/started', { token: supportToken, source: 'yt' }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1091,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/preplay/started', { token: supportToken, source: 'yt' }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1351,
+          "kind": "on",
+          "snippet": "Bus.on('support/preplay/started', () => document.body.classList.add('is-preplay'));   // début lecture support (playBefore)"
+        }
+      ],
+      "counts": {
+        "emit": 3,
+        "on": 3,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/segment",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 147,
+          "kind": "emit",
+          "snippet": "Bus.emit('support/segment', {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/bingo.js",
+          "line": 220,
+          "kind": "on",
+          "snippet": "Bus.on('support/segment', (seg) => {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/started",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 794,
+          "kind": "on",
+          "snippet": "Bus.on('support/started', (payload) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2459,
+          "kind": "on",
+          "snippet": "Bus.on('support/started', async ({ token, reason }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2706,
+          "kind": "on",
+          "snippet": "try { Bus.on('support/started', off); } catch { resolve(); }"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 801,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/started', { token, reason }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1352,
+          "kind": "on",
+          "snippet": "Bus.on('support/started',         () => document.body.classList.remove('is-preplay'));  // affichage de la question"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/bingo.js",
+          "line": 128,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/started', { token: null, reason: 'yt-after-jingle' }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 63,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/started', { token, reason: 'no-support' }); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/quiz.js",
+          "line": 177,
+          "kind": "emit",
+          "snippet": "Bus.emit('support/started', { token, reason: 'yt-ended-playbefore' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 723,
+          "kind": "on",
+          "snippet": "Bus.on('support/started', async ({ token, reason }) => {"
+        }
+      ],
+      "counts": {
+        "emit": 4,
+        "on": 5,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/type",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 955,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('support/type', currentTypeSupport); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/bingo.js",
+          "line": 228,
+          "kind": "on",
+          "snippet": "Bus.on('support/type', (t) => { _currentTypeSupport = Number(t) || null; });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "support/videoId",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 145,
+          "kind": "emit",
+          "snippet": "if (videoId) Bus.emit('support/videoId', videoId);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/strategies/bingo.js",
+          "line": 226,
+          "kind": "on",
+          "snippet": "Bus.on('support/videoId', (id) => { if (id) expectedVideoId = id; });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "timer/end",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2455,
+          "kind": "on",
+          "snippet": "Bus.on('timer/end', hideQuizLeaderboardOverlay);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1269,
+          "kind": "on",
+          "snippet": "offTimerEnd = Bus.on('timer/end', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 51,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/end'); // passage à la question suivante"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 127,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/end');"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "timer/forceRevealNow",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2348,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/forceRevealNow', { reason: 'all-answered' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 811,
+          "kind": "on",
+          "snippet": "Bus.on('timer/forceRevealNow', async (payload = {}) => {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "timer/pause",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 139,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/pause', { remaining: rem });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "timer/reveal",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2435,
+          "kind": "on",
+          "snippet": "Bus.on('timer/reveal', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/quiz_ui.js",
+          "line": 10,
+          "kind": "on",
+          "snippet": "const offReveal = Bus.on('timer/reveal', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 34,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/reveal');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 99,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/reveal');"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "timer/start",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 56,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/start', { seconds });"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "timer/stop",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 153,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/stop');"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "timer/tick",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 25,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/tick', { remaining: rem });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 90,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/tick', { remaining: 0 });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 0,
+        "once": 0
+      }
+    },
+    {
+      "name": "timer/transition",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1284,
+          "kind": "on",
+          "snippet": "Bus.on('timer/transition', ({ progress }) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 43,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/transition', { progress: p }); // 0 au début, 1 à la fin"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 111,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/transition', { progress: p });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "timer/transition/end",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1292,
+          "kind": "on",
+          "snippet": "Bus.on('timer/transition/end', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 48,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/transition/end');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 121,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/transition/end');"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "timer/transition/start",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/player/index.js",
+          "line": 1277,
+          "kind": "on",
+          "snippet": "Bus.on('timer/transition/start', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 38,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/transition/start', { durationMs: REVEAL_DELAY_MS });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/timer_engine.js",
+          "line": 104,
+          "kind": "emit",
+          "snippet": "Bus.emit('timer/transition/start', { durationMs: delay });"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "ui/next",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 747,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('ui/next'); } catch {}"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 829,
+          "kind": "on",
+          "snippet": "Bus.on('ui/next', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2029,
+          "kind": "emit",
+          "snippet": "Bus.emit('ui/next');"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "ui/pause",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 820,
+          "kind": "on",
+          "snippet": "Bus.on('ui/pause', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2015,
+          "kind": "emit",
+          "snippet": "Bus.emit('ui/pause');"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "ui/play",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 810,
+          "kind": "on",
+          "snippet": "Bus.on('ui/play', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2018,
+          "kind": "emit",
+          "snippet": "Bus.emit('ui/play');"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "ui/podium/refresh",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2419,
+          "kind": "on",
+          "snippet": "Bus.on('ui/podium/refresh', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 666,
+          "kind": "emit",
+          "snippet": "Bus.emit('ui/podium/refresh');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/games/bingo_ui.js",
+          "line": 684,
+          "kind": "emit",
+          "snippet": "if (Number(lastState.current_phase) === -1) { try { Bus.emit('ui/podium/refresh'); } catch {} }"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "ui/prev",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 836,
+          "kind": "on",
+          "snippet": "Bus.on('ui/prev', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2039,
+          "kind": "emit",
+          "snippet": "Bus.emit('ui/prev');"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "ui/quit",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 845,
+          "kind": "on",
+          "snippet": "Bus.on('ui/quit', async () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2050,
+          "kind": "emit",
+          "snippet": "Bus.emit('ui/quit');"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "ui/startSupport",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 815,
+          "kind": "on",
+          "snippet": "Bus.on('ui/startSupport', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2065,
+          "kind": "emit",
+          "snippet": "try { Bus.emit('ui/startSupport'); } catch {}"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "ws/close",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2501,
+          "kind": "on",
+          "snippet": "Bus.on('ws/close', () => bannerWarn('Déconnecté — tentative de reconnexion...', { ttl: 3000 }));"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 291,
+          "kind": "emit",
+          "snippet": "Bus.emit('ws/close');"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "ws/error",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2502,
+          "kind": "on",
+          "snippet": "Bus.on('ws/error', () => bannerError('Erreur réseau', { ttl: 2500 }));"
+        }
+      ],
+      "counts": {
+        "emit": 0,
+        "on": 1,
+        "once": 0
+      }
+    },
+    {
+      "name": "ws/open",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/canvas_display.js",
+          "line": 2500,
+          "kind": "on",
+          "snippet": "Bus.on('ws/open', ()  => bannerInfo('Connecté au serveur', { ttl: 1500 }));"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 226,
+          "kind": "emit",
+          "snippet": "Bus.emit('ws/open');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 259,
+          "kind": "emit",
+          "snippet": "Bus.emit('ws/open');"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 138,
+          "kind": "on",
+          "snippet": "Bus.on('ws/open',   ()  => { __lastWSState = 'open'; });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 231,
+          "kind": "on",
+          "snippet": "const off1 = Bus.on('ws/open', finish);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 317,
+          "kind": "on",
+          "snippet": "Bus.on('ws/open', () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 88,
+          "kind": "on",
+          "snippet": "Bus.on('ws/open',   ()  => { lastWSState = 'open'; });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 174,
+          "kind": "on",
+          "snippet": "const off1 = Bus.on('ws/open', finish);"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 267,
+          "kind": "on",
+          "snippet": "Bus.on('ws/open',   ()  => { lastWSState = 'open'; });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 284,
+          "kind": "on",
+          "snippet": "const off1 = Bus.on('ws/open', finish);"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 8,
+        "once": 0
+      }
+    },
+    {
+      "name": "ws/open:debounced",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 319,
+          "kind": "emit",
+          "snippet": "__rrTimer = setTimeout(() => Bus.emit('ws/open:debounced'), 10);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 321,
+          "kind": "on",
+          "snippet": "Bus.on('ws/open:debounced', async () => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 806,
+          "kind": "on",
+          "snippet": "Bus.on('ws/open:debounced', () => {"
+        }
+      ],
+      "counts": {
+        "emit": 1,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "ws/registered",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 260,
+          "kind": "emit",
+          "snippet": "Bus.emit('ws/registered', { ack: { ok: true, meta: data } });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 281,
+          "kind": "on",
+          "snippet": "const off = Bus.on('ws/registered', (a) => { try { off(); } catch {} resolve(a?.ack || a); });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 300,
+          "kind": "emit",
+          "snippet": "Bus.emit('ws/registered', { ack });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 801,
+          "kind": "on",
+          "snippet": "Bus.on('ws/registered', () => {"
+        }
+      ],
+      "counts": {
+        "emit": 2,
+        "on": 2,
+        "once": 0
+      }
+    },
+    {
+      "name": "ws/status",
+      "occurrences": [
+        {
+          "file": "../games/web/includes/canvas/core/boot_organizer.js",
+          "line": 229,
+          "kind": "on",
+          "snippet": "Bus.on('ws/status', (s) => {"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 168,
+          "kind": "emit",
+          "snippet": "Bus.emit('ws/status', { state: 'opening-auth' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 219,
+          "kind": "emit",
+          "snippet": "Bus.emit('ws/status', st);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 252,
+          "kind": "emit",
+          "snippet": "Bus.emit('ws/status', st);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 284,
+          "kind": "emit",
+          "snippet": "Bus.emit('ws/status', st);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 301,
+          "kind": "emit",
+          "snippet": "Bus.emit('ws/status', st);"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_connector.js",
+          "line": 372,
+          "kind": "emit",
+          "snippet": "Bus.emit('ws/status', { state: 'connecting' });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 137,
+          "kind": "on",
+          "snippet": "Bus.on('ws/status', (s) => { __lastWSState = s?.state || __lastWSState; });"
+        },
+        {
+          "file": "../games/web/includes/canvas/core/ws_effects.js",
+          "line": 232,
+          "kind": "on",
+          "snippet": "const off2 = Bus.on('ws/status', (s) => { if (s?.state === 'open') finish(); });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 87,
+          "kind": "on",
+          "snippet": "Bus.on('ws/status', (s) => { lastWSState = s?.state || lastWSState; });"
+        },
+        {
+          "file": "../games/web/includes/canvas/play/play-ws.js",
+          "line": 175,
+          "kind": "on",
+          "snippet": "const off2 = Bus.on('ws/status', (s) => { if (s?.state === 'open') finish(); });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 266,
+          "kind": "on",
+          "snippet": "Bus.on('ws/status', (s) => { lastWSState = s?.state || lastWSState; });"
+        },
+        {
+          "file": "../games/web/includes/canvas/remote/remote-ws.js",
+          "line": 285,
+          "kind": "on",
+          "snippet": "const off2 = Bus.on('ws/status', (s) => { if (s?.state === 'open') finish(); });"
+        }
+      ],
+      "counts": {
+        "emit": 6,
+        "on": 7,
+        "once": 0
+      }
+    }
+  ]
+}

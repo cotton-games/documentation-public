@@ -1,0 +1,4 @@
+PASS génération reproductible
+PASS 13 CREATE InnoDB/utf8_general_ci uniquement ; aucun ALTER legacy, DML, trigger ni table équipe
+PASS POSTCHECK : aucun DDL/DML, aucune dépendance DATABASE(), PREPARE de chaînes SELECT fixes
+PASS QR 4/4 et stats 10/10 dans DDL/POSTCHECK

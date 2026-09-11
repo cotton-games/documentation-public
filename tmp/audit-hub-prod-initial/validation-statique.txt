@@ -1,0 +1,5 @@
+00-schema-legacy.sql: 10 instructions SELECT/SHOW ; tables qualifiees ; aucune table Hub.
+01-inventaire-contextes.sql: 10 instructions SELECT/SHOW ; tables qualifiees ; aucune table Hub.
+02-offres.sql: 4 instructions SELECT/SHOW ; tables qualifiees ; aucune table Hub.
+03-donnees-metier-optionnel.sql: 5 instructions SELECT/SHOW ; tables qualifiees ; aucune table Hub.
+Controle lexical statique, pas une execution SQL ni une validation du schema PROD.
