@@ -1,0 +1,54 @@
+	#	Nom	Type	Interclassement	Attributs	Null	Valeur par défaut	Commentaires	Extra	Action
+	1	id Primaire	smallint(5)		UNSIGNED	Non	Aucun(e)		AUTO_INCREMENT	Modifier Modifier	Supprimer Supprimer	
+	2	id_championnat_saison	smallint(5)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	3	id_client	smallint(5)		UNSIGNED	Non	0			Modifier Modifier	Supprimer Supprimer	
+	4	id_offre_client	int(11)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	5	id_operation_evenement	smallint(5)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	6	id_evenement	smallint(5)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	7	date	date			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	8	heure_debut	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	9	heure_fin	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	10	flag_session_demo	tinyint(1)		UNSIGNED	Non	0			Modifier Modifier	Supprimer Supprimer	
+	11	flag_controle_numerique	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	12	flag_session_privee	tinyint(1)			Non	0			Modifier Modifier	Supprimer Supprimer	
+	13	flag_session_weblive	tinyint(1)			Non	0			Modifier Modifier	Supprimer Supprimer	
+	14	flag_session_finale	tinyint(1)			Non	0			Modifier Modifier	Supprimer Supprimer	
+	15	id_type_produit	tinyint(1)		UNSIGNED	Non	0			Modifier Modifier	Supprimer Supprimer	
+	16	id_format	tinyint(1)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	17	id_produit	mediumint(8)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	18	code_session	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	19	nb_joueurs_max	smallint(5)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	20	nom	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	21	nom_court	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	22	descriptif_court	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	23	descriptif_long	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	24	lot_1	varchar(255)	utf8mb4_unicode_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	25	lot_2	varchar(255)	utf8mb4_unicode_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	26	lot_3	varchar(255)	utf8mb4_unicode_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	27	diffusion_message	text	utf8mb4_unicode_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	28	diffusion_evenement_nom	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	29	diffusion_evenement_date	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	30	diffusion_evenement_heure	text	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	31	lien_url_sortie_app_1	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	32	lien_url_sortie_app_2	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	33	lien_url	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	34	lien_libelle	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	35	lien_target	tinyint(1)			Non	0			Modifier Modifier	Supprimer Supprimer	
+	36	video_code	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	37	flag_configuration_complete	tinyint(1)			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	38	online	tinyint(1)			Non	0			Modifier Modifier	Supprimer Supprimer	
+	39	position	tinyint(3)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	40	flag_une	tinyint(1)			Non	0			Modifier Modifier	Supprimer Supprimer	
+	41	seo_slug	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	42	seo_meta_title	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	43	seo_meta_description	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	44	design_icone	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	45	design_css_class	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	46	date_ajout	datetime			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	47	date_maj	datetime			Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	48	id_securite	varchar(255)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	49	id_user_ajout	tinyint(3)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	50	id_user_maj	tinyint(3)		UNSIGNED	Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	51	ip	varchar(15)	utf8_general_ci		Non	Aucun(e)			Modifier Modifier	Supprimer Supprimer	
+	52	lot_ids	text	utf8_general_ci		Oui	NULL			Modifier Modifier	Supprimer Supprimer	
+	53	community_item_id Index	int(10)		UNSIGNED	Oui	NULL			Modifier Modifier	Supprimer Supprimer	

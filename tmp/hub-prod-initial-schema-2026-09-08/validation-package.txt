@@ -1,0 +1,28 @@
+VERSION()
+10.11.14-MariaDB-0+deb12u2
+PASS base sans Hub NO
+PASS première installation YES
+PASS relance YES
+[blindtest_session_teams][skipped] table missing session=test
+PASS real helper: 0 DDL, QR/stats/Quick conformes ; table équipes absente gérée en lecture/écriture.
+PASS interruption après 6 tables NO
+PASS reprise complète YES
+PASS legacy intact et tables nouvelles vides YES
+PASS QR default NO
+PASS QR enum/type NO
+PASS stats absente NO
+PASS nullabilité NO
+PASS enum status NO
+PASS unique absente NO
+PASS index ordre NO
+PASS engine NO
+PASS collation NO
+PASS colonne inattendue NO
+PASS index inattendu NO
+PASS trigger NO
+PASS table Quick absente NO
+PASS Hub non vide NO
+PASS Quick non vide NO
+PASS état final reconstitué YES
+PASS : tests réels sur serveur isolé ; aucune certification 10.3 par ce test 10.11.
+Serveur isolé arrêté. Traces : /tmp/cotton-hub-pack-test-9pvuqn87
