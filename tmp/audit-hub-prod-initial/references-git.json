@@ -1,0 +1,38 @@
+{
+  "global": {
+    "main": "5ec94b28a99830e4ccfb7e85b9e0d27234d6a344",
+    "HEAD": "9b41cbd0cf6c0abde96309ed683f3b17b91b0ada"
+  },
+  "pro": {
+    "main": "f5af07280eed17210353956060b52f11c9b68dd8",
+    "HEAD": "7a4449ada69800ee47e1a296a214be5ec581d889"
+  },
+  "games": {
+    "main": "786480de1ebc7854989ac61fcd01715331f3e651",
+    "HEAD": "1c58c3b3d827d50d8663c9e661d5f7af8c1d14eb"
+  },
+  "play": {
+    "main": "39d99115516c32de48cda157038f1222419dfa2c",
+    "HEAD": "4a7c22623ca2e8f0eef6dc176c51a4ed1876e733"
+  },
+  "bingo.game": {
+    "main": "1038c05539bffa285567d75ffa2d023292311c77",
+    "HEAD": "42b829e63fc79675841b069ada2ceb293abef786"
+  },
+  "blindtest": {
+    "main": "2823bc817ffa7e049999fd5dad981bac1ae50cb2",
+    "HEAD": "67f6cb0e3aac44832e9743cb83ed6dac87ab1e10"
+  },
+  "quiz": {
+    "main": "3ddc167a6c1132d70d58f38f8fb0b02c0b8a719e",
+    "HEAD": "cabfdb16fe31ed9b34dde5b7832a2d751a838111"
+  },
+  "www": {
+    "main": "24704ea08c7e242307861e18f70fa592a2ef40f6",
+    "HEAD": "56b31c84566ea88f3a2a2e6750d96164eaa88ea6"
+  },
+  "documentation": {
+    "main": "6435df7d38a3c407288a17e420d339ddd2e2cb00",
+    "HEAD": "31d501a42d5847cdeb3005544aa6182cf8cf121e"
+  }
+}

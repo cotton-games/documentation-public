@@ -1,0 +1,6 @@
+Local MariaDB 10.11.14-MariaDB-0+deb12u2. Pas une validation MariaDB PROD 10.3.39.
+00-schema-readonly.sql: SQL execute sans erreur, 584 lignes fixture.
+01-parc-readonly.sql: SQL execute sans erreur, 24 lignes fixture.
+02-couverture-readonly.sql: SQL execute sans erreur, 15 lignes fixture.
+03-pre-post-readonly.sql: SQL execute sans erreur, 15 lignes fixture.
+Fixture : 2 candidats jour contre 1 candidat SQL pour operation 0 ; cas distingue.

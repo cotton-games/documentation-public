@@ -1,0 +1,85 @@
+TAP version 13
+# Subtest: production flag is OFF and immutable
+ok 1 - production flag is OFF and immutable
+  ---
+  duration_ms: 4.599496
+  ...
+# Subtest: normal registration, direct WS mutations refused, empty read and disconnect preserve residual data
+ok 2 - normal registration, direct WS mutations refused, empty read and disconnect preserve residual data
+  ---
+  duration_ms: 50.648077
+  ...
+# Subtest: individual answers/ranking/Canvas/end: hub=false, demo=false, residual=false
+ok 3 - individual answers/ranking/Canvas/end: hub=false, demo=false, residual=false
+  ---
+  duration_ms: 78.959322
+  ...
+# Subtest: individual answers/ranking/Canvas/end: hub=false, demo=false, residual=true
+ok 4 - individual answers/ranking/Canvas/end: hub=false, demo=false, residual=true
+  ---
+  duration_ms: 28.610117
+  ...
+# Subtest: individual answers/ranking/Canvas/end: hub=false, demo=true, residual=false
+ok 5 - individual answers/ranking/Canvas/end: hub=false, demo=true, residual=false
+  ---
+  duration_ms: 40.503151
+  ...
+# Subtest: individual answers/ranking/Canvas/end: hub=false, demo=true, residual=true
+ok 6 - individual answers/ranking/Canvas/end: hub=false, demo=true, residual=true
+  ---
+  duration_ms: 85.847039
+  ...
+# Subtest: individual answers/ranking/Canvas/end: hub=true, demo=false, residual=false
+ok 7 - individual answers/ranking/Canvas/end: hub=true, demo=false, residual=false
+  ---
+  duration_ms: 359.742453
+  ...
+# Subtest: individual answers/ranking/Canvas/end: hub=true, demo=false, residual=true
+ok 8 - individual answers/ranking/Canvas/end: hub=true, demo=false, residual=true
+  ---
+  duration_ms: 54.586796
+  ...
+# Subtest: individual answers/ranking/Canvas/end: hub=true, demo=true, residual=false
+ok 9 - individual answers/ranking/Canvas/end: hub=true, demo=true, residual=false
+  ---
+  duration_ms: 54.638434
+  ...
+# Subtest: individual answers/ranking/Canvas/end: hub=true, demo=true, residual=true
+ok 10 - individual answers/ranking/Canvas/end: hub=true, demo=true, residual=true
+  ---
+  duration_ms: 47.588213
+  ...
+# Subtest: historical team hydration and ended snapshot remain readable with OFF
+ok 11 - historical team hydration and ended snapshot remain readable with OFF
+  ---
+  duration_ms: 62.279494
+  ...
+# Subtest: dormant implementation still works when enabled in isolated test only
+ok 12 - dormant implementation still works when enabled in isolated test only
+  ---
+  duration_ms: 68.086622
+  ...
+# Subtest: no teams: OFF produces the same scores, rankings and Canvas writes as the enabled individual path
+ok 13 - no teams: OFF produces the same scores, rankings and Canvas writes as the enabled individual path
+  ---
+  duration_ms: 1623.529272
+  ...
+# Subtest: paper finalization stays individual with residual teams, hub=false
+ok 14 - paper finalization stays individual with residual teams, hub=false
+  ---
+  duration_ms: 34.461782
+  ...
+# Subtest: paper finalization stays individual with residual teams, hub=true
+ok 15 - paper finalization stays individual with residual teams, hub=true
+  ---
+  duration_ms: 59.292041
+  ...
+1..15
+# tests 15
+# suites 0
+# pass 15
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+# duration_ms 3990.770526
