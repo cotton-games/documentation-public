@@ -1,0 +1,50 @@
+[
+  {
+    "game": "quiz",
+    "mode": "MASTER_RECONNECT",
+    "runtime_key": "p:00000000-0000-4000-8000-000000000001",
+    "engine_db_id": 201,
+    "identity_preserved": true,
+    "numeric_score_still_fails": true
+  },
+  {
+    "game": "quiz",
+    "mode": "GRACE",
+    "runtime_key": "p:00000000-0000-4000-8000-000000000001",
+    "engine_db_id": 201,
+    "identity_preserved": true,
+    "numeric_score_still_fails": true
+  },
+  {
+    "game": "quiz",
+    "mode": "SUSPEND_RESUME",
+    "runtime_key": "p:00000000-0000-4000-8000-000000000001",
+    "engine_db_id": 201,
+    "identity_preserved": true,
+    "numeric_score_still_fails": true
+  },
+  {
+    "game": "blindtest",
+    "mode": "MASTER_RECONNECT",
+    "runtime_key": "p:00000000-0000-4000-8000-000000000001",
+    "engine_db_id": 201,
+    "identity_preserved": true,
+    "numeric_score_still_fails": true
+  },
+  {
+    "game": "blindtest",
+    "mode": "GRACE",
+    "runtime_key": "p:00000000-0000-4000-8000-000000000001",
+    "engine_db_id": 201,
+    "identity_preserved": true,
+    "numeric_score_still_fails": true
+  },
+  {
+    "game": "blindtest",
+    "mode": "SUSPEND_RESUME",
+    "runtime_key": "p:00000000-0000-4000-8000-000000000001",
+    "engine_db_id": 201,
+    "identity_preserved": true,
+    "numeric_score_still_fails": true
+  }
+]

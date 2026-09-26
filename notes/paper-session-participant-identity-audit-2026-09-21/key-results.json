@@ -1,0 +1,27 @@
+[
+    {
+        "origin": "EP_QR",
+        "hub_player_id": 101,
+        "participant_key": "p:f6db49ce-0165-5078-9db4-74b4ad2c8a30"
+    },
+    {
+        "origin": "EP_FOUND_REMOTE",
+        "hub_player_id": 102,
+        "participant_key": "p:f6db49ce-0165-5078-9db4-74b4ad2c8a30"
+    },
+    {
+        "origin": "TEAM_FOUND_REMOTE",
+        "hub_player_id": 103,
+        "participant_key": "p:83406a62-9e00-5a0c-9dd0-5483b86e751e"
+    },
+    {
+        "origin": "FREE_ENTRY",
+        "hub_player_id": 104,
+        "participant_key": "p:00000000-0000-4000-8000-000000000001"
+    },
+    {
+        "origin": "LEGACY_HUB_WITHOUT_TOKEN",
+        "hub_player_id": 105,
+        "participant_key": "p:bec4efbc-d28a-5c28-be1c-b31756188b08"
+    }
+]

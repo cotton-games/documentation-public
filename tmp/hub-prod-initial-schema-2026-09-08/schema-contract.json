@@ -1,0 +1,1470 @@
+{
+  "games_hubs": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 185
+      },
+      {
+        "name": "id_securite",
+        "definition": "varchar(64) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 186
+      },
+      {
+        "name": "id_client",
+        "definition": "mediumint(9) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 187
+      },
+      {
+        "name": "hub_date",
+        "definition": "date NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 188
+      },
+      {
+        "name": "context_type",
+        "definition": "varchar(16) NOT NULL DEFAULT 'day'",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 189
+      },
+      {
+        "name": "id_operation_evenement",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 190
+      },
+      {
+        "name": "hub_label",
+        "definition": "varchar(255) DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 191
+      },
+      {
+        "name": "flag_active",
+        "definition": "tinyint(1) UNSIGNED NOT NULL DEFAULT 1",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 192
+      },
+      {
+        "name": "hub_status",
+        "definition": "varchar(32) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 193
+      },
+      {
+        "name": "active_session_id",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 194
+      },
+      {
+        "name": "active_session_activated_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 195
+      },
+      {
+        "name": "remote_routing_generation",
+        "definition": "bigint(20) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 196
+      },
+      {
+        "name": "remote_routing_intent_id",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 197
+      },
+      {
+        "name": "remote_transition_type",
+        "definition": "varchar(32) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 198
+      },
+      {
+        "name": "remote_transition_payload_json",
+        "definition": "text DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 199
+      },
+      {
+        "name": "remote_transition_started_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 200
+      },
+      {
+        "name": "presentation_session_id",
+        "definition": "int(10) UNSIGNED DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 201
+      },
+      {
+        "name": "presentation_mode",
+        "definition": "varchar(24) NOT NULL DEFAULT 'session'",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 202
+      },
+      {
+        "name": "presentation_updated_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 203
+      },
+      {
+        "name": "hub_master_instance_id",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 204
+      },
+      {
+        "name": "hub_master_instance_seen_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 205
+      },
+      {
+        "name": "hub_remote_instance_id",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 206
+      },
+      {
+        "name": "hub_remote_instance_seen_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 207
+      },
+      {
+        "name": "prizes_initialized_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 208
+      },
+      {
+        "name": "delete_operation_token",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 209
+      },
+      {
+        "name": "delete_step",
+        "definition": "varchar(48) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 210
+      },
+      {
+        "name": "delete_started_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 211
+      },
+      {
+        "name": "delete_error_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 212
+      },
+      {
+        "name": "date_ajout",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 213
+      },
+      {
+        "name": "date_maj",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 214
+      },
+      {
+        "name": "player_qr_display_mode",
+        "definition": "varchar(8) NULL DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hub_player_qr_functions.php",
+        "line": 10
+      },
+      {
+        "name": "player_qr_display_revision",
+        "definition": "bigint(20) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hub_player_qr_functions.php",
+        "line": 10
+      },
+      {
+        "name": "player_qr_display_confirmation_json",
+        "definition": "text NULL DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hub_player_qr_functions.php",
+        "line": 10
+      },
+      {
+        "name": "player_qr_official_started_at",
+        "definition": "datetime NULL DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hub_player_qr_functions.php",
+        "line": 10
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_games_hubs_token` (`id_securite`)",
+      "UNIQUE KEY `uniq_games_hubs_context` (`id_client`,`hub_date`,`context_type`,`id_operation_evenement`)",
+      "KEY `idx_games_hubs_client_date` (`id_client`,`hub_date`)",
+      "KEY `idx_games_hubs_active_session` (`active_session_id`)",
+      "KEY `idx_games_hubs_presentation_session` (`presentation_session_id`)",
+      "KEY `idx_games_hubs_operation` (`id_operation_evenement`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "games_hubs_sessions": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 276
+      },
+      {
+        "name": "id_hub",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 277
+      },
+      {
+        "name": "id_session",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 278
+      },
+      {
+        "name": "membership_source",
+        "definition": "varchar(32) NOT NULL DEFAULT 'legacy_reconciled'",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 279
+      },
+      {
+        "name": "status",
+        "definition": "enum('active','inactive') NOT NULL DEFAULT 'active'",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 280
+      },
+      {
+        "name": "created_at",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 281
+      },
+      {
+        "name": "updated_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 282
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_games_hubs_sessions_hub_session` (`id_hub`,`id_session`)",
+      "KEY `idx_games_hubs_sessions_hub_status` (`id_hub`,`status`)",
+      "KEY `idx_games_hubs_sessions_session` (`id_session`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "games_hubs_players": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 293
+      },
+      {
+        "name": "id_hub",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 294
+      },
+      {
+        "name": "id_client",
+        "definition": "mediumint(9) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 295
+      },
+      {
+        "name": "id_operation_evenement",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 296
+      },
+      {
+        "name": "hub_token",
+        "definition": "varchar(64) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 297
+      },
+      {
+        "name": "player_token",
+        "definition": "varchar(96) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 298
+      },
+      {
+        "name": "auth_identity_key",
+        "definition": "varchar(128) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 299
+      },
+      {
+        "name": "id_ep_player",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 300
+      },
+      {
+        "name": "auth_type",
+        "definition": "enum('guest','ep') NOT NULL DEFAULT 'guest'",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 301
+      },
+      {
+        "name": "pseudo",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 302
+      },
+      {
+        "name": "pseudo_normalized",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 303
+      },
+      {
+        "name": "status",
+        "definition": "enum('active','left') NOT NULL DEFAULT 'active'",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 304
+      },
+      {
+        "name": "return_token",
+        "definition": "varchar(64) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 305
+      },
+      {
+        "name": "return_expires_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 306
+      },
+      {
+        "name": "created_at",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 307
+      },
+      {
+        "name": "updated_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 308
+      },
+      {
+        "name": "last_seen_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 309
+      },
+      {
+        "name": "last_ip",
+        "definition": "varchar(45) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 310
+      },
+      {
+        "name": "user_agent_hash",
+        "definition": "char(40) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 311
+      },
+      {
+        "name": "hub_photo_media_id",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 312
+      },
+      {
+        "name": "hub_photo_game_key",
+        "definition": "varchar(32) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 313
+      },
+      {
+        "name": "hub_photo_source",
+        "definition": "varchar(32) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 314
+      },
+      {
+        "name": "hub_photo_updated_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 315
+      },
+      {
+        "name": "stats_aggregate_score",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "games/web/includes/canvas/sql/2026-07-30_games_hubs_players_stats_projection.sql",
+        "line": 60
+      },
+      {
+        "name": "stats_wins_count",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "games/web/includes/canvas/sql/2026-07-30_games_hubs_players_stats_projection.sql",
+        "line": 76
+      },
+      {
+        "name": "stats_second_places_count",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "games/web/includes/canvas/sql/2026-07-30_games_hubs_players_stats_projection.sql",
+        "line": 92
+      },
+      {
+        "name": "stats_third_places_count",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "games/web/includes/canvas/sql/2026-07-30_games_hubs_players_stats_projection.sql",
+        "line": 108
+      },
+      {
+        "name": "stats_parties_count",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "games/web/includes/canvas/sql/2026-07-30_games_hubs_players_stats_projection.sql",
+        "line": 124
+      },
+      {
+        "name": "stats_last_result_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "games/web/includes/canvas/sql/2026-07-30_games_hubs_players_stats_projection.sql",
+        "line": 140
+      },
+      {
+        "name": "stats_source_revision",
+        "definition": "char(40) DEFAULT NULL",
+        "source": "games/web/includes/canvas/sql/2026-07-30_games_hubs_players_stats_projection.sql",
+        "line": 156
+      },
+      {
+        "name": "stats_computed_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "games/web/includes/canvas/sql/2026-07-30_games_hubs_players_stats_projection.sql",
+        "line": 172
+      },
+      {
+        "name": "stats_dirty_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "games/web/includes/canvas/sql/2026-07-30_games_hubs_players_stats_projection.sql",
+        "line": 188
+      },
+      {
+        "name": "stats_error",
+        "definition": "varchar(255) DEFAULT NULL",
+        "source": "games/web/includes/canvas/sql/2026-07-30_games_hubs_players_stats_projection.sql",
+        "line": 204
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_games_hubs_players_identity` (`id_hub`,`auth_identity_key`)",
+      "KEY `idx_games_hubs_players_hub_status` (`id_hub`,`status`)",
+      "KEY `idx_games_hubs_players_pseudo` (`id_hub`,`pseudo_normalized`)",
+      "KEY `idx_games_hubs_players_return` (`return_token`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "games_hubs_participations_probables": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 326
+      },
+      {
+        "name": "id_hub",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 327
+      },
+      {
+        "name": "id_client",
+        "definition": "mediumint(9) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 328
+      },
+      {
+        "name": "id_operation_evenement",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 329
+      },
+      {
+        "name": "hub_token",
+        "definition": "varchar(64) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 330
+      },
+      {
+        "name": "auth_identity_key",
+        "definition": "varchar(128) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 331
+      },
+      {
+        "name": "id_ep_player",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 332
+      },
+      {
+        "name": "source",
+        "definition": "varchar(32) NOT NULL DEFAULT 'hub_play'",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 333
+      },
+      {
+        "name": "status",
+        "definition": "enum('declared','cancelled','confirmed') NOT NULL DEFAULT 'declared'",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 334
+      },
+      {
+        "name": "date_ajout",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 335
+      },
+      {
+        "name": "date_maj",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 336
+      },
+      {
+        "name": "declared_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 337
+      },
+      {
+        "name": "cancelled_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 338
+      },
+      {
+        "name": "confirmed_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 339
+      },
+      {
+        "name": "ip",
+        "definition": "varchar(45) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 340
+      },
+      {
+        "name": "id_user_ajout",
+        "definition": "mediumint(9) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 341
+      },
+      {
+        "name": "id_user_maj",
+        "definition": "mediumint(9) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 342
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_games_hubs_probables_identity` (`id_hub`,`auth_identity_key`)",
+      "KEY `idx_games_hubs_probables_hub_status` (`id_hub`,`status`)",
+      "KEY `idx_games_hubs_probables_ep` (`id_ep_player`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "games_hubs_players_sessions": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 366
+      },
+      {
+        "name": "id_hub",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 367
+      },
+      {
+        "name": "id_hub_player",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 368
+      },
+      {
+        "name": "id_session",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 369
+      },
+      {
+        "name": "session_token",
+        "definition": "varchar(64) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 370
+      },
+      {
+        "name": "game_type",
+        "definition": "varchar(32) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 371
+      },
+      {
+        "name": "id_participation",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 372
+      },
+      {
+        "name": "participant_key",
+        "definition": "varchar(128) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 373
+      },
+      {
+        "name": "id_ep_player",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 374
+      },
+      {
+        "name": "status",
+        "definition": "enum('created','active','left','completed','failed') NOT NULL DEFAULT 'created'",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 375
+      },
+      {
+        "name": "auto_joined_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 376
+      },
+      {
+        "name": "manual_joined_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 377
+      },
+      {
+        "name": "last_joined_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 378
+      },
+      {
+        "name": "left_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 379
+      },
+      {
+        "name": "completed_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 380
+      },
+      {
+        "name": "join_count",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 381
+      },
+      {
+        "name": "last_action",
+        "definition": "varchar(32) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 382
+      },
+      {
+        "name": "created_at",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 383
+      },
+      {
+        "name": "updated_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 384
+      },
+      {
+        "name": "last_error",
+        "definition": "varchar(255) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 385
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_games_hubs_players_sessions_player_session` (`id_hub_player`,`id_session`)",
+      "KEY `idx_games_hubs_players_sessions_hub_session` (`id_hub`,`id_session`)",
+      "KEY `idx_games_hubs_players_sessions_session` (`id_session`)",
+      "KEY `idx_games_hubs_players_sessions_participant` (`game_type`,`participant_key`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "games_hubs_publication": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 426
+      },
+      {
+        "name": "id_hub",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 427
+      },
+      {
+        "name": "title",
+        "definition": "varchar(150) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 428
+      },
+      {
+        "name": "tagline",
+        "definition": "varchar(255) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 429
+      },
+      {
+        "name": "description",
+        "definition": "text",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 430
+      },
+      {
+        "name": "location_name",
+        "definition": "varchar(150) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 431
+      },
+      {
+        "name": "address",
+        "definition": "varchar(180) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 432
+      },
+      {
+        "name": "postal_code",
+        "definition": "varchar(20) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 433
+      },
+      {
+        "name": "city",
+        "definition": "varchar(120) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 434
+      },
+      {
+        "name": "country",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 435
+      },
+      {
+        "name": "website_url",
+        "definition": "varchar(255) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 436
+      },
+      {
+        "name": "cta_label",
+        "definition": "varchar(150) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 437
+      },
+      {
+        "name": "publication_status",
+        "definition": "varchar(32) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 438
+      },
+      {
+        "name": "date_ajout",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 439
+      },
+      {
+        "name": "date_maj",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 440
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_games_hubs_publication_hub` (`id_hub`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "games_hubs_prizes": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 449
+      },
+      {
+        "name": "id_hub",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 450
+      },
+      {
+        "name": "rank",
+        "definition": "tinyint(3) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 451
+      },
+      {
+        "name": "label",
+        "definition": "varchar(120) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 452
+      },
+      {
+        "name": "description",
+        "definition": "varchar(255) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 453
+      },
+      {
+        "name": "date_ajout",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 454
+      },
+      {
+        "name": "date_maj",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 455
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_games_hubs_prizes_hub_rank` (`id_hub`,`rank`)",
+      "KEY `idx_games_hubs_prizes_hub` (`id_hub`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "games_hubs_remote_access": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 465
+      },
+      {
+        "name": "id_hub",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 466
+      },
+      {
+        "name": "id_client",
+        "definition": "mediumint(9) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 467
+      },
+      {
+        "name": "remote_token",
+        "definition": "varchar(96) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 468
+      },
+      {
+        "name": "remote_token_hash",
+        "definition": "char(64) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 469
+      },
+      {
+        "name": "session_token_hash",
+        "definition": "char(64) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 470
+      },
+      {
+        "name": "status",
+        "definition": "enum('active','revoked') NOT NULL DEFAULT 'active'",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 471
+      },
+      {
+        "name": "label",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 472
+      },
+      {
+        "name": "created_at",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 473
+      },
+      {
+        "name": "revoked_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 474
+      },
+      {
+        "name": "last_seen_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 475
+      },
+      {
+        "name": "last_ip",
+        "definition": "varchar(45) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 476
+      },
+      {
+        "name": "user_agent_hash",
+        "definition": "char(40) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 477
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_games_hubs_remote_token_hash` (`remote_token_hash`)",
+      "KEY `idx_games_hubs_remote_hub_status` (`id_hub`,`status`)",
+      "KEY `idx_games_hubs_remote_session_hash` (`session_token_hash`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "games_hubs_remote_master_presence": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 488
+      },
+      {
+        "name": "id_hub",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 489
+      },
+      {
+        "name": "master_instance_id",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 490
+      },
+      {
+        "name": "last_seen_at",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 491
+      },
+      {
+        "name": "last_applied_preparation_revision",
+        "definition": "varchar(64) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 492
+      },
+      {
+        "name": "last_control_revision",
+        "definition": "varchar(64) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 493
+      },
+      {
+        "name": "visibility",
+        "definition": "varchar(16) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 494
+      },
+      {
+        "name": "user_agent_hash",
+        "definition": "char(40) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 495
+      },
+      {
+        "name": "created_at",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 496
+      },
+      {
+        "name": "updated_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 497
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_games_hubs_remote_presence_master` (`id_hub`,`master_instance_id`)",
+      "KEY `idx_games_hubs_remote_presence_seen` (`id_hub`,`last_seen_at`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "games_hubs_remote_runtime_presence": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 507
+      },
+      {
+        "name": "id_hub",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 508
+      },
+      {
+        "name": "id_session",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 509
+      },
+      {
+        "name": "execution_id",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 510
+      },
+      {
+        "name": "master_instance_id",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 511
+      },
+      {
+        "name": "last_seen_at",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 512
+      },
+      {
+        "name": "visibility",
+        "definition": "varchar(16) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 513
+      },
+      {
+        "name": "user_agent_hash",
+        "definition": "char(40) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 514
+      },
+      {
+        "name": "created_at",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 515
+      },
+      {
+        "name": "updated_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 516
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_games_hubs_remote_runtime_master` (`id_hub`,`id_session`,`execution_id`,`master_instance_id`)",
+      "KEY `idx_games_hubs_remote_runtime_seen` (`id_hub`,`id_session`,`execution_id`,`last_seen_at`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "games_hubs_remote_commands": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 526
+      },
+      {
+        "name": "id_hub",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 527
+      },
+      {
+        "name": "id_remote_access",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 528
+      },
+      {
+        "name": "command_type",
+        "definition": "varchar(32) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 529
+      },
+      {
+        "name": "payload_json",
+        "definition": "text",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 530
+      },
+      {
+        "name": "status",
+        "definition": "enum('pending','claimed','processing','completed','failed','expired','cancelled') NOT NULL DEFAULT 'pending'",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 531
+      },
+      {
+        "name": "remote_command_key",
+        "definition": "varchar(96) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 532
+      },
+      {
+        "name": "created_at",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 533
+      },
+      {
+        "name": "expires_at",
+        "definition": "datetime NOT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 534
+      },
+      {
+        "name": "claimed_by",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 535
+      },
+      {
+        "name": "claimed_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 536
+      },
+      {
+        "name": "completed_at",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 537
+      },
+      {
+        "name": "result_json",
+        "definition": "text",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 538
+      },
+      {
+        "name": "error_code",
+        "definition": "varchar(64) NOT NULL DEFAULT ''",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 539
+      },
+      {
+        "name": "date_maj",
+        "definition": "datetime DEFAULT NULL",
+        "source": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+        "line": 540
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_games_hubs_remote_command_key` (`id_hub`,`remote_command_key`)",
+      "KEY `idx_games_hubs_remote_commands_pending` (`id_hub`,`status`,`expires_at`,`id`)",
+      "KEY `idx_games_hubs_remote_commands_access` (`id_remote_access`,`created_at`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "programming_quick_operations": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 6
+      },
+      {
+        "name": "id_client",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 7
+      },
+      {
+        "name": "idempotency_key",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 8
+      },
+      {
+        "name": "command_hash",
+        "definition": "char(64) NOT NULL DEFAULT ''",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 9
+      },
+      {
+        "name": "status",
+        "definition": "varchar(24) NOT NULL DEFAULT 'pending'",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 10
+      },
+      {
+        "name": "operation_step",
+        "definition": "varchar(32) NOT NULL DEFAULT 'pending'",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 11
+      },
+      {
+        "name": "session_ids_json",
+        "definition": "text",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 12
+      },
+      {
+        "name": "session_security_ids_json",
+        "definition": "text",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 13
+      },
+      {
+        "name": "hub_id",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 14
+      },
+      {
+        "name": "dashboard_url",
+        "definition": "varchar(255) NOT NULL DEFAULT ''",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 15
+      },
+      {
+        "name": "result_json",
+        "definition": "text",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 16
+      },
+      {
+        "name": "error_code",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 17
+      },
+      {
+        "name": "created_at",
+        "definition": "datetime NOT NULL",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 18
+      },
+      {
+        "name": "updated_at",
+        "definition": "datetime NOT NULL",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 19
+      },
+      {
+        "name": "expires_at",
+        "definition": "datetime NOT NULL",
+        "source": "documentation/programming_quick_operations_phpmyadmin.sql",
+        "line": 20
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_programming_quick_client_key` (`id_client`,`idempotency_key`)",
+      "KEY `idx_programming_quick_expires_at` (`expires_at`)",
+      "KEY `idx_programming_quick_client_status` (`id_client`,`status`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  },
+  "programming_quick_series_operations": {
+    "columns": [
+      {
+        "name": "id",
+        "definition": "int(10) UNSIGNED NOT NULL AUTO_INCREMENT",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 6
+      },
+      {
+        "name": "id_client",
+        "definition": "int(10) UNSIGNED NOT NULL DEFAULT 0",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 7
+      },
+      {
+        "name": "idempotency_key",
+        "definition": "varchar(80) NOT NULL DEFAULT ''",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 8
+      },
+      {
+        "name": "command_hash",
+        "definition": "char(64) NOT NULL DEFAULT ''",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 9
+      },
+      {
+        "name": "status",
+        "definition": "varchar(24) NOT NULL DEFAULT 'pending'",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 10
+      },
+      {
+        "name": "operation_step",
+        "definition": "varchar(32) NOT NULL DEFAULT 'pending'",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 11
+      },
+      {
+        "name": "template_json",
+        "definition": "mediumtext",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 12
+      },
+      {
+        "name": "recurrence_json",
+        "definition": "mediumtext",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 13
+      },
+      {
+        "name": "occurrences_json",
+        "definition": "mediumtext",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 14
+      },
+      {
+        "name": "themes_json",
+        "definition": "mediumtext",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 15
+      },
+      {
+        "name": "result_json",
+        "definition": "mediumtext",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 16
+      },
+      {
+        "name": "created_at",
+        "definition": "datetime NOT NULL",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 17
+      },
+      {
+        "name": "updated_at",
+        "definition": "datetime NOT NULL",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 18
+      },
+      {
+        "name": "expires_at",
+        "definition": "datetime NOT NULL",
+        "source": "documentation/programming_quick_series_operations_phpmyadmin.sql",
+        "line": 19
+      }
+    ],
+    "indexes": [
+      "PRIMARY KEY (`id`)",
+      "UNIQUE KEY `uniq_programming_quick_series_client_key` (`id_client`,`idempotency_key`)",
+      "KEY `idx_programming_quick_series_expires_at` (`expires_at`)",
+      "KEY `idx_programming_quick_series_client_status` (`id_client`,`status`)"
+    ],
+    "source_engine": "MyISAM",
+    "charset": "utf8",
+    "collation": "utf8_general_ci",
+    "engine": "InnoDB",
+    "prod_before": "absent",
+    "phase_1_action": "CREATE TABLE IF NOT EXISTS, vide"
+  }
+}

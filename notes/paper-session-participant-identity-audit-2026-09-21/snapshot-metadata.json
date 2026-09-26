@@ -1,0 +1,14 @@
+{
+  "frozen_at": "2026-09-21T07:23:09.228058+00:00",
+  "changed_since_initial_read": [
+    "/home/romain/Cotton/games/web/includes/canvas/php/hub_capacity.php",
+    "/home/romain/Cotton/quiz/web/server/actions/registration.js",
+    "/home/romain/Cotton/quiz/web/server/actions/hubCapacity.js",
+    "/home/romain/Cotton/blindtest/web/server/actions/registration.js",
+    "/home/romain/Cotton/blindtest/web/server/actions/hubCapacity.js",
+    "/home/romain/Cotton/bingo.game/ws/bingo_server.js",
+    "/home/romain/Cotton/bingo.game/ws/hub_capacity.js",
+    "/home/romain/Cotton/global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "/home/romain/Cotton/global/web/app/modules/jeux/hubs/app_games_hub_capacity.php"
+  ]
+}

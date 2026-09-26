@@ -1,0 +1,34 @@
+[
+  {
+    "game": "quiz",
+    "action": "paper_finalize_end",
+    "runtime_key": "p:00000000-0000-4000-8000-000000000001",
+    "http_acknowledged_score": 7,
+    "persisted_podium_score": 1,
+    "result": "STALE_RUNTIME_PROPAGATES_TO_PODIUM"
+  },
+  {
+    "game": "quiz",
+    "origin": "LATE_HTTP_ONLY_REGISTRATION",
+    "action": "admin_set_score",
+    "remote_payload_id": "p:00000000-0000-4000-8000-000000000001",
+    "result": "MISSING_RUNTIME_PLAYER_NOT_CREATED",
+    "scope": "empty-runtime fixture; no end-to-end Hub polling"
+  },
+  {
+    "game": "blindtest",
+    "action": "paper_finalize_end",
+    "runtime_key": "p:00000000-0000-4000-8000-000000000001",
+    "http_acknowledged_score": 7,
+    "persisted_podium_score": 1,
+    "result": "STALE_RUNTIME_PROPAGATES_TO_PODIUM"
+  },
+  {
+    "game": "blindtest",
+    "origin": "LATE_HTTP_ONLY_REGISTRATION",
+    "action": "admin_set_score",
+    "remote_payload_id": "p:00000000-0000-4000-8000-000000000001",
+    "result": "MISSING_RUNTIME_PLAYER_NOT_CREATED",
+    "scope": "empty-runtime fixture; no end-to-end Hub polling"
+  }
+]

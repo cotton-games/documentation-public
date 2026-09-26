@@ -1,0 +1,333 @@
+<!-- AUTO-UPDATE:BEGIN id="hub-suspend-20260910-actions" owner="codex" -->
+
+**25/09 — Robustesse Hub locale, non déployée.** `execution_id` sur retries Player est une fence de comparaison avec E canonique, jamais une autorité navigateur. Admission active revalidée avant write. `registerPlayer` ne peut devenir `registerOrganizer` ; initialisation/runtime officiels réservés au primary publié. Remote conserve les relais au Master. [Contrat, erreurs, tests et backport](../../notes/hub-execution-robustness-backport-2026-09-25.md).
+
+**25/09 — Hub-native DEV, correctif local non déployé :** `hub_embed_state` demeure un POST autorisé sur les routes Hub existantes. Côté Remote, il projette le même `app_games_hub_remote_client_routing_state_get` que control_poll ; lecture seulement. L’hôte consomme client_routing même dans la branche native, exige session/E/génération et présence Master exactes. Pas d’autorité locale START/ACK Remote : son consommateur ACK est retiré. Les ACK secondaires déjà émis par les WS de la baseline peuvent encore arriver, mais sont ignorés par le front natif ; aucun WS modifié. Master premier lancement : ACK corrélé inchangé. Reprise : descripteur preparation=false dérivé du first_start canonique. Voir note V2 AH.
+
+
+**25/09 — Diagnostics pregame locaux.** Aucune action START/ACK supplémentaire. Lecture existante `hub_pregame/read` enrichie sur demande moteur de la population éligible (identités Hub), télémétrie `HUB_PREGAME_WAVE` dans les journaux WS. Intersection mesurée, pas décision full-ready ;5/10/5/90 conservé. [Détails](../../notes/hub-open-players-foundations-2026-09-24.md#af-hub-native--audit-du-delta-et-instrumentation-préalable-start--25092026).
+
+
+**25/09 — POC iframe livré en DEV et recette manuelle confirmée après la préparation locale ci-dessous.** Analyse sans nouveau patch : voir section AE de la note V2 ; ACK candidat UI, started preuve métier, limites de capture explicites. **Bilan local initial :** Opt-in `hub_embed_poc=ack|started`, officiel numérique uniquement ; même Canvas/primary conservé à la révélation, fullscreen parent, Annuler avant START accepté, retour enfant léger sans second Hub. Lecture DEV autorisée du slot pour distinguer started d’un simple closed. Remote, moteurs, ensure/mappings/compteur/auto-start et A/B/C inchangés.9 tests hôte +12 contrôles PHP +103 tests pregame existants réussis ; recette des trois jeux DEV à effectuer par l’opérateur. [Périmètre, liste exacte des9 fichiers applicatifs, activation A/B et limites, section AD](../../notes/hub-open-players-foundations-2026-09-24.md). Aucun deploy/restart.
+
+
+**25/09 — C révisé, local non déployé : retrait Hub durable immédiat ; cleanup runtime non bloquant.** Tombstone + membership inactive + slot closed/removed + focus/présentation libérés dans la demande PHP, réponse removed/already_removed ; aucun moteur requis. Le moteur vivant observe le tombstone puis détache/ferme les sockets sans finaliser le Hub. Read retiré explicite, lifecycle/START/Player tardifs refusés, cleanup tardif sans mutation ; gameplay sain protégé. Ancien removing finalisable en retentant le retrait, sans réconciliateur. A/B, ensure, auto-start5s/10s/5s/90s, compteur et UI pregame conservés. Tests :20 suites principales,26 scénarios retrait moteur/retour,300 vérifications retrait PHP ; compléments admission/publics/Pro/fallback verts, effets externes simulés. [Contrat, fichiers et rollback C : section AC](../../notes/hub-open-players-foundations-2026-09-24.md). Markers25-09-2026/02 préparés ; aucun deploy/restart.
+
+
+**Contrat courant pregame (24/09, local non déployé) :** départ automatique demandé, minimum5s / grâce sans bind10s / calme WS5s / watchdog exceptionnel90s, sans plafond normal. Remplace le départ exclusivement humain décrit dans les entrées historiques ci-dessous. Binds WS effectifs seuls ; compteur numérique regroupé sur250ms, sans effet sur le timer serveur. Signal HUB_PREGAME_AUTO_START au primary → ui/play → START/ACK existant, guards préservés. Aucun quorum ; zéro valide. Ensure/mappings/papier/démo inchangés. Tests auto37/37, UI20/20 ; vagues de5000 sockets simulés par moteur, charge DEV réelle et navigateur restant à qualifier. Détails, fichiers et rollback : section T de la note V2. Aucun déploiement/restart. Minimum depuis open accepté, indépendance de l’animation250ms ; CTA Démarrer le jeu et styles dédiés supprimés sur Master/Remote, seul retour volontaire conservé. Textes adaptés au départ automatique. Retry ACK avec request_id stable par E et reprise du même START en starting ; watchdog demandé/accepté tracé distinctement.
+
+
+**Passe UX prégame locale, non déployée :** Master/Remote partagent « La partie va bientôt commencer » et « Prépare-toi à jouer ! ». Master borné au viewport sans scroll, visuel/espacements réduits selon la hauteur ; Remote compact. Halo renforcé sur arrivée WS, compteur « N joueur(s) ont rejoint la partie » avec accord, messages calmes propres au jeu, sans cible ni blocage START. Retour soirée/événement en lien discret ; START légèrement souligné au calme. Player : bouton Réessayer retiré, polling/navigation/reconnexion existants conservés. BT27977 : update_session_infos paperMode=false observé en open à17:16:45.458, rejet reproduit par le guard réel ; synchronisation Organizer différée jusqu’à l’ACK START, dernières valeurs fusionnées et limitées à E. Code brut HUB_PREGAME_NOT_STARTED traduit en attente normale sur les trois surfaces ; autres erreurs maintenues. Aucun changement ensure/mapping/moteur/lifecycle. Détails, tests et limites en section S de la note V2.
+
+
+**Correctif local admission EP Hub numérique (non déployé).** La réponse DEV Blind Test27977/Hub353 expose `PARTICIPANT_SOURCE_INVALID` dans `access.ensure.api`, avant URL/redirection. Le motif interne exact (historique absent, clé, contexte ou SQL) n’est pas distingué par ce code erreur ; le même refus Quiz n’est pas encore capturé. L’ensure numérique atteste désormais une identité EP Hub active via un contexte PHP interne limité à l’appel `player_register`, restauré dans finally. Les adaptateurs Quiz/BT/Bingo vérifient jeu, session, identité et clé canonique avant d’exempter cette provenance du filtre d’historique organisateur. Aucun champ navigateur n’accorde cette confiance. Capacité, lifecycle, mappings left, marqueurs de jonction, protection des pseudos invités et injection papier inchangés. Aucun changement WS, schéma ou compteur prégame. Détails et recette : section Q de la note Open Players V2.
+
+
+**UX prégame locale finalisée (non déployée, navigateur non qualifié) :** Lancer → prégame partagé Master/Remote → Démarrer le jeu → gameplay. Surface Hub isolée masquant totalement le lobby historique, contexte/branding déjà résolus, boutons propres, compteur « N joueurs prêts » et activité sans cible non bloquante. Retour à la soirée via cleanup canonique. Même E/slot sur retour d’un prégame sain ; Lancer avant START, Reprendre après départ réel. Confirmations redondantes retirées uniquement du parcours officiel numérique ; papier/démo préservés. Voir la section O de la note V2 pour tests, fichiers, limites et recette.
+
+## 24/09/2026 — Open Players V2, local non déployé
+
+Master `open_players` réutilise les guards du premier launch officiel numérique. WS `HUB_PREGAME_STATUS/START/ABANDON` : primary courant + E/version ; Remote `HUB_PREGAME_REMOTE_START/REMOTE_ABANDON` : owner courant, relais au primary. Serveur : `STATE`, `START_ACK`, `ERROR`, `ABORTED`. Le départ effectif passe toujours par les handlers historiques ; aucun Play/Next ancien ne contourne Open. [Contrat](../../notes/hub-open-players-foundations-2026-09-24.md).
+
+
+### 22/09/2026 — Bingo : premier state Player Hub allégé
+
+> **Branche `sas_players` — NON DÉPLOYÉ EN PROD au 22/09/2026.** Exclu du déploiement `hub_soiree`. [État de livraison](../deployment-status.md).
+
+`auth_player` Hub non-démo reçoit `state` avec le même `num_connected_players` et les mêmes champs phase/progression/génération/lots/reprise, mais sans `players`. Le Player utilise le total explicite ; aucun changement client requis. Autres rôles, papier/démo/hors Hub et publications périodiques gardent leur contrat. Routage DB grille+secret puis auth complète dans la queue ; deux reset_state nominaux au lieu de trois. Lifecycle et capacité frais conservés, pas de TTL ni de nouvelle action HTTP. [Preuves, invariants et limites](../../notes/bingo-digital-auth-performance-2026-09-22.md).
+
+
+### PATCH1B — autorisation bornée pendant la suspension
+
+Lors d’une reprise papier explicite, le grant existant est créé avant l’ensure collectif. Un contexte serveur temporaire permet uniquement le `player_register` canonique du participant attendu. Games relit session/Hub/exécution/focus/génération/fenêtre/expiration et suspension libérée avec jeton valide. Aucun champ client ne remplace les deux contextes serveur. Aucune levée globale du gel : toutes les autres écritures restent bloquées et seul l’ACK moteur normal produit `hub_resumed`. La correction nécessite Global `app_games_hubs_functions.php` **et Games `php/hub_lifecycle.php`** ; pas de WS/marker modifié. [Diagnostic et validation](../../notes/paper-resume-patch1b-2026-09-21.md).
+
+
+
+### PATCH2 — score papier Quiz/BT (21/09/2026)
+
+`admin_set_score` restitue `paper_score_correction_result` avec `request_id` stable et résultat structuré ; K est exclusive et D vérifié. `paper_finalize_end` recharge les scores confirmés avant le classement et refuse un snapshot concurrentement périmé. Les messages d’inscription du PATCH1 et les winners Bingo sont conservés. [Contrat](paper-score-corrections.md).
+
+
+## 21/09/2026 — Bind papier idempotent
+
+`admin_player_register` lit la participation existante et répond `paper_player_bound` (`bound`, `already_bound`, `not_found`, `inactive`, `conflict`). Remote le demande aussi sur `already_active`. Les snapshots papier autoritaires portent `roster` après réconciliation ; les commandes score restent inchangées. [Contrat](paper-roster.md).
+
+
+### Hub Master : surface mobile — 18/09/2026, local non déployé
+
+`launch_session` conserve son service et ses gardes. Seule la politique papier du Master accepte `master_surface=mobile` ; sans cette valeur exacte, le papier officiel reste refusé `PAPER_LAUNCH_REMOTE_ONLY`. Indication du viewport courant `<992px`, jamais une authentification/capacité persistée. Revalidation client après confirmation et avant POST ; desktop `>=992px` reste Remote-only. Reprise numérique : `expected_execution_id` inchangé ; papier : contrat existant sans cette garde numérique. Retour session contextualisé vers Hub, puis lien explicite vers Dashboard. [Détails et tests](../../notes/hub-master-responsive-2026-09-18.md).
+
+
+### Continuité Remote des trois moteurs — 18/09/2026, local non déployé
+
+`remoteInstanceId` reste persistant par navigateur ; `remotePageId` est éphémère par document, transmis à chaque registration et retry Games. Quiz/Blind Test rejoignent le contrat Bingo : même navigateur + même page = `same_continuity_reconnect`, autre page active/appareil ou identité insuffisante = `takeover`. Un reload crée une nouvelle page : aucune continuité certaine inventée. Exception déjà établie : même navigateur et preuve serveur de retrait après suspension confirmée, liée au même couple execution/request désormais repris. Quiz/Blind Test classent aussi une ancienne socket non ouverte ou déjà révoquée `stale_socket_replaced`.
+
+Quiz/Blind Test distinguent la socket candidate (jamais propriétaire), la propriétaire courante et la socket révoquée/obsolète. Une candidate peut découvrir la session et appeler `registerOrganizer` secondaire ; elle ne peut pas commander le jeu. Le marquage candidate précède les attentes SQL ; les gardes sont revérifiées après ces attentes. Seule la promotion établit l’ownership. Une ancienne propriétaire perdue ou révoquée ne redevient jamais candidate. Les anciennes références sont révoquées puis `secondarySockets=[nouvelle]` est installé avant tout send/close ; les closes tardifs sont sans effet sur la nouvelle propriétaire. Le quit legacy exige toujours la propriétaire courante. Deux helpers identiques restent nécessaires aux packages WS indépendants.
+
+Le lifecycle Quiz/Blind Test conserve `request_id`, `trigger`, `surface`, `page_id` ; aucun token ajouté aux diagnostics de remplacement. Le jeton de reprise reste uniquement dans son champ protocolaire existant. Games retire le lifecycle démo de l’ancienne surface avant de fermer le transport pour les motifs silencieux : ni close durable, ni marqueur local, ni navigation, même après une réponse heartbeat tardive. Un takeover explicite retire aussi le lifecycle local de la Remote remplacée : elle ne clôture pas la démo partagée et ne provoque aucun retour Hub du Master ou de la nouvelle Remote. Les événements sans motif structuré, la fermeture volontaire et la perte réseau réelle gardent leur politique existante.
+
+**Validation DEV confirmée par l’utilisateur :** le correctif takeover/rattachement tardif précédent est validé. La correction UX suivante reste locale : sur `replacement_reason=takeover`, l’ancienne Remote affiche l’alerte puis tente de fermer l’onglet, avec repli `about:blank`. Elle quitte le parcours de pilotage sans retour Hub. Quit volontaire Remote ≠ takeover Remote ; auto-routing, ownership et présence/génération restent inchangés.
+
+`HUB_SUSPEND_REQUESTED` précède l’envoi front et la persistance serveur ; `trigger=master_button|remote_button|session_not_found`, surface, request_id, Hub, exécution, source/runtime numériques, génération/intention et page éphémère. Le relais Bingo conserve ces diagnostics ; PHP relit les identités et la publication canoniques, puis garde le même request_id dans `hub_suspended` et `hub_suspend_released`. Liste explicite de champs, aucun token de session/reprise/accès ajouté au diagnostic. Les anciens clients sans diagnostic produisent `unspecified` ; aucune causalité rétrospective inventée pour Hub120/session30700/runtime17898.
+
+
+## Suspension Hub officielle — local, non déployé
+
+- WS `quitGame` + `intent=hub_suspend`, `execution_id`, `source_session_id`, `runtime_session_id`, `request_id` : réservé au primary courant. Remote Quiz/BT relaye `remoteQuitRequest`; Bingo relaye `remote_action=remote_quit_request`, sans seconde confirmation Master. Une intention invalide ne tombe jamais dans le quit terminal.
+- `HUB_SUSPEND_ACK` signifie état moteur installé et journal confirmé. `HUB_SESSION_SUSPENDED` signifie aussi focus libéré ; contient `sessionId`, `runtime_session_id`, `execution_id`, `request_id`. `HUB_SUSPEND_ERROR` maintient les surfaces sur la session ; retry du même request ID. Aucun `SESSION_ENDED` pour cette branche.
+- HTTP interne `hub_lifecycle`, service token obligatoire : `read`, `validate`, `suspend`, `release`, `resume`. Les IDs d’événement HTTP sont générés côté moteur, séparément du request ID métier. Validation Hub/source/runtime/jeu/exécution ouverte/provenance officielle et état non terminal.
+- Gel WS des mutations (réponses, scores, progression, inscriptions, équipes BT, vérifications/winners/reset/fin Bingo) et gel HTTP dans `game_api_dispatch` : scores, phases, inscriptions/désactivations, grilles, progression, reset, fin naturelle. Les lectures restent possibles. Les opérations déjà engagées peuvent finir ; aucune annulation globale de file.
+- Reprise explicite `hub_resume_token` délivrée par le launch `existing`, liée à la suspension et à la génération. Une URL ou reconnexion sans autorisation ne dégele pas. [Détails](../../notes/hub-suspend-patch-2026-09-10.md).
+
+Correctif du 11/09/2026 : le relais Remote → Master reconstruit les champs métier avant `quitGame`, sans reprendre le `type`/`action` entrant. Les refus `HUB_SUSPEND_ERROR` des dispatchers Quiz/Blind Test/Bingo transportent `request_id`, `execution_id` et `runtime_session_id` ; ils restent des refus, sans suspension ni clear focus.
+
+11/09/2026 — Retour Play après suspension : `active_launched_session` peut conserver `presentation.target=session` sur la session suspendue tout en renvoyant `session:null`. Le Player utilise désormais cette absence explicite de session active pour revenir au Hub, indépendamment de la sélection de présentation. `player_unresolved` et un champ absent ne prouvent pas une perte de focus. Isolation démo et garde visuelle terminale conservées ; polling existant de15s et contrôles de premier plan inchangés.
+
+11/09/2026 — Retour Play immédiat autorisé : Quiz/Blind Test/Bingo incluent désormais les sockets Players de la session dans les destinataires de `HUB_SESSION_SUSPENDED`, émis uniquement après succès de release/clear focus. Le handler Play valide contexte officiel, execution_id, runtime_session_id, token sessionId et request_id non vide ; il bloque les reconnects et revient directement au Hub Play, une seule fois, sans flux terminal. Les démos et signaux obsolètes sont ignorés. Le polling15s corrigé reste en secours ; une réponse HTTP déjà en vol ne provoque pas de seconde navigation.
+
+11/09/2026 — Reprise Quiz papier : suppression du filtre `flag_controle_numerique != 0` dans le garde `$HUB_RESUME_EXISTING` de Games `organizer_canvas.php`. Une reprise officielle papier autorisée suit désormais le même chemin que le numérique ; contexte activé, exécution exacte, focus actif, runtime running et génération exacte restent obligatoires. Le dégel WS exige toujours son autorisation de reprise.
+
+
+### Notifications gagnantes Bingo — 16/09/2026, patch local
+
+Live numérique et déclarations administratives utilisent `ws/bingo_winner_notification.js` : `1 → LIGNE`, `2 → DOUBLE LIGNE`, `3/5 → BINGO`, accord gagné/gagnée, nom et grille optionnels. À l’authentification Master/Remote, le repository lit `bingo_phase_winners` pour le token authentifié et la playlist, joint joueur/grille, puis reconstruit `state.notifications` avec le même formatter. La phase gagnée fait autorité, jamais la phase courante avancée.
+
+Déduplication par event_id (sinon phase normalisée + joueur) ; remplacement des logs gagnants correspondants à leur emplacement. Les anciens logs génériques sans event_id sont rapprochés par phase, dont le winner est unique dans l’API canonique ; les anciens textes live par phase/nom. Les autres logs et les phases sans winner exploitable restent inchangés. Un `id` stable dérivé de l’event_id empêche aussi le rejeu du buffer Master. La phrase générique reste stockée, sans migration ni nouveau write. Schéma ancien sans table/champ requis : fallback logs ; les autres erreurs SQL restent propagées.
+
+Master/Remote gardent leur flux et leur UI ; parser Remote vérifié sur les quatre codes. Overlay `phase_over` inchangé. Noms lus à l’hydratation depuis le joueur actuel : aucune archive du nom au moment de la victoire n’est ajoutée. Une jointure sans joueur exploitable conserve le log historique.
+
+<!-- AUTO-UPDATE:END id="hub-suspend-20260910-actions" -->
+
+> **Maintenance pact**
+> - Codex: you may only edit inside `AUTO-UPDATE` blocks.
+> - Humans: edit anything outside blocks; keep block IDs stable.
+
+# Actions (Canvas / Bridge)
+
+> Contractual registry of actions and where they are handled.
+
+## Conventions (humain)
+- Les actions doivent rester stables et documentées ici dès qu’elles sont ajoutées/modifiées.
+- **Convention stable de nommage** (sans espaces) :
+  - Le champ `action` est en **lowercase** et en **snake_case** (`[a-z0-9_]+`), ex: `session_update`, `players_get`, `case_click`.
+  - Une forme *alias* `game:action` est tolérée (ex: `bingo:case_click`) **sans espaces** et uniquement si `game` correspond au préfixe.
+  - Ne jamais écrire `bingo: case_click` (avec espace) : c’est une erreur de doc/usage (le bridge va `trim()` mais ce format ne doit pas exister côté clients).
+- **Côté bridge** : si `action` est `bingo:xxx` et `game=bingo`, le préfixe est **retiré** avant dispatch (`xxx` est envoyé à `game_api_dispatch()`).
+
+<!-- AUTO-UPDATE:BEGIN id="actions-list" owner="codex" -->
+
+### Hotfix hub_soiree — 23/09, non déployé
+
+`registerPlayer` Quiz/BT et `auth_player` Bingo → `hub_capacity_get(stage=admit)` quand le lifecycle serveur fournit le contexte officiel. Sans ce contexte, contrôle historique ; refus ciblé non converti en admission legacy. `remote_runtime_presence(source=autostart_validate)` : fence organisateur en lecture seule. Aucun nouveau protocole moteur, aucune modification de `HUB_EXECUTION_MISMATCH`. [Détails](../../notes/hub-soiree-hotfix-2026-09-23.md).
+
+
+### PATCH3 Bingo papier — 21/09/2026
+
+`admin_phase_winner` en papier : association facultative via le roster actif PATCH1, K exclusive/D cohérent ou D-only sans socket. Échec de résolution ≠ échec de phase. ACK `persisted=true` conservé sans nouvelle avance ; `phase_over` et notification portent D/nom résolus ou identité absente. `handleVerificationRequestMessage` numérique et `admin_phase_fail` inchangés. [Contrat et tests](../../notes/bingo-paper-association-patch3-2026-09-21.md).
+
+
+### Grâce involontaire expirée — 18/09/2026, local non déployé
+
+`canvas:hub_session_grace_expired` conserve son canal service-only mais reçoit l’identité officielle capturée par le moteur. Callbacks : Quiz/BT `actions/connection.js`, Bingo `ws/bingo_server.js`. Les runtimes deviennent indisponibles avant la notification ; helpers `runtimeExpiry.js` / `runtime_expiry.js` réessaient les erreurs de transport/stockage en gardant la même identité. Cleanup final après acquittement ; anciens chemins hors Hub/démos conservés.
+
+Global persiste `hub_runtime_expired`, puis clear CAS. Reprise/création implicite et auto-join refusés ; carte « Suspendue » sans action. Une suspension explicite n’émet jamais cet événement et reste reprenable avant cutoff, même après +61 min. Logs sans données personnelles : `runtime_grace_expired`, `runtime_expired_persisted`, `runtime_resume_rejected_expired`, `runtime_expired_focus_cleared`, plus `runtime_expired_delivery_retry`. Contexte : Hub, session numérique, exécution, moteur, motif. [Rapport et tests](../../notes/hub-runtime-expired-2026-09-18.md).
+
+
+### Quiz / Blind Test — grâce primary (correctif local 09/09/2026, non déployé)
+
+Pendant `primaryReconnectTimer`, perdre toutes les Remote/secondary conserve runtime, joueurs et sockets numériques, sans désactivation DB, terminal ni clear Hub. Même contrat papier/numérique et Hub/hors Hub. `graceExpirationInProgress` réserve le cleanup au callback d'expiration pendant son appel Canvas asynchrone; pas de double cleanup sur secondary close. Retour primary reconnu par l'inscription existante; expiration réelle et quit explicite primary restent terminaux. Le clear `canvas:hub_session_grace_expired` reste conditionnel au focus de la session; aucun payload/action ajouté. Tests locaux : `quiz/tests/primary-grace.test.cjs` et `blindtest/tests/primary-grace.test.cjs`.
+
+
+### Blind Test — coupe-circuit équipes (08/09/2026)
+
+`blindtest/web/server/features.js` fixe `BLINDTEST_TEAMS_ENABLED=false`. `teamCreate`, `teamJoin`, `teamJoinByCode`, `teamLeave` renvoient `teamError` / `TEAM_FEATURE_DISABLED` sans modifier la session. `teamList` et les notifications d’inscription renvoient `teamState` avec `enabled=false`, `teams=[]`, `teamPlayers={}`, `playerTeamId=null`, `locked=true`, sans code. Le code ON reste conservé ; ses contraintes historiques décrites plus bas ne s’appliquent qu’après réactivation dédiée. Gameplay live individuel ; les snapshots terminés et `session_teams_get` restent lisibles. Snapshot Canvas sans équipe : aucune suppression des équipes persistées (`NO_TEAM_RANKINGS`).
+# Actions “canon” (dispatch `game_api_dispatch`)
+
+## Bingo (`bingo_api_*`)
+- `bingo:deactivate_player` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, p)`
+- `bingo:end_game` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, p)`
+- `bingo:grid_assign` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, p)`
+- `bingo:grid_cells_sync` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, p)`
+- `bingo:grid_hydrate` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, p)`
+- `bingo:grid_lines` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, p)`
+- `bingo:phase_winner` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, p)`
+- `bingo:player_register` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, p)`
+- `bingo:players_get` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, p)`
+- `bingo:reset` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, p)`
+- `bingo:reset_state` — génération/phase/playlist et `reset_pending`, lecture Canvas pour clôture et garde WS.
+- `bingo:resetdemo` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, payload)`
+- `bingo:session_update` — `games/web/includes/canvas/php/bingo_adapter_glue.php` — `(pdo, payload)`
+
+Note compteur runtime: pour Bingo, Quiz et Blind Test, `players_get` filtre les joueurs actifs par défaut; `includeInactive` est réservé aux lectures terminales/historiques. Les réhydratations `canvas_display.js` déclenchées en session active (`session/init`, `game/started`, `game/paused`, retour mobile organizer) ne doivent pas envoyer ce flag.
+
+Note format court: `id_jeu_bingo_musical_format=5` est mappe comme une grille 3x3 pour les actions de grille Bingo existantes, sans nouvelle action Canvas.
+
+## Blindtest (`blindtest_api_*`)
+- `blindtest:deactivate_player` — `games/web/includes/canvas/php/blindtest_adapter_glue.php` — `(pdo, p)`
+- `blindtest:player_register` — `games/web/includes/canvas/php/blindtest_adapter_glue.php` — `(pdo, p)`
+- `blindtest:players_get` — `games/web/includes/canvas/php/blindtest_adapter_glue.php` — `(pdo, p)`
+- `blindtest:resetdemo` — `games/web/includes/canvas/php/blindtest_adapter_glue.php` — `(pdo, payload)`
+- `blindtest:session_primary_id` — `games/web/includes/canvas/php/blindtest_adapter_glue.php` — `(pdo, p)`
+- `blindtest:session_update` — `games/web/includes/canvas/php/blindtest_adapter_glue.php` — `(pdo, payload)`
+- `blindtest:update_score` — `games/web/includes/canvas/php/blindtest_adapter_glue.php` — `(pdo, p)`
+
+Note format court: le resolver Blind Test lit `championnats_sessions.id_format`; `id_format=5` limite le preload a 20 morceaux deterministes depuis la playlist source, sans nouvelle action Canvas.
+Note equipes runtime: `blindtest:session_update` conserve `podium_json` et accepte un classement final optionnel (`players`, `rankings` ou `finalRankings`). Les entrees equipe sont persistées dans `blindtest_session_teams` quand la table existe; l'absence de table est non bloquante. Depuis le 2026-07-07, une entree n'est equipe que si `teamMemberCount` / `members` indique au moins 2 membres runtime; une equipe préparée restée seule est transmise comme joueur solo.
+
+### Blindtest WS runtime-only (hors Canvas bridge)
+- `paper_finalize_end` — Remote → WS; requête idempotente avec `sessionId` + `event_id`. Elle appelle `finalizePaperScores()` et ne constitue jamais un terminal Master.
+- `paper_score_finalization_state` — WS outbound organizers; expose `finalizing_scores`, `completed` ou le retour `awaiting_score_validation` avec `result/reason`, sans remplacer la preuve HTTP de persistance.
+- `remoteQuitRequest` — Remote historique → WS → Organizer primaire; demande volontaire confirmée côté Remote. Le serveur relaie uniquement au primary Organizer, qui exécute le contrat Master `endSession(..., serverLogout=true)`. Si aucun primary n'est connecté, le serveur renvoie `remoteQuitUnavailable` à la Remote.
+- `teamCreate` — `blindtest/web/server/actions/teams.js` — cree une equipe runtime pour la session courante.
+- `teamJoin` — `blindtest/web/server/actions/teams.js` — rattache le joueur canonique a une equipe runtime.
+- `teamJoinByCode` — `blindtest/web/server/actions/teams.js` — rattache le joueur canonique a une equipe runtime via son code court.
+- `teamLeave` — `blindtest/web/server/actions/teams.js` — retire le joueur de son equipe runtime avant demarrage.
+- `teamList` — `blindtest/web/server/actions/teams.js` — renvoie l'etat `teamState`.
+- `teamState` — WS outbound — liste publique des equipes, `teamPlayers`, `playerTeamId`, `maxPlayers`, `locked`; `teamCode` est renseigne uniquement pour l'equipe du joueur destinataire.
+- `teamError` — WS outbound — refus runtime (`TEAM_FULL`, `TEAM_LOCKED_AFTER_START`, etc.).
+- `updatePlayers` / `endGame` player — WS outbound — en Blind Test equipe, `totalPlayers` reste le nombre de joueurs connectes reels, `rankingEntriesTotal` porte le nombre de participants de classement (equipes de 2+ membres + solos), et `isTeam` indique si l'entree finale du joueur est une equipe valide.
+
+Contraintes: les actions create/join/leave restent runtime WS et sont autorisees uniquement en `En attente`, avant `mainPlayerStarted`, avec master primaire ouvert; max 6 membres par equipe; code court unique dans la session, invalide quand l'equipe devient vide. En lobby, une equipe préparée à 1 membre reste visible et rattachée au membre restant. Au classement runtime, une equipe compte seulement a partir de 2 membres présents. La persistance DB est limitee au snapshot final via `blindtest:session_update`.
+
+## Quiz (`quiz_api_*`)
+- `quiz:deactivate_player` — `games/web/includes/canvas/php/quiz_adapter_glue.php` — `(pdo, p)`
+- `quiz:player_register` — `games/web/includes/canvas/php/quiz_adapter_glue.php` — `(pdo, p)`
+- Les trois handlers `player_register` acceptent une adoption d'identité uniquement pendant l'injection Hub papier serveur: une ligne runtime unique au pseudo exact peut recevoir la clé Hub canonique, sans recréation de ligne ni mutation de score/grille/gains. Tout appel navigateur ordinaire conserve les gardes d'unicité historiques.
+- Précondition interne Hub papier: avant la boucle, `canvas_historical_session_ensure_for_game(...)` assure et relit le parent Quiz/Blind Test une seule fois. Bingo effectue uniquement une validation de `championnats_sessions`. Cette abstraction n'ajoute aucune action dispatchée et ne modifie aucun payload/résultat public `player_register`.
+- `quiz:players_get` — `games/web/includes/canvas/php/quiz_adapter_glue.php` — `(pdo, p)`
+- `quiz:resetdemo` — `games/web/includes/canvas/php/quiz_adapter_glue.php` — `(pdo, payload)`
+- `quiz:session_primary_id` — `games/web/includes/canvas/php/quiz_adapter_glue.php` — `(pdo, p)`
+- `quiz:session_update` — `games/web/includes/canvas/php/quiz_adapter_glue.php` — `(pdo, payload)`
+- `quiz:update_score` — `games/web/includes/canvas/php/quiz_adapter_glue.php` — `(pdo, p)`
+
+### Quiz WS runtime-only (hors Canvas bridge)
+- `paper_finalize_end` — Remote → WS; requête idempotente avec `sessionId` + `event_id`, traitée par `finalizePaperScores()` sans relais terminal local au Master.
+- `paper_score_finalization_state` — WS outbound organizers; état de la finalisation, utilisé pour bloquer le double clic ou restaurer la revue après échec.
+- `remoteQuitRequest` — Remote historique → WS → Organizer primaire; demande volontaire confirmée côté Remote. Le serveur relaie uniquement au primary Organizer, qui exécute le contrat Master `endSession(..., serverLogout=true)`. Si aucun primary n'est connecté, le serveur renvoie `remoteQuitUnavailable` à la Remote.
+
+### Bingo WS finalisation papier
+- `admin_phase_winner` sans joueur avance `phase_courante` comme index 0-based dans la `phases_liste` complète, dont l'index 0 est le sentinelle pré-partie. Il ne persiste aucun gagnant; `BINGO_MANUAL_PHASE_ADVANCE` journalise la grille, les lignes 0-based et l'index avant/après.
+- La dernière validation `admin_phase_winner` persistée avec `next_phase=-1` déclenche le handler serveur `end_game` même si aucun Master n'est connecté.
+- Remote et Master sont coalescés par un verrou en vol; `paper_score_finalization_state` signale l'échec, tandis que `HUB_SESSION_FINISHED` n'est émis qu'après `bingo:end_game` puis completion Hub confirmés.
+- `remote_action=remote_quit_request` — Remote historique → WS Bingo → Organizer; demande volontaire confirmée côté Remote, relayée comme action Organizer avec `sessionId` pour exécuter le contrat Master existant. Si aucun Organizer n'est connecté, Bingo renvoie `remoteQuitUnavailable` à la Remote. L'Organizer doit attendre la prise en charge locale du send `quitGame forced=false` par une socket ouverte avant redirection; le serveur loggue `quitGame_received`, puis diffuse `SESSION_ENDED` avec `reason=organizer_quit` / `terminal_reason=organizer_quit`. Ce terminal ferme les interfaces mais reste reprenable en Hub: le guard mémoire `sessionEndedGames` est réarmé seulement lors d'une reprise Organizer prouvée (`BINGO_QUIT_GUARD_RESET`) et reste distinct de la fin naturelle `bingo:end_game` / `HUB_SESSION_FINISHED`. L'envoi Remote trace `hub_remote_bingo_terminal_delivery` avec état registre/socket et succès/échec d'envoi, sans secret.
+
+### Hub Remote commands (hors Canvas bridge)
+- `master_ping` — Hub Remote -> `games_hubs_remote_commands`; commande technique non destructive claimée par Hub Master via `remote_control_poll`.
+- `launch_session` — Hub Remote -> `games_hubs_remote_commands`; requête minimale `{session_id}` où l'identifiant reste la source officielle. Hub Master claim la commande et transmet `remote-command-{command_id}` comme `launch_intent_id`: le retry de la même commande retrouve une seule démo/exécution, une nouvelle commande crée une démo/exécution distincte. Le résultat public comprend `source_session_id`, `runtime_session_id`, `runtime_mode`, `execution_id`, `organizer_url` et `remote_url`; les URLs visent le runtime déclaré, officiel ou démo.
+
+Contraintes: le contrat `launch_session` est commun Quiz/Blind Test/Bingo; toute divergence Bingo reste derrière le service central Hub Master et les handlers Canvas/WS existants.
+
+## Canvas (global, `canvas_api_*`)
+- `canvas:hub_session_grace_expired` — `games/web/includes/canvas/php/boot_lib.php` — `(pdo, p)`; write service-only, clear conditionnel du focus Hub après expiration définitive.
+- `canvas:hub_session_natural_ended` — `games/web/includes/canvas/php/boot_lib.php` — `(pdo, p)`; write service-only après persistance terminale, résout l'exécution par `runtime_session_id`, puis clear conditionnel sur la source officielle et preuve `hub_execution_completed`. En mode démo, il ne modifie pas la source et ne déclenche ni résultats ni rebuild de stats Hub.
+- `canvas:participant_lookup` — `games/web/includes/canvas/php/boot_lib.php` — `(pdo, p)`
+- `canvas:prizes_get` — `games/web/includes/canvas/php/prizes_glue.php` — `(pdo, p)`
+- `canvas:prizes_save` — `games/web/includes/canvas/php/prizes_glue.php` — `(pdo, p)`
+- `canvas:session_meta_get` — `games/web/includes/canvas/php/boot_lib.php` — `(pdo, p)`
+- `canvas:session_podium_photo_upload` — `games/web/includes/canvas/php/boot_lib.php` — `(pdo, p)`
+- `canvas:youtube_catalog_diagnostics_get` — `games/web/includes/canvas/php/boot_lib.php` — `(pdo, p)`
+
+## API callers (where to patch logging)
+| Repo | Caller type | Wrapper function | File:line | Actions covered (write-heavy) | Notes |
+|---|---|---|---|---|---|
+| games (front organizer) | browser | `__canvasCall` | `games/web/includes/canvas/core/boot_organizer.js:274-335` | `resetdemo`, `session_update`, `prizes_get/save` via `CanvasAPI.*` | Single fetch wrapper; unwraps `{ok,data,error}`; no `event_id` header. |
+| games (front remote) | browser | `remoteApi` / `remoteApiFormData` | `games/web/includes/canvas/remote/remote-ui.js:381-430` | `players_get`, `player_register`, `participant_lookup`, `session_primary_id`, `update_score`, `phase_winner`, `session_podium_photo_upload` | Used by remote admin UI; same envelope handling, plus multipart upload for podium photos. Remote paper critical writes use HTTP before WS refresh. |
+| games (front player) | browser | `api` | `games/web/includes/canvas/play/register.js` | `session_primary_id`, `players_get`, `player_register`, `grid_assign`, `deactivate_player` | Les writes portent un `event_id`; tentative simultanée coalescée et retry réseau avec le même ID. |
+| games (front bingo sync) | browser | direct fetch | `games/web/includes/canvas/play/play-ui.js` | `grid_cells_sync` | Snapshot debounced + `sendBeacon`; ID stable tant que le même snapshot n'est pas acquitté. |
+| bingo WS | Node | `canvasWrite` | `bingo.game/ws/envUtils.js` | `bingo:reset`, `session_update`, `bingo:end_game`, `phase_winner`, `hub_session_natural_ended` | Injects `event_id`, sets `X-Service-Token`; natural end emits `HUB_SESSION_FINISHED` only when the bridge confirms the current Hub execution. |
+| quiz WS | Node | `canvasWrite` | `quiz/web/server/actions/envUtils.js` | `update_score`, `session_update`, `deactivate_player`, `player_register`, `hub_session_natural_ended` | `CanvasAPI.*` uses this; injects `event_id`, timeout/abort; natural end follows persisted final podium. |
+| blindtest WS | Node | `canvasWrite` | `blindtest/web/server/actions/envUtils.js` | `update_score`, `session_update`, `deactivate_player`, `player_register`, `hub_session_natural_ended` | Same as quiz wrapper, including final team/solo snapshot before the Hub callback. |
+
+Evidence details: `notes/logging-api-callers-audit.md`.
+
+### WS primary organizer recovery
+- Quiz et Blind Test utilisent `sendMessageToPrimary(sessionId, message)` pour les envois cibles organizer principal.
+- Depuis le 2026-06-12, si `session.primarySocket` est absente ou fermee mais qu'une socket organizer ouverte est deja connue de la session, le WS la promeut localement et logge `PRIMARY_ORGANIZER_RECOVERED`.
+- Si aucune socket organizer ouverte n'existe, `WS_SEND_NO_PRIMARY_ORGANIZER` reste le signal support attendu, avec compteurs actifs organizer/secondary.
+- Bingo n'a pas d'equivalent direct: `sendMsgToClient()` parcourt les sockets organizer ouvertes dans `clients`.
+
+### API call logging spec (API_CALL_*)
+- Events: `API_CALL_ATTEMPT` (DEBUG), `API_CALL_RESULT` (DEBUG if `ok=true`, INFO if `ok=false`), `API_CALL_ERROR` (WARN).
+- Common fields (snake_case): `request_id` (front+WS), `event_id` (WS writes), `api_action`, `payload_keys`, `http_status`, `latency_ms`, `already_processed?`, `error_message?`, `transport` (`front`/`ws`), `session_id?`, `player_id?`.
+- Wrappers instrumented: `__canvasCall` (organizer), `remoteApi` (remote UI), `api` (player UI), `grid_cells_sync` fetch (bingo player), `canvasWrite` (bingo/quiz/blindtest WS).
+- Legacy network success logs are downgraded to DEBUG with `event:"LEGACY_API_NOTE"` and `legacy_api=1` to avoid duplicates in the viewer.
+Bingo, 11/09/2026 : `demo_reset` vérifie la génération SQL avant nettoyage mémoire et ACK ; authentifications et commandes sont sérialisées par partie. Trames et writes retardés conservent leur génération. `reset_game` porte aussi la nouvelle génération ; `clear_players` ne supprime plus le roster lors du reset. [Contrat/test](../../notes/bingo-reset-generation-patch-2026-09-11.md).
+
+`reset_ack` Bingo porte `reset_event_id`, `ok`, `phase` et `bingo_reset_generation` ; le Master attend cet ACK avant son jingle et ses commandes initiales. Retry corrélé via sessionStorage, sans second reset effectif. L’auth Master pendant pending reste une voie de récupération, pas une autorisation de gameplay.
+
+<!-- AUTO-UPDATE:END id="actions-list" -->
+
+<!-- AUTO-UPDATE:BEGIN id="actions-matrix" owner="codex" -->
+## Coverage matrix (auto)
+| area | action | write? | required fields | idempotence | notes |
+|---|---|---:|---|---|---|
+| Canvas / Hub | `hub_session_natural_ended` | ✅ | `game`, `sessionId`, `event_id`, `X-Service-Token` | replay résultat + focus/exécution gardés | Exige session terminée et `hub_execution_started`; écrit `hub_execution_completed` après clear et récupère au retry un clear déjà commité avec exécution encore ouverte. |
+| Bingo | `player_register` | ✅ | `username`, `sessionId`, `player_id`, `event_id` | replay résultat + upsert | Front browser sans service token; ID stable pendant retry, upsert sur `(session_id, player_id)`. Une injection Hub papier serveur peut adopter une unique ligne historique sous contrôle du contexte interne. |
+| Bingo WS | `auth_player` | ❌ | `id_player`, `id_grid`, `token`, `player_id`, `demoParticipant?` | — | WS-only auth, hors Canvas bridge. `demoParticipant=true` identifie la preview desktop mais compte quand meme dans le quota `maxPlayers`. |
+| Bingo | `resetdemo` | ✅ | `sessionId`, `event_id`, `bingo_reset_generation` | même opération = même résultat | Reset canonique phase 0, joueurs/grilles conservés ; journal pending/completed puis notification WS et reload. |
+| Bingo | `session_update` | ✅ | `sessionId`, `event_id`, + `id_song` (write) | `already_processed` on replay | WS emits `event:"session_update"` only on state/phase/media evolution (dedup), WS_IN/OUT traffic stays DEBUG by défaut (`WS_LOG_TRAFFIC=1` → INFO) |
+| Bingo | `grid_assign` | ✅ | `sessionId`, `player_id` (canon), `gridSupport`, `event_id` | replay résultat + assign idempotent | Si déjà assigné, renvoie la même grille (`already_assigned=true`); appels simultanés coalescés côté navigateur. |
+| Bingo | `grid_hydrate` | ❌ | `sessionId`, `player_id` (canon), `gridId?` | — | Read: si `gridId` absent, le bridge retrouve la grille via l’assignation joueur. |
+| Bingo | `grid_cells_sync` | ✅ | `sessionId`, `player_id` (canon), `gridId`, `checkedCells`, `event_id`, `bingo_reset_generation` | snapshot versionné | Le même snapshot conserve son ID après erreur réseau. La garde de génération précède toute écriture ; absence autorisée uniquement en génération 0, stale refusé HTTP409. |
+| Bingo | `end_game` (alias `bingo:end_game`) | ✅ | `sessionId`, `event_id` | `already_processed` on replay + verrou WS en vol | Après dernière phase persistée, le WS peut le déclencher sans Master; échec = retour revue, sans podium/Hub. Optional: `reason`, `ended_at`. |
+| Bingo | `phase_winner` (alias `bingo:phase_winner`) | ✅ | `sessionId`, `event_id`, `player_id` (canon), `phase` | `already_processed` on replay | `playerId` numérique optionnel (legacy) ; WS envoie key-first (`player_id`). |
+| Bingo | `reset` (alias `bingo:reset`) | ✅ | `sessionId`, `event_id`, `bingo_reset_generation` | `already_processed` on replay | Même primitive complète, phase cible 1 par défaut, roster conservé. |
+| Canvas | `participant_lookup` | ❌ | `game`, `query`, `sessionId?` | — | Remote papier helper to search existing players/teams before registration. |
+| Canvas | `player_podium_photo_access_get` | ❌ | `game`, `sessionId`, `game_player_id?`, `player_db_id?`, `game_player_key?`, `player_id?` | — | Read: player end-screen eligibility check for podium photo CTA; returns eligibility, row meta, runtime snapshot and consent text. |
+| Canvas | `player_podium_photo_upload` | ✅ | `game`, `sessionId`, `rank`, `files_img[]`, `consent=1`, `game_player_id?`, `player_db_id?`, `game_player_key?`, `player_id?`, `photo_row_key?` | — | Front player multipart upload for own podium photo; server rechecks ended session, podium membership and consent, then snapshots runtime label/pseudo for deletion audit. |
+| Canvas | `session_meta_get` | ❌ | `game`, `sessionId` | — | Read: polling organizer / remote metadata, inclut aussi `podium_photos`. |
+| Quiz / Blind Test / Bingo | `session_update` avec `paperMode` sur demo | ✅ | `sessionId`, `paperMode` | — | Autorise la persistance du format sur une demo non lancee; garde `FORMAT_SWITCH_LOCKED` si la phase runtime indique une session demarree. |
+| Canvas | `youtube_catalog_diagnostics_get` | ❌ | `game`, `sessionId`, `items[]` | — | Read: test pre-lancement organizer; relit `content_links_check_results` pour signaler les supports YouTube deja connus comme inutilisables par le scan `pro`. |
+| Canvas | `session_podium_photo_upload` | ✅ | `game`, `sessionId`, `rank`, `id_client`, `files_img[]`, `consent=1`, `consent_text`, `photo_row_key?` | — | Front remote multipart upload for ended-session podium photos; remote now collects organizer consent before upload and persists it with source `games_remote_organizer`. |
+| Blindtest | `session_primary_id` | ❌ | `sessionId` | — | Read (no `event_id`) |
+| Blindtest | `players_get` | ❌ | `sessionPrimaryId`; `includeInactive` terminal/historique only | — | Read (no `event_id`). Les réhydratations runtime actives de `canvas_display.js` ne doivent pas envoyer `includeInactive`; le filtre actif serveur reste le contrat par défaut. |
+| Blindtest | `update_score` | ✅ | `sessionPrimaryId`, `player_id` (canon), `score`, `event_id` | `already_processed` on replay | `playerId` numérique optionnel (legacy); WS envoie key-first (`player_id`). |
+| Blindtest | `session_update` | ✅ | `sessionId`, `event_id` | `already_processed` on replay | WS persistence (session end / podium); le payload final peut porter `players[]` avec equipes de 2+ membres seulement; WS_IN/WS_OUT traffic stays DEBUG par défaut (`WS_LOG_TRAFFIC=1` → INFO) |
+| Blindtest | `deactivate_player` | ✅ | `sessionPrimaryId`, `player_id` (canon), `event_id` | `already_processed` on replay | `playerId` numérique optionnel (legacy); WS voluntary quit cleanup key-first. |
+| Blindtest | `player_register` | ✅ | `sessionPrimaryId`, `username`, `event_id` | `already_processed` on replay | UPSERT canonique; `score=0` uniquement sous contexte serveur interne d'un `manual_join_session` Hub dont le mapping était `left`; toute autre réactivation conserve le score. |
+| Blindtest WS runtime | `teamCreate` / `teamJoin` / `teamJoinByCode` / `teamLeave` / `teamList` | ❌ | `sessionId`, `player_id`, `teamId?`, `teamName?`, `teamCode?` | — | Stand-by : flag central OFF, mutations refusées `TEAM_FEATURE_DISABLED`; lecture runtime vide `enabled=false`, sans mutation. Lecture DB historique conservée. |
+| Blindtest WS runtime | `remoteQuitRequest` | ✅ | `sessionId` | verrou front Remote + relais primary | Quit volontaire confirmé côté Remote; le WS relaie au primary Organizer, puis l'Organizer exécute `endSession({ reason:'Quitter le jeu', serverLogout:true })`. |
+| Quiz | `session_primary_id` | ❌ | `sessionId` | — | Read (no `event_id`) |
+| Quiz | `players_get` | ❌ | `sessionPrimaryId`; `includeInactive` terminal/historique only | — | Read (no `event_id`). Les réhydratations runtime actives de `canvas_display.js` ne doivent pas envoyer `includeInactive`; le filtre actif serveur reste le contrat par défaut. |
+| Quiz | `update_score` | ✅ | `sessionPrimaryId`, `player_id` (canon), `score`, `event_id` | `already_processed` on replay | `playerId` numérique optionnel (legacy); WS envoie key-first (`player_id`). |
+| Quiz remote papier | `update_score` | ✅ | `sessionId`, `sessionPrimaryId`, `player_id` (canon) ou `playerId`, `score`, `event_id`, `role=remote`, `remote_action=paper_score_update`, `paperMode=1` | `already_processed` on replay | La remote persiste par HTTP avant le WS `admin_set_score`; le succes remote depend de l'ACK bridge, le WS est un refresh best-effort si le primary organizer est disponible. |
+| Quiz | `session_update` | ✅ | `sessionId`, `event_id` | `already_processed` on replay | WS persistence (session end / podium); WS_IN/WS_OUT traffic stays DEBUG by défaut (`WS_LOG_TRAFFIC=1` → INFO) |
+| Quiz | `deactivate_player` | ✅ | `sessionPrimaryId`, `player_id` (canon), `event_id` | `already_processed` on replay | `playerId` numérique optionnel (legacy); WS voluntary quit cleanup key-first. |
+| Quiz | `player_register` | ✅ | `sessionPrimaryId`, `username`, `event_id` | `already_processed` on replay | UPSERT canonique; `score=0` uniquement sous contexte serveur interne d'un `manual_join_session` Hub dont le mapping était `left`; toute autre réactivation conserve le score. |
+| Quiz WS runtime | `remoteQuitRequest` | ✅ | `sessionId` | verrou front Remote + relais primary | Quit volontaire confirmé côté Remote; le WS relaie au primary Organizer, puis l'Organizer exécute `endSession({ reason:'Quitter le jeu', serverLogout:true })`. |
+| Bingo WS runtime | `remote_action=remote_quit_request` | ✅ | `sessionId` | verrou front Remote + relais Organizer + send local garanti | Quit volontaire confirmé côté Remote; Bingo relaie l'action et le `sessionId` à l'Organizer, qui exécute `endSession({ reason:'Quitter le jeu', serverLogout:true })` et attend `quitGame` pris en charge par une socket ouverte avant redirection. Le serveur loggue `quitGame_received`; le `SESSION_ENDED` volontaire porte `organizer_quit`, son envoi Remote est tracé par `hub_remote_bingo_terminal_delivery`, et son guard d'idempotence est réarmé uniquement sur reprise Organizer prouvée. |
+
+### Response shape note (auto)
+- Bridge always responds with an envelope `{ ok, data, error, ts }` (see `canon/interfaces/canvas-bridge.md`).
+- WS callers must read fields inside `data` (or use a wrapper that unwraps `data`).
+
+### WS inventory (Blindtest/Quiz) (auto)
+WS callers (deduped) and the payload keys they send to the bridge.
+
+| game | action | read/write | WS call sites | payload keys (WS → bridge) | data fields used by WS |
+|---|---|---:|---|---|---|
+| Blindtest | `session_primary_id` | read | `blindtest/web/server/actions/sessionUtils.js` | `game`, `sessionId` | `sessionPrimaryId` |
+| Blindtest | `players_get` | read | `blindtest/web/server/actions/registration.js` | `game`, `sessionPrimaryId` | `players[]` (`playerId`, `playerName`, `score`) |
+| Blindtest | `update_score` | write | `blindtest/web/server/actions/gameplay.js` | `game`, `sessionPrimaryId`, `player_id`, `playerId?`, `score`, `event_id`* | `changed` |
+| Blindtest | `session_update` | write | `blindtest/web/server/actions/gameplay.js` | `game`, `sessionId`, `currentSongIndex`, `gameStatus`, `totalPlayers`, `podium`, `players?`, `event_id`* | `changed` |
+| Blindtest | `deactivate_player` | write | `blindtest/web/server/actions/connection.js` | `game`, `sessionPrimaryId`, `player_id`, `playerId?`, `event_id`* | `changed` |
+| Blindtest | `player_register` | write | `blindtest/web/server/actions/loadtest.js` | `game`, `sessionPrimaryId`, `username`, `event_id`* | `playerId`, `username`, `sessionPrimaryId` |
+| Quiz | `session_primary_id` | read | `quiz/web/server/actions/sessionUtils.js` | `game`, `sessionId` | `sessionPrimaryId` |
+| Quiz | `players_get` | read | `quiz/web/server/actions/registration.js` | `game`, `sessionPrimaryId` | `players[]` (`playerId`, `playerName`, `score`) |
+| Quiz | `update_score` | write | `quiz/web/server/actions/gameplay.js` | `game`, `sessionPrimaryId`, `player_id`, `playerId?`, `score`, `event_id`* | `changed` |
+| Quiz | `session_update` | write | `quiz/web/server/actions/gameplay.js` | `game`, `sessionId`, `currentSongIndex`, `gameStatus`, `totalPlayers`, `podium`, `event_id`* | `changed` |
+| Quiz | `deactivate_player` | write | `quiz/web/server/actions/connection.js` | `game`, `sessionPrimaryId`, `player_id`, `playerId?`, `event_id`* | `changed` |
+| Quiz | `player_register` | write | `quiz/web/server/actions/loadtest.js` | `game`, `sessionPrimaryId`, `username`, `event_id`* | `playerId`, `username`, `sessionPrimaryId` |
+
+\* `event_id` is injected by the WS wrapper for write actions (see `blindtest/web/server/actions/envUtils.js` and `quiz/web/server/actions/envUtils.js`).
+\* Les wrappers WS valident les payloads player-scoped avant appel bridge (`WS_API_PAYLOAD_VALIDATED`) : `player_id` canon requis, `playerId` numeric-only.
+\* Loadtests WS URL: `blindtest/web/server/actions/loadtest.js` and `quiz/web/server/actions/loadtest.js` default to `ws://127.0.0.1:${WS_PORT}/` (fallback 3031 for Blindtest, 3032 for Quiz).
+\* WS `update_score` write smoothing: `CANVAS_UPDATE_SCORE_CONCURRENCY` (default 5) caps in-process concurrency; `CANVAS_HTTP_TIMEOUT_MS` (default 3000) aborts Canvas HTTP calls (no retry).
+
+### Logging patch plan (next step)
+- **Front (games)**: instrument the three fetch wrappers — `__canvasCall` (`boot_organizer.js:274-335`), `remoteApi` (`remote-ui.js:381-410`), `api` (`play/register.js:513-548`) — to emit attempt/result/error with `action`, `game`, payload keys, HTTP status, parsed envelope; add a small hook on standalone `grid_cells_sync` (`play-ui.js:1046-1088`).
+- **Player end-screen upload**: `games/web/includes/canvas/play/play-ui.js` now also calls the bridge directly for `player_podium_photo_access_get` and `player_podium_photo_upload`; this path is browser-originated, multipart for the upload, and does not carry `event_id`.
+- **WS Bingo**: patch `canvasWrite` (`envUtils.js:167-195`) once to log attempt/result/error with `event_id`, `statusCode`, `latencyMs`, `canvasHost`; callers already pass `sessionId/playerId/phase`.
+- **WS Quiz/Blindtest**: patch `canvasWrite` (`quiz/web/server/actions/envUtils.js:208-233`, `blindtest/web/server/actions/envUtils.js:211-239`) to log attempt/result/error with `event_id`, `statusCode`, `latencyMs`, token presence, unwrapped `data`; covers `update_score`, `session_update`, `deactivate_player`, `player_register`.
+- **Fallbacks**: if wrappers cannot be patched, instrument per-call sites listed in `notes/logging-api-callers-audit.md` (`bingo_server.js`, `play/register.js`, etc.).
+<!-- AUTO-UPDATE:END id="actions-matrix" -->

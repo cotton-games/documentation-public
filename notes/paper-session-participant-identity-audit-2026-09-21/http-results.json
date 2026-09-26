@@ -1,0 +1,18 @@
+[
+    {
+        "game": "quiz",
+        "requested_score": 3,
+        "old_score": 10,
+        "returned_score": 10,
+        "sql_uses_greatest": true,
+        "scope": "real handler, SQL semantics emulated; no database"
+    },
+    {
+        "game": "blindtest",
+        "requested_score": 3,
+        "old_score": 10,
+        "returned_score": 10,
+        "sql_uses_greatest": true,
+        "scope": "real handler, SQL semantics emulated; no database"
+    }
+]
