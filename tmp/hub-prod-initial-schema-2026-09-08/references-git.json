@@ -1,0 +1,84 @@
+{
+  "documentation": {
+    "branch": "develop",
+    "head": "c14a124632a84d3221f161c0667a3ce5e255e070"
+  },
+  "global": {
+    "branch": "hub_soiree",
+    "head": "1b7b4e452ba6ee9b5bdedfc5943071322b9c5f49"
+  },
+  "pro": {
+    "branch": "hub_soiree",
+    "head": "eaca08277ecf46ad884955798b7b8264bfd93b2f"
+  },
+  "games": {
+    "branch": "hub_soiree",
+    "head": "71eb3c713e395aff269e5ebb73976362d8d5381b"
+  },
+  "play": {
+    "branch": "hub_soiree",
+    "head": "4a7c22623ca2e8f0eef6dc176c51a4ed1876e733"
+  },
+  "quiz": {
+    "branch": "hub_soiree",
+    "head": "cabfdb16fe31ed9b34dde5b7832a2d751a838111"
+  },
+  "blindtest": {
+    "branch": "hub_soiree",
+    "head": "67f6cb0e3aac44832e9743cb83ed6dac87ab1e10"
+  },
+  "bingo.game": {
+    "branch": "hub_soiree",
+    "head": "42b829e63fc79675841b069ada2ceb293abef786"
+  },
+  "www": {
+    "branch": "hub_soiree",
+    "head": "56b31c84566ea88f3a2a2e6750d96164eaa88ea6"
+  },
+  "blocking_source_sha256": "47c51aa42fee7f859b20c1416d142818abe62ba385b046c4642b127d0a119da4",
+  "corrected_source_sha256": "f36f9a590715aaf651f89a2fe1afc917c18469885a83110f7996b7d283f8777c",
+  "source_state": "Global local modifié, non committé : guard status uniquement. Empreinte blocking_source_sha256 conservée comme preuve avant correctif.",
+  "final_review": {
+    "documentation": {
+      "branch": "develop",
+      "head": "cfda68ae2fc4ebfe7c8566a62ab62d062646ff25"
+    },
+    "global": {
+      "branch": "hub_soiree",
+      "head": "626a76bfcd8b39bb192040bc21609b3f15fbfa1c"
+    },
+    "pro": {
+      "branch": "hub_soiree",
+      "head": "eaca08277ecf46ad884955798b7b8264bfd93b2f"
+    },
+    "games": {
+      "branch": "hub_soiree",
+      "head": "71eb3c713e395aff269e5ebb73976362d8d5381b"
+    },
+    "play": {
+      "branch": "hub_soiree",
+      "head": "4a7c22623ca2e8f0eef6dc176c51a4ed1876e733"
+    },
+    "quiz": {
+      "branch": "hub_soiree",
+      "head": "cabfdb16fe31ed9b34dde5b7832a2d751a838111"
+    },
+    "blindtest": {
+      "branch": "hub_soiree",
+      "head": "67f6cb0e3aac44832e9743cb83ed6dac87ab1e10"
+    },
+    "bingo.game": {
+      "branch": "hub_soiree",
+      "head": "42b829e63fc79675841b069ada2ceb293abef786"
+    },
+    "www": {
+      "branch": "hub_soiree",
+      "head": "56b31c84566ea88f3a2a2e6750d96164eaa88ea6"
+    }
+  },
+  "prod_inputs": {
+    "/home/romain/Cotton/resultats_00_precheck.txt": "dcd7b10fb1bc8379cb8a2a96a5a7b2b7c02cc51b5deee9d4bf901081a0de02f7",
+    "/home/romain/Cotton/resultats_00_precheck_2.txt": "221c5161d962f177bbb3e4684d594f782010e3b9f20ccbaa760665f5d381b14b"
+  },
+  "final_schema_source_sha256": "f36f9a590715aaf651f89a2fe1afc917c18469885a83110f7996b7d283f8777c"
+}

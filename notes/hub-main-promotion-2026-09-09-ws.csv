@@ -1,0 +1,5 @@
+repo,path,source_commit,sha256,scope
+blindtest,web/server/actions/connection.js,993900e41c98766f2869702c035d27a286061c52,56383e83753844bf0cbc434320bb7aa8ef06b00b82a06a6c8c5db177864432c0,"Dernier correctif grace; reste a jour en PROD selon operateur, copie non effectuee"
+blindtest,web/server/restart_serveur.txt,993900e41c98766f2869702c035d27a286061c52,95f79a8f4643432042e6c486bded85faec6a5586f1682f3d6d91ca5be359971f,"Dernier correctif grace; reste a jour en PROD selon operateur, copie non effectuee"
+quiz,web/server/actions/connection.js,66b2646e12e7e20432361e25cccd94c914057178,0a17ff0d43e01ca58ed1f2df10521ac93d5d7c6d57e173b2617ad874fb248baa,"Dernier correctif grace; reste a jour en PROD selon operateur, copie non effectuee"
+quiz,web/server/restart_serveur.txt,66b2646e12e7e20432361e25cccd94c914057178,95f79a8f4643432042e6c486bded85faec6a5586f1682f3d6d91ca5be359971f,"Dernier correctif grace; reste a jour en PROD selon operateur, copie non effectuee"

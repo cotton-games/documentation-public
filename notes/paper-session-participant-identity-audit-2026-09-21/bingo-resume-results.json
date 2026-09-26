@@ -1,0 +1,26 @@
+[
+  {
+    "game": "bingo",
+    "mode": "MASTER_RECONNECT",
+    "runtime_key": "p:00000000-0000-4000-8000-000000000001",
+    "engine_db_id": 201,
+    "identity_preserved": true,
+    "scope": "real disconnect/restore/hydration methods; authentication and clocks simulated"
+  },
+  {
+    "game": "bingo",
+    "mode": "GRACE",
+    "runtime_key": "p:00000000-0000-4000-8000-000000000001",
+    "engine_db_id": 201,
+    "identity_preserved": true,
+    "scope": "real disconnect/restore/hydration methods; authentication and clocks simulated"
+  },
+  {
+    "game": "bingo",
+    "mode": "SUSPEND_RESUME",
+    "runtime_key": "p:00000000-0000-4000-8000-000000000001",
+    "engine_db_id": 201,
+    "identity_preserved": true,
+    "scope": "real disconnect/restore/hydration methods; authentication and clocks simulated"
+  }
+]

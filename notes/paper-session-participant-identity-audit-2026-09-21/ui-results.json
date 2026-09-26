@@ -1,0 +1,14 @@
+[
+  {
+    "projection": "PARTIAL_WS_AFTER_HTTP",
+    "canonical": "p:00000000-0000-4000-8000-000000000001",
+    "numeric_id_retained": 201,
+    "score_action_result": "FAIL_NUMERIC_PRECEDENCE"
+  },
+  {
+    "projection": "AUTHORITATIVE_WS_AFTER_HTTP",
+    "canonical": "p:00000000-0000-4000-8000-000000000001",
+    "numeric_id_retained": null,
+    "score_action_result": "RESOLVES_CANONICAL"
+  }
+]

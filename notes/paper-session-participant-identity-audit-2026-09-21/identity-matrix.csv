@@ -1,0 +1,25 @@
+game,origin,global_hub_ids,engine_db_id,runtime_key,remote_ids,expected_live_id
+quiz,QR Hub,"H, K invité ou K déterministe EP; M lors ensure",D=cotton_quiz_players.id; absent avant ensure,K=p:UUID,K/D après hydratation,K; H seulement pour undo roster Hub
+quiz,Hub Remote,"H; K interne, M absent avant injection",D=cotton_quiz_players.id; absent avant ensure,K=p:UUID,id=H lobby; K/D moteur,K; H seulement pour undo roster Hub
+quiz,Remote session,H/M via bridge si contexte Hub,D=cotton_quiz_players.id; absent avant ensure,K=p:UUID,K/D HTTP puis WS,K; H seulement pour undo roster Hub
+quiz,Injection lancement,H existant; M enrichi après réponse vérifiée,D=cotton_quiz_players.id; absent avant ensure,K=p:UUID,K/D HTTP puis WS,K; H seulement pour undo roster Hub
+quiz,Saisie libre,H éventuel; K UUID invité,D=cotton_quiz_players.id; absent avant ensure,K=p:UUID,K/D HTTP puis WS,K; H seulement pour undo roster Hub
+quiz,Existant retrouvé,E/T source typée; H/M selon parcours,D=cotton_quiz_players.id; absent avant ensure,K=p:UUID,lookup id=player:E ou team:T; puis K/D,K; H seulement pour undo roster Hub
+quiz,Équipe historique/wording,K stable team:T; invité Hub possible,D=cotton_quiz_players.id; absent avant ensure,K=p:UUID,K/D pour un participant runtime,K; H seulement pour undo roster Hub
+quiz,Restauré/repris,H/M préexistants; aucune recréation nominale,D=cotton_quiz_players.id; absent avant ensure,K=p:UUID,K/D ou K selon serializer,K; H seulement pour undo roster Hub
+blindtest,QR Hub,"H, K invité ou K déterministe EP; M lors ensure",D=blindtest_players.id; absent avant ensure,K=p:UUID,K/D après hydratation,K; H seulement pour undo roster Hub
+blindtest,Hub Remote,"H; K interne, M absent avant injection",D=blindtest_players.id; absent avant ensure,K=p:UUID,id=H lobby; K/D moteur,K; H seulement pour undo roster Hub
+blindtest,Remote session,H/M via bridge si contexte Hub,D=blindtest_players.id; absent avant ensure,K=p:UUID,K/D HTTP puis WS,K; H seulement pour undo roster Hub
+blindtest,Injection lancement,H existant; M enrichi après réponse vérifiée,D=blindtest_players.id; absent avant ensure,K=p:UUID,K/D HTTP puis WS,K; H seulement pour undo roster Hub
+blindtest,Saisie libre,H éventuel; K UUID invité,D=blindtest_players.id; absent avant ensure,K=p:UUID,K/D HTTP puis WS,K; H seulement pour undo roster Hub
+blindtest,Existant retrouvé,E/T source typée; H/M selon parcours,D=blindtest_players.id; absent avant ensure,K=p:UUID,lookup id=player:E ou team:T; puis K/D,K; H seulement pour undo roster Hub
+blindtest,Équipe historique/wording,K stable team:T; invité Hub possible,D=blindtest_players.id; absent avant ensure,K=p:UUID,K/D pour un participant runtime,K; H seulement pour undo roster Hub
+blindtest,Restauré/repris,H/M préexistants; aucune recréation nominale,D=blindtest_players.id; absent avant ensure,K=p:UUID,K/D ou K selon serializer,K; H seulement pour undo roster Hub
+bingo,QR Hub,"H, K invité ou K déterministe EP; M lors ensure",D=bingo_players.id; absent avant ensure,K=p:UUID,K/D après hydratation,K; H seulement pour undo roster Hub
+bingo,Hub Remote,"H; K interne, M absent avant injection",D=bingo_players.id; absent avant ensure,K=p:UUID,id=H lobby; K/D moteur,K; H seulement pour undo roster Hub
+bingo,Remote session,H/M via bridge si contexte Hub,D=bingo_players.id; absent avant ensure,K=p:UUID,K/D HTTP puis WS,K; H seulement pour undo roster Hub
+bingo,Injection lancement,H existant; M enrichi après réponse vérifiée,D=bingo_players.id; absent avant ensure,K=p:UUID,K/D HTTP puis WS,K; H seulement pour undo roster Hub
+bingo,Saisie libre,H éventuel; K UUID invité,D=bingo_players.id; absent avant ensure,K=p:UUID,K/D HTTP puis WS,K; H seulement pour undo roster Hub
+bingo,Existant retrouvé,E/T source typée; H/M selon parcours,D=bingo_players.id; absent avant ensure,K=p:UUID,lookup id=player:E ou team:T; puis K/D,K; H seulement pour undo roster Hub
+bingo,Équipe historique/wording,K stable team:T; invité Hub possible,D=bingo_players.id; absent avant ensure,K=p:UUID,K/D pour un participant runtime,K; H seulement pour undo roster Hub
+bingo,Restauré/repris,H/M préexistants; aucune recréation nominale,D=bingo_players.id; absent avant ensure,K=p:UUID,K/D ou K selon serializer,K; H seulement pour undo roster Hub

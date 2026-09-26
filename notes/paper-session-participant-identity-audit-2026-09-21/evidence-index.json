@@ -1,0 +1,322 @@
+[
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 2029,
+    "function": "applyScoreUpdate"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 2088,
+    "function": "handlePhaseWin"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 3139,
+    "function": "resolveRemotePodiumMetaRow"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 3238,
+    "function": "uploadRemotePodiumPhotoFile"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 4037,
+    "function": "buildParticipantChoiceFromLookup"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 4209,
+    "function": "fetchPlayersSnapshot"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 4234,
+    "function": "startPaperParticipantsPolling"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 4264,
+    "function": "getCanonicalPlayerId"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 4272,
+    "function": "getNumericPlayerId"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 4278,
+    "function": "getRemotePlayerStableId"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 4381,
+    "function": "getOrCreateRemotePlayerId"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 4423,
+    "function": "seedRemoteRegisteredParticipant"
+  },
+  {
+    "path": "games/web/includes/canvas/remote/remote-ui.js",
+    "line": 4450,
+    "function": "handleAddPlayerLive"
+  },
+  {
+    "path": "games/web/modules/app_hub_remote_ajax.php",
+    "line": 451,
+    "function": "games_hub_remote_paper_lookup"
+  },
+  {
+    "path": "games/web/modules/app_hub_remote_ajax.php",
+    "line": 464,
+    "function": "games_hub_remote_paper_player_public"
+  },
+  {
+    "path": "games/web/modules/app_hub_remote_ajax.php",
+    "line": 546,
+    "function": "games_hub_remote_handle_paper_lobby_player_add"
+  },
+  {
+    "path": "games/web/modules/app_hub_remote_ajax.php",
+    "line": 600,
+    "function": "games_hub_remote_handle_paper_lobby_player_remove"
+  },
+  {
+    "path": "games/web/includes/canvas/php/boot_lib.php",
+    "line": 979,
+    "function": "canvas_build_stable_participant_key"
+  },
+  {
+    "path": "games/web/includes/canvas/php/boot_lib.php",
+    "line": 1174,
+    "function": "canvas_api_participant_lookup"
+  },
+  {
+    "path": "games/web/includes/canvas/php/boot_lib.php",
+    "line": 1472,
+    "function": "canvas_api_session_podium_photo_upload"
+  },
+  {
+    "path": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "line": 5548,
+    "function": "app_games_hub_player_upsert"
+  },
+  {
+    "path": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "line": 5691,
+    "function": "app_games_hub_player_register_guest_from_play"
+  },
+  {
+    "path": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "line": 5746,
+    "function": "app_games_hub_player_ensure"
+  },
+  {
+    "path": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "line": 5798,
+    "function": "app_games_hub_player_unregister"
+  },
+  {
+    "path": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "line": 7831,
+    "function": "app_games_hub_session_podium_row_hub_player_get"
+  },
+  {
+    "path": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "line": 8535,
+    "function": "app_games_hub_session_mapping_upsert"
+  },
+  {
+    "path": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "line": 8633,
+    "function": "app_games_hub_session_player_key"
+  },
+  {
+    "path": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "line": 8649,
+    "function": "app_games_hub_session_register_bridge"
+  },
+  {
+    "path": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "line": 8869,
+    "function": "app_games_hub_session_participation_ensure"
+  },
+  {
+    "path": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "line": 9201,
+    "function": "app_hub_player_resolve_session_access"
+  },
+  {
+    "path": "global/web/app/modules/jeux/hubs/app_games_hubs_functions.php",
+    "line": 9688,
+    "function": "app_games_hub_session_inject_active_players"
+  },
+  {
+    "path": "quiz/web/server/actions/gameplay.js",
+    "line": 141,
+    "function": "finalizePaperScores"
+  },
+  {
+    "path": "quiz/web/server/actions/gameplay.js",
+    "line": 1032,
+    "function": "updatePlayerListNow"
+  },
+  {
+    "path": "quiz/web/server/actions/gameplay.js",
+    "line": 1099,
+    "function": "endGame"
+  },
+  {
+    "path": "quiz/web/server/actions/gameplay.js",
+    "line": 1207,
+    "function": "buildEndGamePayloadFromSession"
+  },
+  {
+    "path": "quiz/web/server/actions/gameplay.js",
+    "line": 1330,
+    "function": "persistScore"
+  },
+  {
+    "path": "quiz/web/server/actions/gameplay.js",
+    "line": 1366,
+    "function": "persistPodium"
+  },
+  {
+    "path": "quiz/web/server/actions/gameplay.js",
+    "line": 1411,
+    "function": "adminSetScore"
+  },
+  {
+    "path": "quiz/web/server/actions/registration.js",
+    "line": 16,
+    "function": "normalizeRegisterIds"
+  },
+  {
+    "path": "games/web/includes/canvas/php/quiz_adapter_glue.php",
+    "line": 1046,
+    "function": "quiz_api_update_score"
+  },
+  {
+    "path": "games/web/includes/canvas/php/quiz_adapter_glue.php",
+    "line": 1250,
+    "function": "quiz_api_players_get"
+  },
+  {
+    "path": "games/web/includes/canvas/php/quiz_adapter_glue.php",
+    "line": 1328,
+    "function": "quiz_api_deactivate_player"
+  },
+  {
+    "path": "games/web/includes/canvas/php/quiz_adapter_glue.php",
+    "line": 1441,
+    "function": "quiz_api_player_register"
+  },
+  {
+    "path": "blindtest/web/server/actions/gameplay.js",
+    "line": 161,
+    "function": "finalizePaperScores"
+  },
+  {
+    "path": "blindtest/web/server/actions/gameplay.js",
+    "line": 1246,
+    "function": "updatePlayerListNow"
+  },
+  {
+    "path": "blindtest/web/server/actions/gameplay.js",
+    "line": 1316,
+    "function": "endGame"
+  },
+  {
+    "path": "blindtest/web/server/actions/gameplay.js",
+    "line": 1458,
+    "function": "buildEndGamePayloadFromSession"
+  },
+  {
+    "path": "blindtest/web/server/actions/gameplay.js",
+    "line": 1620,
+    "function": "persistScore"
+  },
+  {
+    "path": "blindtest/web/server/actions/gameplay.js",
+    "line": 1656,
+    "function": "persistPodium"
+  },
+  {
+    "path": "blindtest/web/server/actions/gameplay.js",
+    "line": 1712,
+    "function": "adminSetScore"
+  },
+  {
+    "path": "blindtest/web/server/actions/registration.js",
+    "line": 23,
+    "function": "normalizeRegisterIds"
+  },
+  {
+    "path": "games/web/includes/canvas/php/blindtest_adapter_glue.php",
+    "line": 1039,
+    "function": "blindtest_api_update_score"
+  },
+  {
+    "path": "games/web/includes/canvas/php/blindtest_adapter_glue.php",
+    "line": 1208,
+    "function": "blindtest_api_players_get"
+  },
+  {
+    "path": "games/web/includes/canvas/php/blindtest_adapter_glue.php",
+    "line": 1351,
+    "function": "blindtest_api_deactivate_player"
+  },
+  {
+    "path": "games/web/includes/canvas/php/blindtest_adapter_glue.php",
+    "line": 1464,
+    "function": "blindtest_api_player_register"
+  },
+  {
+    "path": "games/web/includes/canvas/php/bingo_adapter_glue.php",
+    "line": 1162,
+    "function": "bingo_api_players_get"
+  },
+  {
+    "path": "games/web/includes/canvas/php/bingo_adapter_glue.php",
+    "line": 1259,
+    "function": "_bingo_resolve_identity"
+  },
+  {
+    "path": "games/web/includes/canvas/php/bingo_adapter_glue.php",
+    "line": 1403,
+    "function": "bingo_api_player_register"
+  },
+  {
+    "path": "games/web/includes/canvas/php/bingo_adapter_glue.php",
+    "line": 1688,
+    "function": "bingo_api_phase_winner"
+  },
+  {
+    "path": "bingo.game/ws/bingo_server.js",
+    "line": 2199,
+    "function": "handleRemoteMessage"
+  },
+  {
+    "path": "bingo.game/ws/bingo_server.js",
+    "line": 3416,
+    "function": "resolvePlayerScopeForGame"
+  },
+  {
+    "path": "bingo.game/ws/bingo_server.js",
+    "line": 3479,
+    "function": "hydratePlayersFromDB"
+  },
+  {
+    "path": "bingo.game/ws/bingo_server.js",
+    "line": 3645,
+    "function": "restoreHubRuntime"
+  },
+  {
+    "path": "bingo.game/ws/bingo_server.js",
+    "line": 3947,
+    "function": "getPlayersSnapshot"
+  }
+]

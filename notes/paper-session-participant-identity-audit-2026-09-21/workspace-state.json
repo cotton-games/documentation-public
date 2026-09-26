@@ -1,0 +1,37 @@
+{
+  "documentation": {
+    "head": "974d9496853459cc8cc9cb81ecc27b192b7a1690",
+    "status": "M CHANGELOG.md\n M DOCS_MANIFEST.md\n M HANDOFF.md\n M SITEMAP.md\n M SITEMAP.ndjson\n M SITEMAP.txt\n M canon/INDEX.md\n M canon/data/INDEX.md\n M canon/data/schema/INDEX.md\n M canon/entrypoints.md\n M canon/front/INDEX.md\n M canon/interfaces/INDEX.md\n M canon/interfaces/canvas-bridge.md\n M canon/repos/INDEX.md\n M canon/repos/bingo.game/INDEX.md\n M canon/repos/blindtest/INDEX.md\n M canon/repos/games/INDEX.md\n M canon/repos/games/README.md\n M canon/repos/games/TASKS.md\n M canon/repos/global/INDEX.md\n M canon/repos/global/README.md\n M canon/repos/global/TASKS.md\n M canon/repos/play/INDEX.md\n M canon/repos/play/README.md\n M canon/repos/play/TASKS.md\n M canon/repos/pro/INDEX.md\n M canon/repos/quiz/INDEX.md\n M canon/repos/www/INDEX.md\n M canon/repos/www/README.md\n M canon/repos/www/TASKS.md\n M canon/runbooks/INDEX.md\n M canon/runbooks/dev.md\n M notes/INDEX.md\n M notes/archive/INDEX.md\n M pm2-ws.md\n M specs/INDEX.md\n M specs/tests/INDEX.md\n?? notes/hub-participation-cta-2026-09-20.md",
+    "branch": "develop"
+  },
+  "games": {
+    "head": "ee7fd3d89450936d32047cbd079993cbaaab7539",
+    "status": "M web/games_ajax.php\n M web/includes/canvas/php/bingo_adapter_glue.php\n M web/includes/canvas/php/blindtest_adapter_glue.php\n M web/includes/canvas/php/boot_lib.php\n M web/includes/canvas/php/quiz_adapter_glue.php\n M web/player_canvas.php\n M web/tests/hub_legacy_entry_routes_test.php\n?? web/includes/canvas/php/hub_capacity.php\n?? web/tests/hub_capacity_runtime_test.cjs\n?? web/tests/hub_player_entry_test.php",
+    "branch": "hub_soiree"
+  },
+  "global": {
+    "head": "0fbb78cfb868a3c996a6036c77d20811649a6401",
+    "status": "M web/app/modules/jeux/bingo_musical/app_bingo_musical_functions.php\n M web/app/modules/jeux/hubs/app_games_hubs_functions.php\n M web/tests/hub_guest_rejoin_test.php\n?? web/app/modules/jeux/hubs/app_games_hub_capacity.php\n?? web/app/modules/jeux/hubs/app_games_hub_participation_cta.php\n?? web/tests/hub_capacity_test.php",
+    "branch": "hub_soiree"
+  },
+  "quiz": {
+    "head": "557f5a201cd369195fe380a9456f60b44fe967d9",
+    "status": "M web/server/actions/envUtils.js\n M web/server/actions/registration.js\n?? web/server/actions/hubCapacity.js",
+    "branch": "hub_soiree"
+  },
+  "blindtest": {
+    "head": "34614075b0a895911e4253a99e186d27fca5bb2c",
+    "status": "M web/server/actions/envUtils.js\n M web/server/actions/registration.js\n?? web/server/actions/hubCapacity.js",
+    "branch": "hub_soiree"
+  },
+  "bingo.game": {
+    "head": "591bc17ed13e2ac03fe51c7fdf09aa416c2d9c88",
+    "status": "M ws/bingo_server.js\n?? ws/hub_capacity.js",
+    "branch": "hub_soiree"
+  },
+  "play": {
+    "head": "4a7c22623ca2e8f0eef6dc176c51a4ed1876e733",
+    "status": "M web/.htaccess\n M web/ep/ep_signin.php\n M web/ep/ep_signup.php\n M web/ep/modules/jeux/hubs/ep_hubs_detail.php\n M web/ep/modules/jeux/sessions/ep_sessions_inscription_form.php\n M web/ep/modules/jeux/sessions/ep_sessions_inscription_script.php\n M web/ep/modules/jeux/sessions/ep_sessions_list_bloc.php\n?? web/ep/includes/ep_session_hub_cta.php\n?? web/tests/ep_session_hub_cta_test.php\n?? web/tests/ep_session_routing_contract_test.php",
+    "branch": "hub_soiree"
+  }
+}

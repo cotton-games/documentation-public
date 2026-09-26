@@ -1,0 +1,62 @@
+[
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "preparation",
+      "cmd": "php /home/romain/Cotton/games/web/tests/hub_paper_preparation_test.php",
+      "chunk_id": "51d68d",
+      "wall_time_seconds": 2.283359341,
+      "exit_code": 0,
+      "original_token_count": 15,
+      "output": "OK 75 paper preparation checks (fake storage, no real DB)\n"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "roster",
+      "cmd": "php /home/romain/Cotton/global/web/tests/hub_player_roster_registration_state_test.php",
+      "chunk_id": "7c2d2b",
+      "wall_time_seconds": 2.840038578,
+      "exit_code": 0,
+      "original_token_count": 10,
+      "output": "OK hub player roster registration state\n"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "bootstrap",
+      "cmd": "php /home/romain/Cotton/global/web/tests/hub_paper_cold_runtime_bootstrap_contract_test.php",
+      "chunk_id": "059a02",
+      "wall_time_seconds": 2.804234809,
+      "exit_code": 0,
+      "original_token_count": 12,
+      "output": "OK Hub paper cold runtime bootstrap contract\n"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "bingo",
+      "cmd": "node /home/romain/Cotton/games/web/tests/bingo_paper_correction_test.mjs",
+      "chunk_id": "024ff5",
+      "wall_time_seconds": 4.094072818,
+      "exit_code": 0,
+      "original_token_count": 9,
+      "output": "OK bingo paper correction contract\n"
+    }
+  },
+  {
+    "status": "fulfilled",
+    "value": {
+      "name": "capacity",
+      "cmd": "node /home/romain/Cotton/games/web/tests/hub_capacity_runtime_test.cjs",
+      "chunk_id": "55cec5",
+      "wall_time_seconds": 3.213956859,
+      "exit_code": 0,
+      "original_token_count": 75,
+      "output": "OK quiz: real register/probe, upsell 51, stale metadata, left, paper, demo, autonomous\nOK blindtest: real register/probe, upsell 51, stale metadata, left, paper, demo, autonomous\nOK Bingo capacity authority and demo\nOK Bingo real authentication: 51 accepted after upsell, non-active identity refused\n"
+    }
+  }
+]
